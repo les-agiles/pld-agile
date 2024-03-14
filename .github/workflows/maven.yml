@@ -30,7 +30,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'maven'
-          maven-version: '3.6.9'
+          maven-version: '3.9.6'
           architecture: x64
       - name: Build with Maven
         run: mvn -B package --file pom.xml
