@@ -2,6 +2,7 @@ module fr.insa.geofast {
     requires javafx.controls;
     requires javafx.fxml;
     requires atlantafx.base;
+    requires lombok;
 
 
     opens fr.insa.geofast to javafx.fxml;
