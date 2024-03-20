@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@Getter
 @XmlRootElement(name = "segment")
 @XmlType(propOrder = {"destination", "length", "name", "origin"})
 public class Segment {
@@ -15,7 +14,6 @@ public class Segment {
     private Intersection destination;
     private Intersection origin;
 
-    //Setter for all
     @XmlElement(name = "name")
     public void setName(String name) {
         this.name = name;
@@ -35,4 +33,6 @@ public class Segment {
     public void setOrigin(Intersection origin) {
         this.origin = origin;
     }
+
+
 }
