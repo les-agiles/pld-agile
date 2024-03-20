@@ -1,11 +1,11 @@
-module org.example.demo {
+module fr.insa.geofast {
     requires javafx.controls;
     requires javafx.fxml;
     requires atlantafx.base;
 
 
-    opens org.example.demo to javafx.fxml;
-    exports org.example.demo;
-    exports org.example.demo.controller;
-    opens org.example.demo.controller to javafx.fxml;
+    opens fr.insa.geofast to javafx.fxml;
+    exports fr.insa.geofast;
+    exports fr.insa.geofast.controller;
+    opens fr.insa.geofast.controller to javafx.fxml;
 }

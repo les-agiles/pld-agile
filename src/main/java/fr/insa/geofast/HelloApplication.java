@@ -1,4 +1,4 @@
-package org.example.demo;
+package fr.insa.geofast;
 
 import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.PrimerLight;

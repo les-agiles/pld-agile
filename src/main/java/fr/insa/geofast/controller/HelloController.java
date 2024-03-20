@@ -1,4 +1,4 @@
-package org.example.demo.controller;
+package fr.insa.geofast.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

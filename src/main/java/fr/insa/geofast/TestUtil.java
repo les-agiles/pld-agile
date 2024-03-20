@@ -1,4 +1,4 @@
-package org.example.demo;
+package fr.insa.geofast;
 
 public class TestUtil {
     public static String getGreeting() {

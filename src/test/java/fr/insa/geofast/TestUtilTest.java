@@ -1,4 +1,4 @@
-package org.example.demo;
+package fr.insa.geofast;
 
 import org.junit.jupiter.api.Test;
 
