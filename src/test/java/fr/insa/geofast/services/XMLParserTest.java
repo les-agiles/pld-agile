@@ -57,4 +57,23 @@ public class XMLParserTest {
         assertEquals(308, map.getIntersections().size());
         assertEquals(616, map.getSegments().size());
     }
+
+    @Test
+    void parseMap_WharehouseAdressShouldBeNull_DueToNonExistingIntersectionId(){
+        Map map = null;
+
+        try {
+            map = XMLParser.parseMap(absolutePath + "/unit-tests-map3.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(map);
+        assertNull(map.getWarehouse().getAddress());
+    }
+
+    @Test
+    void parseMap_ShouldNotWork_DueIncorrectXMLDataFormat(){
+        assertThrows(Exception.class, () -> XMLParser.parseMap(absolutePath + "/unit-tests-map4.xml"));
+    }
 }
