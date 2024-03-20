@@ -20,16 +20,14 @@ public class XMLParserTest {
     }
 
     @Test
-    public void testParseMap() {
+    void testParseMap() {
         Map map = null;
         try {
             map = XMLParser.parseMap(absolutePath + "/unit-tests-map1.xml");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(map);
         Assertions.assertNotNull(map);
         Assertions.assertEquals(1, map.getWarehouse().getAddress());
-
     }
 }

@@ -1,6 +1,5 @@
 package fr.insa.geofast.models;
 
-import lombok.Getter;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -12,13 +11,11 @@ public class Map {
     @XmlElement(name = "warehouse")
     private Warehouse warehouse;
 
-    public Warehouse getWarehouse() {
-        return warehouse;
-    }
-
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
     }
 
-
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
 }
