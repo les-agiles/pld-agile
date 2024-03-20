@@ -1,20 +1,15 @@
 package fr.insa.geofast.models;
 
-
 import javax.xml.bind.annotation.*;
-
 
 @XmlRootElement(name = "warehouse")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Warehouse {
     @XmlAttribute
-    private long address;
+    @XmlIDREF
+    private Intersection address;
 
-    public void setAddress(long address) {
-        this.address = address;
-    }
-
-    public long getAddress() {
+    public Intersection getAddress() {
         return address;
     }
 }

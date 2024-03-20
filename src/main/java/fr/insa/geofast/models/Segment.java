@@ -1,37 +1,37 @@
 package fr.insa.geofast.models;
 
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "segment")
-@XmlType(propOrder = {"destination", "length", "name", "origin"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Segment {
+    @XmlAttribute
     private String name;
+
+    @XmlAttribute
     private double length;
-    private Intersection destination;
+
+    @XmlAttribute
+    @XmlIDREF
     private Intersection origin;
 
-    @XmlElement(name = "name")
-    public void setName(String name) {
-        this.name = name;
+    @XmlAttribute
+    @XmlIDREF
+    private Intersection destination;
+
+    public String getName() {
+        return name;
     }
 
-    @XmlElement(name = "length")
-    public void setLength(double length) {
-        this.length = length;
+    public double getLength() {
+        return length;
     }
 
-    @XmlElement(name = "destination")
-    public void setDestination(Intersection destination) {
-        this.destination = destination;
+    public Intersection getOrigin() {
+        return origin;
     }
 
-    @XmlElement(name = "origin")
-    public void setOrigin(Intersection origin) {
-        this.origin = origin;
+    public Intersection getDestination() {
+        return destination;
     }
-
-
 }

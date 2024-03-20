@@ -1,31 +1,21 @@
 package fr.insa.geofast.models;
 
 import javax.xml.bind.annotation.*;
-import java.util.List;
 
 @XmlRootElement(name = "intersection")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Intersection {
     @XmlAttribute
-    private long id;
+    @XmlID
+    private String id;
+
     @XmlAttribute
     private double latitude;
+
     @XmlAttribute
     private double longitude;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
