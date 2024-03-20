@@ -1,7 +1,10 @@
 package fr.insa.geofast.models;
 
+import lombok.Getter;
+
 import javax.xml.bind.annotation.*;
 
+@Getter
 @XmlRootElement(name = "segment")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Segment {
@@ -19,19 +22,4 @@ public class Segment {
     @XmlIDREF
     private Intersection destination;
 
-    public String getName() {
-        return name;
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public Intersection getOrigin() {
-        return origin;
-    }
-
-    public Intersection getDestination() {
-        return destination;
-    }
 }

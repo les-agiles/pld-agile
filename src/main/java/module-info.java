@@ -3,6 +3,7 @@ module fr.insa.geofast {
     requires javafx.fxml;
     requires atlantafx.base;
     requires java.xml.bind;
+    requires lombok;
 
     opens fr.insa.geofast to javafx.fxml;
     exports fr.insa.geofast;

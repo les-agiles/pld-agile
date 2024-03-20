@@ -1,7 +1,10 @@
 package fr.insa.geofast.models;
 
+import lombok.Getter;
+
 import javax.xml.bind.annotation.*;
 
+@Getter
 @XmlRootElement(name = "intersection")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Intersection {
@@ -15,15 +18,4 @@ public class Intersection {
     @XmlAttribute
     private double longitude;
 
-    public String getId() {
-        return id;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
 }
