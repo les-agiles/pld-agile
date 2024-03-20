@@ -1,14 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2015-2020 Peter-Josef Meisch (pj.meisch@sothawo.com)
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<?import com.sothawo.mapjfx.MapView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.insa.geofast.controller.MapController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+            prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.insa.geofast.controller.MapController">
+    <top>
+        <HBox fx:id="topControls" alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="buttonZoom" text="Zoom 14"/>
+                <Slider fx:id="sliderZoom" blockIncrement="1.0" majorTickUnit="7.0" max="28.0" minorTickCount="6"
+                        showTickLabels="true" showTickMarks="true" snapToTicks="true" value="14.0" HBox.hgrow="ALWAYS"/>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+            </padding>
+        </HBox>
+    </top>
+    <center>
+        <MapView fx:id="mapView" BorderPane.alignment="CENTER"/>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="labelCenter" text="Center: "/>
+                <Label fx:id="labelExtent" text="Extent: "/>
+                <Label fx:id="labelZoom" text="Zoom: "/>
+                <Label fx:id="labelEvent" text="Event: "/>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </HBox>
+    </bottom>
+    <left>
+        <Accordion fx:id="leftControls" BorderPane.alignment="CENTER">
+            <panes>
+                <TitledPane fx:id="optionsLocations" animated="true" text="locations">
+                    <content>
+                        <VBox spacing="10.0">
+                            <children>
+                                <Button fx:id="buttonKaHarbour" text="Karlsruhe harbour" maxWidth="Infinity"/>
+                                <Button fx:id="buttonKaCastle" text="Karlsruhe castle" maxWidth="Infinity"/>
+                                <Button fx:id="buttonKaStation" text="Karlsruhe station" maxWidth="Infinity"/>
+                                <Button fx:id="buttonKaSoccer" text="KSC soccer stadium" maxWidth="Infinity"/>
+                                <Button fx:id="buttonAllLocations" text="All" maxWidth="Infinity"/>
+                            </children>
+                        </VBox>
+                    </content>
+                </TitledPane>
+                <TitledPane fx:id="optionsMapType" animated="true" text="map style">
+                    <content>
+                        <VBox spacing="10.0">
+                            <fx:define>
+                                <ToggleGroup fx:id="mapTypeGroup"/>
+                            </fx:define>
+                            <children>
+                                <RadioButton fx:id="radioMsOSM" text="OSM" toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsWMS" text="WMS terrestris OSM" toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsXYZ" text="XYZ source" toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsBR" text="Bing Roads" toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsCd" text="Bing Roads - dark" toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsCg" text="Bing Roads - grayscale"
+                                             toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsCl" text="Bing Roads - light" toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsBA" text="Bing Aerial" toggleGroup="$mapTypeGroup"/>
+                                <RadioButton fx:id="radioMsBAwL" text="Bing Aerial with Labels"
+                                             toggleGroup="$mapTypeGroup"/>
+                            </children>
+                        </VBox>
+                    </content>
+                </TitledPane>
+                <TitledPane fx:id="optionsMarkers" animated="true" text="markers">
+                    <content>
+                        <VBox spacing="10.0">
+                            <children>
+                                <CheckBox fx:id="checkKaHarbourMarker" text="Karlsruhe harbour" maxWidth="Infinity"/>
+                                <CheckBox fx:id="checkKaCastleMarker" text="Karlsruhe castle" maxWidth="Infinity"/>
+                                <CheckBox fx:id="checkKaStationMarker" text="Karlsruhe station" maxWidth="Infinity"/>
+                                <CheckBox fx:id="checkKaSoccerMarker" text="KSC soccer stadium" maxWidth="Infinity"/>
+                                <CheckBox fx:id="checkClickMarker" text="click location" maxWidth="Infinity"/>
+                            </children>
+                        </VBox>
+                    </content>
+                </TitledPane>
+                <TitledPane fx:id="optionsTracks" animated="true" text="tracks and polygons">
+                    <content>
+                        <VBox spacing="10.0">
+                            <children>
+                                <CheckBox fx:id="checkTrackMagenta" text="magenta track" maxWidth="Infinity"/>
+                                <CheckBox fx:id="checkTrackCyan" text="cyan track" maxWidth="Infinity"/>
+                                <CheckBox fx:id="checkDrawPolygon" text="draw a polygon" maxWidth="Infinity"/>
+                            </children>
+                        </VBox>
+                    </content>
+                </TitledPane>
+                <TitledPane fx:id="optionsMisc" animated="true" text="misc">
+                    <content>
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label text="animation duration"/>
+                                <TextField fx:id="animationDuration" prefWidth="120.0" promptText="milliseconds"/>
+                                <Label text="Bing Maps API-Key"/>
+                                <TextField fx:id="bingMapsApiKey" prefWidth="120.0" promptText="API-Key"/>
+                                <CheckBox fx:id="checkConstrainGermany" text="constrain to Germany"
+                                          maxWidth="Infinity"/>
+                            </children>
+                        </VBox>
+                    </content>
+                </TitledPane>
+            </panes>
+        </Accordion>
+    </left>
+</BorderPane>

@@ -1,12 +1,13 @@
 package fr.insa.geofast;
 
-import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.PrimerLight;
+import com.sothawo.mapjfx.Projection;
+import fr.insa.geofast.controller.MapController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,15 +17,19 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
-        Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
 
         stage.getIcons().add(new Image(Objects.requireNonNull(HelloApplication.class.getResourceAsStream("GeoFastIcon.png"))));
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent rootNode = fxmlLoader.load(getClass().getResourceAsStream("map-view.fxml"));
 
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 700, Color.WHITE);
+        final MapController controller = fxmlLoader.getController();
+        final Projection projection = getParameters().getUnnamed().contains("wgs84")
+                ? Projection.WGS_84 : Projection.WEB_MERCATOR;
+        controller.initMapAndControls(projection);
 
-        stage.setTitle("GeoFast");
+        Scene scene = new Scene(rootNode);
+        stage.setTitle("GeoFast!");
         stage.setScene(scene);
         stage.show();
     }
