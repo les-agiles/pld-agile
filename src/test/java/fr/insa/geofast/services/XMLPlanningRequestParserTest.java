@@ -19,7 +19,7 @@ public class XMLPlanningRequestParserTest {
     }
 
     @Test
-    void parsePlanningRequest_ShouldParseTheMostSimpleXMLMap(){
+    void parsePlanningRequest_ShouldParseTheMostSimpleXMLMap() {
         PlanningRequest planningRequest = null;
 
         try {
@@ -34,5 +34,35 @@ public class XMLPlanningRequestParserTest {
         assertEquals("1", planningRequest.getRequests().get(0).getDeliveryAddressId());
         assertEquals(540, planningRequest.getRequests().get(0).getDeliveryDuration());
         assertEquals(8, planningRequest.getRequests().get(0).getDeliveryTime());
+    }
+
+    @Test
+    void parsePlanningRequest_ShouldParseASmallSizedXMLMap() {
+        PlanningRequest planningRequest = null;
+
+        try {
+            planningRequest = XMLParser.parsePlanningRequest(absolutePath + "/unit-tests-request2.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(planningRequest);
+        assertEquals(11, planningRequest.getRequests().size());
+        assertEquals("1", planningRequest.getRequests().get(0).getCourierId());
+        assertEquals("55444215", planningRequest.getRequests().get(0).getDeliveryAddressId());
+        assertEquals(480, planningRequest.getRequests().get(0).getDeliveryDuration());
+        assertEquals(9, planningRequest.getRequests().get(0).getDeliveryTime());
+
+        assertEquals(11, planningRequest.getRequests().size());
+        assertEquals("2", planningRequest.getRequests().get(10).getCourierId());
+        assertEquals("26317393", planningRequest.getRequests().get(10).getDeliveryAddressId());
+        assertEquals(420, planningRequest.getRequests().get(10).getDeliveryDuration());
+        assertEquals(8, planningRequest.getRequests().get(10).getDeliveryTime());
+
+    }
+
+    @Test
+    void parseMap_ShouldNotWork_DueIncorrectXMLDataFormat() {
+        assertThrows(Exception.class, () -> XMLParser.parseMap(absolutePath + "/unit-tests-request4.xml"));
     }
 }
