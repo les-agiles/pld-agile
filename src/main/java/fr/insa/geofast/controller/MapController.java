@@ -98,6 +98,7 @@ public class MapController {
     private final MapLabel labelKaCastle;
     private final MapLabel labelKaStation;
     private final MapLabel labelClick;
+    private final ArrayList<Marker> intersections = new ArrayList<>();
 
     // a circle around the castle
     private final MapCircle circleCastle;
@@ -376,17 +377,19 @@ public class MapController {
     }
 
     private void loadAndDisplayMap() {
-
-        mapView.addMarker(Marker.createProvided(Marker.Provided.BLUE).setPosition(new Coordinate(48.993284, 8.402186)).setVisible(true));
-
         try {
             var test = getClass().getResource("/smallMap.xml");
             var map = XMLParser.parseMap(test.getPath());
+
             for (var intersection : map.getIntersections()) {
-                mapView.addMarker(Marker.createProvided(Marker.Provided.BLUE).setPosition(new Coordinate(intersection.getLatitude(), intersection.getLongitude())).setVisible(true));
+                Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
+                var marker = Marker.createProvided(Marker.Provided.BLUE)
+                        .setPosition(coordinate)
+                        .setVisible(true);
+
+                intersections.add(marker);
+                mapView.addMarker(marker);
             }
-
-
         } catch (FileNotFoundException | JAXBException e) {
             throw new RuntimeException(e);
         }
