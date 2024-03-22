@@ -24,6 +24,7 @@ public class Request {
     private int deliveryTime;
 
     public void setup(Intersection intersection, DeliveryGuy deliveryGuy){
-
+        deliveryAddress = intersection;
+        courier = deliveryGuy;
     }
 }
