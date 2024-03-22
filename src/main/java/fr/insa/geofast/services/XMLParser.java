@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class XMLParser {
-
+    private XMLParser(){ }
 
     public static Map parseMap(String path) throws FileNotFoundException, JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(Map.class);

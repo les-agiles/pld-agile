@@ -23,7 +23,7 @@ public class Request {
     @XmlAttribute
     private int deliveryTime;
 
-    public void setup(Map map){
+    public void setup(Intersection intersection, DeliveryGuy deliveryGuy){
 
     }
 }
