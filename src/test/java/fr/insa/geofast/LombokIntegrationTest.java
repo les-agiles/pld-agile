@@ -4,32 +4,32 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LombokTestTest {
+class LombokIntegrationTest {
 
     @Test
     void getName() {
-        LombokTest toto = new LombokTest();
+        LombokIntegration toto = new LombokIntegration();
         toto.setName("testName");
         assertEquals("testName", toto.getName());
     }
 
     @Test
     void getAddress() {
-        LombokTest lt = new LombokTest();
+        LombokIntegration lt = new LombokIntegration();
         lt.setAddress("testAddress");
         assertEquals("testAddress", lt.getAddress());
     }
 
     @Test
     void setName() {
-        var lt = new LombokTest("testName", "testAddress");
+        var lt = new LombokIntegration("testName", "testAddress");
         lt.setName("testName");
         assertEquals("testName", lt.getName());
     }
 
     @Test
     void setAddress() {
-        var lt = new LombokTest();
+        var lt = new LombokIntegration();
         lt.setAddress("testAddress");
         assertEquals("testAddress", lt.getAddress());
     }

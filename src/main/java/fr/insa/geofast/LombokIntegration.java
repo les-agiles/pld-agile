@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LombokTest {
+public class LombokIntegration {
 
     private String name;
 
