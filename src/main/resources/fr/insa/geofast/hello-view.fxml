@@ -46,12 +46,12 @@
                                       <Font size="13.0" />
                                   </font>
                               </Button>
-                        <Button fx:id="importerProgramme1" alignment="TOP_CENTER" layoutX="248.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5;" text="Sauvegarder le programme" textFill="#020817">
+                        <Button fx:id="sauvegarderProgramme" alignment="TOP_CENTER" layoutX="248.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5;" text="Sauvegarder le programme" textFill="#020817">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="importerProgramme11" alignment="TOP_CENTER" layoutX="267.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5; -fx-max-width: 170px;" text="Exporter le programme" textFill="#020817">
+                        <Button fx:id="exporterProgramme" alignment="TOP_CENTER" layoutX="267.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5; -fx-max-width: 170px;" text="Exporter le programme" textFill="#020817">
                            <font>
                               <Font size="13.0" />
                            </font>

@@ -27,6 +27,12 @@ public class HelloController implements Initializable {
     @FXML
     private Button importerProgramme;
 
+    @FXML
+    public Button sauvegarderProgramme;
+
+    @FXML
+    public Button exporterProgramme;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         importerPlan.setOnAction(e -> {
