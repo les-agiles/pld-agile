@@ -1,9 +1,6 @@
 package fr.insa.geofast.services;
 
-import fr.insa.geofast.models.Intersection;
 import fr.insa.geofast.models.Map;
-import fr.insa.geofast.models.Warehouse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +9,12 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class XMLParserTest {
+public class XMLMapParserTest {
     private static String absolutePath;
 
     @BeforeAll
     public static void beforeAll() {
-        Path resourceDirectory = Paths.get("src", "test", "java", "resources");
+        Path resourceDirectory = Paths.get("src", "test", "java", "resources", "maps");
         absolutePath = resourceDirectory.toFile().getAbsolutePath();
     }
 
