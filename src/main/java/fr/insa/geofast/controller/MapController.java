@@ -21,6 +21,7 @@ import com.sothawo.mapjfx.event.MapLabelEvent;
 import com.sothawo.mapjfx.event.MapViewEvent;
 import com.sothawo.mapjfx.event.MarkerEvent;
 import com.sothawo.mapjfx.offline.OfflineCache;
+import fr.insa.geofast.services.XMLParser;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Transition;
 import javafx.beans.binding.Bindings;
@@ -35,7 +36,9 @@ import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.bind.JAXBException;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -372,6 +375,23 @@ public class MapController {
         circleCastle = new MapCircle(coordKarlsruheStation, 1_000).setVisible(true);
     }
 
+    private void loadAndDisplayMap() {
+
+        mapView.addMarker(Marker.createProvided(Marker.Provided.BLUE).setPosition(new Coordinate(48.993284, 8.402186)).setVisible(true));
+
+        try {
+            var test = getClass().getResource("/smallMap.xml");
+            var map = XMLParser.parseMap(test.getPath());
+            for (var intersection : map.getIntersections()) {
+                mapView.addMarker(Marker.createProvided(Marker.Provided.BLUE).setPosition(new Coordinate(intersection.getLatitude(), intersection.getLongitude())).setVisible(true));
+            }
+
+
+        } catch (FileNotFoundException | JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * called after the fxml is loaded and all objects are created. This is not called initialize any more,
      * because we need to pass in the projection before initializing.
@@ -700,6 +720,8 @@ public class MapController {
 
         // now enable the controls
         setControlsDisable(false);
+
+        loadAndDisplayMap();
     }
 
     /**
