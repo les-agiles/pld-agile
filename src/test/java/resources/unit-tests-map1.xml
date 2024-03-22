@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+    <warehouse address="1"/>
+    <intersection id="1" latitude="45.75406" longitude="4.857418"/>
+    <intersection id="2" latitude="45.750404" longitude="4.8744674"/>
+    <segment destination="2" length="69.69" name="Rue Test" origin="1"/>
+</map>
