@@ -58,11 +58,26 @@ public class XMLPlanningRequestParserTest {
         assertEquals("26317393", planningRequest.getRequests().get(10).getDeliveryAddressId());
         assertEquals(420, planningRequest.getRequests().get(10).getDeliveryDuration());
         assertEquals(8, planningRequest.getRequests().get(10).getDeliveryTime());
-
     }
 
     @Test
-    void parseMap_ShouldNotWork_DueIncorrectXMLDataFormat() {
+    void parsePlanningRequest_ShouldNotWork_DueIncorrectXMLDataFormat() {
         assertThrows(Exception.class, () -> XMLParser.parseMap(absolutePath + "/unit-tests-request4.xml"));
+    }
+
+    @Test
+    void parsePlanningRequest_ShouldParseEmptyPlanningRequest() {
+        PlanningRequest planningRequest = null;
+
+        try {
+            planningRequest = XMLParser.parsePlanningRequest(absolutePath + "/unit-tests-request4.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(planningRequest);
+        assertEquals(0, planningRequest.getRequests().size());
+        PlanningRequest finalPlanningRequest = planningRequest;
+        assertThrows(IndexOutOfBoundsException.class, () -> finalPlanningRequest.getRequests().get(0));
     }
 }
