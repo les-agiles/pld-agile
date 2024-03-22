@@ -2,33 +2,20 @@ package fr.insa.geofast.models;
 
 import lombok.Getter;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.List;
+import javax.xml.bind.annotation.*;
 
 @Getter
 @XmlRootElement(name = "intersection")
-@XmlType(propOrder = {"id", "latitude", "longitude"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Intersection {
+    @XmlAttribute
+    @XmlID
     private String id;
-    private double latitude;
-    private double longitude;
-    private List<Segment> segments;
 
     @XmlAttribute
-    public void setId(String id) {
-        this.id = id;
-    }
+    private double latitude;
 
-    @XmlElement(name = "latitude")
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
+    @XmlAttribute
+    private double longitude;
 
-    @XmlElement(name = "longitude")
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
 }

@@ -2,18 +2,14 @@ package fr.insa.geofast.models;
 
 import lombok.Getter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 @Getter
 @XmlRootElement(name = "warehouse")
-@XmlType(propOrder = {"address"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Warehouse {
+    @XmlAttribute
+    @XmlIDREF
     private Intersection address;
 
-    @XmlElement(name = "address")
-    public void setAddress(Intersection address) {
-        this.address = address;
-    }
 }

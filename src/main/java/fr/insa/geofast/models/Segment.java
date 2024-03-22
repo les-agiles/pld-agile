@@ -2,37 +2,24 @@ package fr.insa.geofast.models;
 
 import lombok.Getter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 @Getter
 @XmlRootElement(name = "segment")
-@XmlType(propOrder = {"destination", "length", "name", "origin"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Segment {
+    @XmlAttribute
     private String name;
+
+    @XmlAttribute
     private double length;
-    private Intersection destination;
+
+    @XmlAttribute
+    @XmlIDREF
     private Intersection origin;
 
-    //Setter for all
-    @XmlElement(name = "name")
-    public void setName(String name) {
-        this.name = name;
-    }
+    @XmlAttribute
+    @XmlIDREF
+    private Intersection destination;
 
-    @XmlElement(name = "length")
-    public void setLength(double length) {
-        this.length = length;
-    }
-
-    @XmlElement(name = "destination")
-    public void setDestination(Intersection destination) {
-        this.destination = destination;
-    }
-
-    @XmlElement(name = "origin")
-    public void setOrigin(Intersection origin) {
-        this.origin = origin;
-    }
 }
