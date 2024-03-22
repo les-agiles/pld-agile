@@ -12,7 +12,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+<HBox fx:controller="fr.insa.geofast.controller.HelloController" maxHeight="-Infinity" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
       prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       style="-fx-background-color: white;">
     <children>
@@ -20,7 +21,7 @@
             <children>
                 <ButtonBar nodeOrientation="LEFT_TO_RIGHT" style="-fx-padding: 21;">
                     <buttons>
-                        <Button alignment="TOP_CENTER" mnemonicParsing="false"
+                        <Button fx:id="importerPlan" alignment="TOP_CENTER" mnemonicParsing="false"
                                 style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5; -fx-max-width: 105px;"
                                 text="Importer plan" textFill="#020817">
                             <font>
@@ -28,7 +29,7 @@
                             </font>
                         </Button>
                         <!-- Buttons -->
-                        <Button alignment="TOP_CENTER" mnemonicParsing="false"
+                        <Button fx:id="importerProgramme" alignment="TOP_CENTER" mnemonicParsing="false"
                                 style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5;"
                                 text="Importer un programme" textFill="#020817">
                             <font>
@@ -87,7 +88,6 @@
                 </ScrollPane>
             </children>
         </VBox>
-        <!-- Add HBox for button alignment -->
         <HBox alignment="CENTER"/>
     </children>
 </HBox>
