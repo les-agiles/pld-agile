@@ -30,7 +30,7 @@
                         <Rectangle2D />
                      </viewport>
                      <HBox.margin>
-                        <Insets left="16.0" top="25.28" />
+                        <Insets left="16.0" top="29.0" />
                      </HBox.margin>
                   </ImageView>
                       <ButtonBar nodeOrientation="LEFT_TO_RIGHT" style="-fx-padding: 21;" HBox.hgrow="ALWAYS">
