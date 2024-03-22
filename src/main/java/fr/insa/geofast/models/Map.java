@@ -3,6 +3,7 @@ package fr.insa.geofast.models;
 import lombok.Getter;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,17 +15,17 @@ public class Map {
     private Warehouse warehouse;
 
     @XmlElement(name = "intersection")
-    private List<Intersection> intersections;
+    private List<Intersection> intersections = new ArrayList<>();
 
     @XmlElement(name = "segment")
-    private List<Segment> segments;
+    private List<Segment> segments = new ArrayList<>();
 
-    private final java.util.Map<String,Intersection> intersectionsMap = new HashMap<>();
+    private final java.util.Map<String, Intersection> intersectionsMap = new HashMap<>();
 
-    public void setup(){
+    public void setup() {
         intersectionsMap.clear();
 
-        for(Intersection intersection : intersections){
+        for (Intersection intersection : intersections) {
             intersectionsMap.put(intersection.getId(), intersection);
         }
     }

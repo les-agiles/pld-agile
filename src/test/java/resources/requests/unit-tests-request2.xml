@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<planningRequest>
+    <request courier="1" deliveryAddress="55444215" deliveryDuration="480" deliveryTime="9"/>
+    <request courier="1" deliveryAddress="1036842078" deliveryDuration="0" deliveryTime="10"/>
+    <request courier="1" deliveryAddress="21717915" deliveryDuration="540" deliveryTime="9"/>
+    <request courier="1" deliveryAddress="208769083" deliveryDuration="240" deliveryTime="9"/>
+    <request courier="1" deliveryAddress="60755991" deliveryDuration="420" deliveryTime="11"/>
+    <request courier="2" deliveryAddress="21992645" deliveryDuration="420" deliveryTime="8"/>
+    <request courier="2" deliveryAddress="26155372" deliveryDuration="420" deliveryTime="8"/>
+    <request courier="2" deliveryAddress="25610684" deliveryDuration="420" deliveryTime="8"/>
+    <request courier="2" deliveryAddress="60755991" deliveryDuration="420" deliveryTime="8"/>
+    <request courier="2" deliveryAddress="1400900990" deliveryDuration="420" deliveryTime="10"/>
+    <request courier="2" deliveryAddress="26317393" deliveryDuration="420" deliveryTime="8"/>
+</planningRequest>
