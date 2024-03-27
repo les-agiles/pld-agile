@@ -22,10 +22,10 @@ public class HelloApplication extends Application {
 
         stage.getIcons().add(new Image(Objects.requireNonNull(HelloApplication.class.getResourceAsStream("GeoFastIcon.png"))));
 
-        String fxmlFile = "map-view.fxml";
+        String fxmlFile = "hello-view.fxml";
         logger.debug("loading fxml file {}", fxmlFile);
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent rootNode = fxmlLoader.load(getClass().getResourceAsStream(fxmlFile));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Parent rootNode = fxmlLoader.load();
         logger.trace("stage loaded");
 
         Scene scene = new Scene(rootNode);
