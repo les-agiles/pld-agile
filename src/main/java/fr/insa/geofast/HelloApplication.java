@@ -1,8 +1,6 @@
 package fr.insa.geofast;
 
 import atlantafx.base.theme.PrimerLight;
-import com.sothawo.mapjfx.Projection;
-import fr.insa.geofast.controller.MapController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,11 +27,6 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent rootNode = fxmlLoader.load(getClass().getResourceAsStream(fxmlFile));
         logger.trace("stage loaded");
-
-        final MapController controller = fxmlLoader.getController();
-        final Projection projection = getParameters().getUnnamed().contains("wgs84")
-                ? Projection.WGS_84 : Projection.WEB_MERCATOR;
-        controller.initMapAndControls(projection);
 
         Scene scene = new Scene(rootNode);
         logger.trace("scene created");
