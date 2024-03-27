@@ -13,6 +13,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
+
+    @FXML
+    private LeftController leftController;
+
+    @FXML
+    private RightController rightController;
+
     @FXML
     private Label welcomeText;
 
