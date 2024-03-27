@@ -1,8 +1,10 @@
 package fr.insa.geofast.models;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.xml.bind.annotation.*;
+import java.util.Date;
 
 @Getter
 @XmlRootElement(name = "request")
@@ -22,6 +24,9 @@ public class Request {
     private int deliveryDuration;
     @XmlAttribute
     private int deliveryTime;
+
+    @Setter
+    private Date arrivalDate = null;
 
     public void setup(Intersection intersection, DeliveryGuy deliveryGuy){
         deliveryAddress = intersection;
