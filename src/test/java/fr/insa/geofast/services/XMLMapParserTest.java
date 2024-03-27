@@ -38,6 +38,10 @@ public class XMLMapParserTest {
         assertEquals(1, map.getSegments().size());
         assertEquals(map.getIntersections().get(0), map.getSegments().get(0).getOrigin());
         assertEquals(map.getIntersections().get(1), map.getSegments().get(0).getDestination());
+        assertEquals(45.75406, map.getIntersections().get(0).getLatitude());
+        assertEquals(4.857418, map.getIntersections().get(0).getLongitude());
+        assertEquals("Rue Test", map.getSegments().get(0).getName());
+        assertEquals(69.69, map.getSegments().get(0).getLength());
     }
 
     @Test
