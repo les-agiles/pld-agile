@@ -23,10 +23,17 @@ public class Map {
     private final java.util.Map<String, Intersection> intersectionsMap = new HashMap<>();
 
     public void setup() {
+        // init intersection map (dictionary)
         intersectionsMap.clear();
 
         for (Intersection intersection : intersections) {
             intersectionsMap.put(intersection.getId(), intersection);
+        }
+
+        // setup intersection's segments
+        for(Segment segment : segments){
+            segment.getOrigin().getSegments().add(segment);
+            segment.getDestination().getSegments().add(segment);
         }
     }
 }

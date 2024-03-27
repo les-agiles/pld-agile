@@ -32,5 +32,9 @@ public class MapFactoryTest {
         assertTrue(map.getIntersectionsMap().containsKey("1"));
         assertTrue(map.getIntersectionsMap().containsKey("2"));
         assertEquals(map.getIntersectionsMap().get("1"), map.getIntersections().get(0));
+        assertEquals(1, map.getIntersections().get(0).getSegments().size());
+        assertEquals(map.getSegments().get(0), map.getIntersections().get(0).getSegments().get(0));
+        assertEquals(1, map.getIntersections().get(1).getSegments().size());
+        assertEquals(map.getSegments().get(0), map.getIntersections().get(1).getSegments().get(0));
     }
 }

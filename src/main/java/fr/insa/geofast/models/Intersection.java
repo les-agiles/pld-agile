@@ -3,6 +3,8 @@ package fr.insa.geofast.models;
 import lombok.Getter;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @XmlRootElement(name = "intersection")
@@ -18,4 +20,5 @@ public class Intersection {
     @XmlAttribute
     private double longitude;
 
+    private final List<Segment> segments = new ArrayList<>();
 }

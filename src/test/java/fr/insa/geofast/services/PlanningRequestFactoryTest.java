@@ -39,5 +39,6 @@ public class PlanningRequestFactoryTest {
         assertEquals(map.getIntersections().get(0), planningRequest.getRequests().get(0).getDeliveryAddress());
         assertEquals(planningRequest.getCouriersMap().get("1"), planningRequest.getRequests().get(0).getCourier());
         assertEquals(planningRequest.getRequests().get(0).getCourier(), planningRequest.getRequests().get(1).getCourier());
+        assertEquals("1", planningRequest.getRequests().get(0).getCourier().getId());
     }
 }
