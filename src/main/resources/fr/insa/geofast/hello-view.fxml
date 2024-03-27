@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2015-2020 Peter-Josef Meisch (pj.meisch@sothawo.com)
 
 <?import javafx.scene.layout.HBox?>
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <fx:include source="left-view.fxml" />
-      <fx:include source="right-view.fxml" />
+        <fx:include source="left-view.fxml"/>
+        <fx:include source="right-view.fxml"/>
     </children>
 </HBox>
