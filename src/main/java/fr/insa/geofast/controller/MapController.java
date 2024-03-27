@@ -27,14 +27,14 @@ import javafx.animation.Transition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
 
 import javax.xml.bind.JAXBException;
 import java.io.BufferedReader;
@@ -46,6 +46,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -54,12 +55,12 @@ import java.util.stream.Stream;
  *
  * @author P.J. Meisch (pj.meisch@sothawo.com).
  */
-public class MapController {
+public class MapController implements Initializable {
 
     /**
      * logger for the class.
      */
-    private static final Logger logger = LoggerFactory.getLogger(MapController.class);
+    protected static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
     /**
      * some coordinates from around town.
@@ -398,10 +399,9 @@ public class MapController {
     /**
      * called after the fxml is loaded and all objects are created. This is not called initialize any more,
      * because we need to pass in the projection before initializing.
-     *
-     * @param projection the projection to use in the map.
      */
-    public void initMapAndControls(Projection projection) {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         logger.trace("begin initialize");
 
         // init MapView-Cache
@@ -555,7 +555,7 @@ public class MapController {
         // finally initialize the map view
         logger.trace("start map initialization");
         mapView.initialize(Configuration.builder()
-                .projection(projection)
+                .projection(Projection.WEB_MERCATOR)
                 .showZoomControls(false)
                 .build());
         logger.debug("initialization finished");
