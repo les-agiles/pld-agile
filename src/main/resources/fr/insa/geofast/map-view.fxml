@@ -23,14 +23,12 @@
             fx:controller="fr.insa.geofast.controller.MapController">
     <top>
         <HBox fx:id="topControls" alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
-            <children>
-                <Button fx:id="buttonZoom" text="Zoom 14"/>
-                <Slider fx:id="sliderZoom" blockIncrement="1.0" majorTickUnit="7.0" max="28.0" minorTickCount="6"
-                        showTickLabels="true" showTickMarks="true" snapToTicks="true" value="14.0" HBox.hgrow="ALWAYS"/>
-            </children>
             <padding>
                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
             </padding>
+            <Button fx:id="buttonZoom" text="Zoom 14"/>
+            <Slider fx:id="sliderZoom" blockIncrement="1.0" majorTickUnit="7.0" max="28.0" minorTickCount="6"
+                    showTickLabels="true" showTickMarks="true" snapToTicks="true" value="14.0" HBox.hgrow="ALWAYS"/>
         </HBox>
     </top>
     <center>
@@ -38,15 +36,13 @@
     </center>
     <bottom>
         <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
-            <children>
-                <Label fx:id="labelCenter" text="Center: "/>
-                <Label fx:id="labelExtent" text="Extent: "/>
-                <Label fx:id="labelZoom" text="Zoom: "/>
-                <Label fx:id="labelEvent" text="Event: "/>
-            </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
             </padding>
+            <Label fx:id="labelCenter" text="Center: "/>
+            <Label fx:id="labelExtent" text="Extent: "/>
+            <Label fx:id="labelZoom" text="Zoom: "/>
+            <Label fx:id="labelEvent" text="Event: "/>
         </HBox>
     </bottom>
 </BorderPane>
