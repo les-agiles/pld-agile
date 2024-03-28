@@ -167,6 +167,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/controller/**</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
