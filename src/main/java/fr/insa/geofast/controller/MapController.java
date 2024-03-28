@@ -1,21 +1,5 @@
 package fr.insa.geofast.controller;
 
-/*
- Copyright 2015-2020 Peter-Josef Meisch (pj.meisch@sothawo.com)
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
-
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapLabelEvent;
 import com.sothawo.mapjfx.event.MapViewEvent;
@@ -29,18 +13,15 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 
 import javax.xml.bind.JAXBException;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -50,18 +31,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Controller for the FXML defined code.
- *
- * @author P.J. Meisch (pj.meisch@sothawo.com).
- */
+@Slf4j
 public class MapController implements Initializable {
-
-    /**
-     * logger for the class.
-     */
-    protected static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
-
     /**
      * some coordinates from around town.
      */
@@ -70,13 +41,6 @@ public class MapController implements Initializable {
     private static final Coordinate coordKarlsruheStation = new Coordinate(48.993284, 8.402186);
     private static final Coordinate coordKarlsruheSoccer = new Coordinate(49.020035, 8.412975);
     private static final Coordinate coordKarlsruheUniversity = new Coordinate(49.011809, 8.413639);
-    private static final Extent extentAllLocations = Extent.forCoordinates(coordKarlsruheCastle, coordKarlsruheHarbour, coordKarlsruheStation, coordKarlsruheSoccer);
-
-    private static final Coordinate coordGermanyNorth = new Coordinate(55.05863889, 8.417527778);
-    private static final Coordinate coordGermanySouth = new Coordinate(47.27166667, 10.17405556);
-    private static final Coordinate coordGermanyWest = new Coordinate(51.0525, 5.866944444);
-    private static final Coordinate coordGermanyEast = new Coordinate(51.27277778, 15.04361111);
-    private static final Extent extentGermany = Extent.forCoordinates(coordGermanyNorth, coordGermanySouth, coordGermanyWest, coordGermanyEast);
 
     /**
      * default zoom value.
@@ -127,60 +91,6 @@ public class MapController implements Initializable {
     private Slider sliderZoom;
 
     /**
-     * Accordion for all the different options
-     */
-    @FXML
-    private Accordion leftControls;
-
-    /**
-     * section containing the location button
-     */
-    @FXML
-    private TitledPane optionsLocations;
-
-    /**
-     * button to set the map's center
-     */
-    @FXML
-    private Button buttonKaHarbour;
-
-    /**
-     * button to set the map's center
-     */
-    @FXML
-    private Button buttonKaCastle;
-
-    /**
-     * button to set the map's center
-     */
-    @FXML
-    private Button buttonKaStation;
-
-    /**
-     * button to set the map's center
-     */
-    @FXML
-    private Button buttonKaSoccer;
-
-    /**
-     * button to set the map's extent.
-     */
-    @FXML
-    private Button buttonAllLocations;
-
-    /**
-     * for editing the animation duration
-     */
-    @FXML
-    private TextField animationDuration;
-
-    /**
-     * the BIng Maps API Key.
-     */
-    @FXML
-    private TextField bingMapsApiKey;
-
-    /**
      * Label to display the current center
      */
     @FXML
@@ -204,121 +114,17 @@ public class MapController implements Initializable {
     @FXML
     private Label labelEvent;
 
-    /**
-     * RadioButton for MapStyle OSM
-     */
-    @FXML
-    private RadioButton radioMsOSM;
 
-    /**
-     * RadioButton for MapStyle Stamen Watercolor
-     */
-    @FXML
-    private RadioButton radioMsSTW;
-
-    /**
-     * RadioButton for MapStyle Bing Roads
-     */
-    @FXML
-    private RadioButton radioMsBR;
-
-    /**
-     * RadioButton for MapStyle Bing Roads - dark
-     */
-    @FXML
-    private RadioButton radioMsCd;
-
-    /**
-     * RadioButton for MapStyle Bing Roads - grayscale
-     */
-    @FXML
-    private RadioButton radioMsCg;
-
-    /**
-     * RadioButton for MapStyle Bing Roads - light
-     */
-    @FXML
-    private RadioButton radioMsCl;
-
-    /**
-     * RadioButton for MapStyle Bing Aerial
-     */
-    @FXML
-    private RadioButton radioMsBA;
-
-    /**
-     * RadioButton for MapStyle Bing Aerial with Label
-     */
-    @FXML
-    private RadioButton radioMsBAwL;
-
-    /**
-     * RadioButton for MapStyle WMS.
-     */
-    @FXML
-    private RadioButton radioMsWMS;
-
-    /**
-     * RadioButton for MapStyle XYZ
-     */
-    @FXML
-    private RadioButton radioMsXYZ;
-
-    /**
-     * ToggleGroup for the MapStyle radios
-     */
-    @FXML
-    private ToggleGroup mapTypeGroup;
-
-    /**
-     * Check button for harbour marker
-     */
-    @FXML
-    private CheckBox checkKaHarbourMarker;
-
-    /**
-     * Check button for castle marker
-     */
-    @FXML
-    private CheckBox checkKaCastleMarker;
-
-    /**
-     * Check button for harbour marker
-     */
-    @FXML
-    private CheckBox checkKaStationMarker;
-
-    /**
-     * Check button for soccer marker
-     */
-    @FXML
-    private CheckBox checkKaSoccerMarker;
-
-    /**
-     * Check button for click marker
-     */
-    @FXML
-    private CheckBox checkClickMarker;
 
     /**
      * the first CoordinateLine
      */
     private CoordinateLine trackMagenta;
-    /**
-     * Check button for first track
-     */
-    @FXML
-    private CheckBox checkTrackMagenta;
 
     /**
      * the second CoordinateLine
      */
     private CoordinateLine trackCyan;
-    /**
-     * Check button for first track
-     */
-    @FXML
-    private CheckBox checkTrackCyan;
 
     /**
      * Coordinateline for polygon drawing.
@@ -329,12 +135,6 @@ public class MapController implements Initializable {
      */
     @FXML
     private CheckBox checkDrawPolygon;
-
-    /**
-     * Check Button for constraining th extent.
-     */
-    @FXML
-    private CheckBox checkConstrainGermany;
 
     /**
      * params for the WMS server.
@@ -379,8 +179,8 @@ public class MapController implements Initializable {
 
     private void loadAndDisplayMap() {
         try {
-            var test = getClass().getResource("/smallMap.xml");
-            var map = XMLParser.parseMap(test.getPath());
+            URL test = getClass().getResource("/smallMap.xml");
+            var map = XMLParser.parseMap(new File(test.toURI()).getAbsolutePath());
 
             for (var intersection : map.getIntersections()) {
                 Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
@@ -393,6 +193,8 @@ public class MapController implements Initializable {
             }
         } catch (FileNotFoundException | JAXBException e) {
             throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -402,7 +204,7 @@ public class MapController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        logger.trace("begin initialize");
+        log.trace("begin initialize");
 
         // init MapView-Cache
         final OfflineCache offlineCache = mapView.getOfflineCache();
@@ -419,42 +221,17 @@ public class MapController implements Initializable {
         // set the custom css file for the MapView
         mapView.setCustomMapviewCssURL(getClass().getResource("/custom_mapview.css"));
 
-        leftControls.setExpandedPane(optionsLocations);
-
         // set the controls to disabled, this will be changed when the MapView is intialized
         setControlsDisable(true);
-
-        // wire up the location buttons
-        buttonKaHarbour.setOnAction(event -> mapView.setCenter(coordKarlsruheHarbour));
-        buttonKaCastle.setOnAction(event -> mapView.setCenter(coordKarlsruheCastle));
-        buttonKaStation.setOnAction(event -> mapView.setCenter(coordKarlsruheStation));
-        buttonKaSoccer.setOnAction(event -> mapView.setCenter(coordKarlsruheSoccer));
-
-        buttonAllLocations.setOnAction(event -> mapView.setExtent(extentAllLocations));
-        logger.trace("location buttons done");
 
         // wire the zoom button and connect the slider to the map's zoom
         buttonZoom.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
         sliderZoom.valueProperty().bindBidirectional(mapView.zoomProperty());
 
-        // add a listener to the animationDuration field and make sure we only accept int values
-        animationDuration.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                mapView.setAnimationDuration(0);
-            } else {
-                try {
-                    mapView.setAnimationDuration(Integer.parseInt(newValue));
-                } catch (NumberFormatException e) {
-                    animationDuration.setText(oldValue);
-                }
-            }
-        });
-        animationDuration.setText("500");
-
         // bind the map's center and zoom properties to the corresponding labels and format them
         labelCenter.textProperty().bind(Bindings.format("center: %s", mapView.centerProperty()));
         labelZoom.textProperty().bind(Bindings.format("zoom: %.0f", mapView.zoomProperty()));
-        logger.trace("options and labels done");
+        log.trace("options and labels done");
 
         // watch the MapView's initialized property to finish initialization
         mapView.initializedProperty().addListener((observable, oldValue, newValue) -> {
@@ -463,67 +240,14 @@ public class MapController implements Initializable {
             }
         });
 
-        // observe the map type radiobuttons
-        mapTypeGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            logger.debug("map type toggled to {}", newValue.toString());
-            MapType mapType = MapType.OSM;
-            if (newValue == radioMsOSM) {
-                mapType = MapType.OSM;
-            } else if (newValue == radioMsBR) {
-                mapType = MapType.BINGMAPS_ROAD;
-            } else if (newValue == radioMsCd) {
-                mapType = MapType.BINGMAPS_CANVAS_DARK;
-            } else if (newValue == radioMsCg) {
-                mapType = MapType.BINGMAPS_CANVAS_GRAY;
-            } else if (newValue == radioMsCl) {
-                mapType = MapType.BINGMAPS_CANVAS_LIGHT;
-            } else if (newValue == radioMsBA) {
-                mapType = MapType.BINGMAPS_AERIAL;
-            } else if (newValue == radioMsBAwL) {
-                mapType = MapType.BINGMAPS_AERIAL_WITH_LABELS;
-            } else if (newValue == radioMsWMS) {
-                mapView.setWMSParam(wmsParam);
-                mapType = MapType.WMS;
-            } else if (newValue == radioMsXYZ) {
-                mapView.setXYZParam(xyzParams);
-                mapType = MapType.XYZ;
-            }
-            mapView.setBingMapsApiKey(bingMapsApiKey.getText());
-            mapView.setMapType(mapType);
-        });
-        mapTypeGroup.selectToggle(radioMsOSM);
-
         setupEventHandlers();
-
-        // add the graphics to the checkboxes
-        checkKaHarbourMarker.setGraphic(
-                new ImageView(new Image(markerKaHarbour.getImageURL().toExternalForm(), 16.0, 16.0, true, true)));
-        checkKaCastleMarker.setGraphic(
-                new ImageView(new Image(markerKaCastle.getImageURL().toExternalForm(), 16.0, 16.0, true, true)));
-        checkKaStationMarker.setGraphic(
-                new ImageView(new Image(markerKaStation.getImageURL().toExternalForm(), 16.0, 16.0, true, true)));
-        checkKaSoccerMarker.setGraphic(
-                new ImageView(new Image(markerKaSoccer.getImageURL().toExternalForm(), 16.0, 16.0, true, true)));
-        checkClickMarker.setGraphic(
-                new ImageView(new Image(markerClick.getImageURL().toExternalForm(), 16.0, 16.0, true, true)));
-
-        // bind the checkboxes to the markers visibility
-        checkKaHarbourMarker.selectedProperty().bindBidirectional(markerKaHarbour.visibleProperty());
-        checkKaCastleMarker.selectedProperty().bindBidirectional(markerKaCastle.visibleProperty());
-        checkKaStationMarker.selectedProperty().bindBidirectional(markerKaStation.visibleProperty());
-        checkKaSoccerMarker.selectedProperty().bindBidirectional(markerKaSoccer.visibleProperty());
-        checkClickMarker.selectedProperty().bindBidirectional(markerClick.visibleProperty());
-        logger.trace("marker checks done");
 
         // load two coordinate lines
         trackMagenta = loadCoordinateLine(getClass().getResource("/M1.csv")).orElse(new CoordinateLine
                 ()).setColor(Color.MAGENTA);
         trackCyan = loadCoordinateLine(getClass().getResource("/M2.csv")).orElse(new CoordinateLine
                 ()).setColor(Color.CYAN).setWidth(7);
-        logger.trace("tracks loaded");
-        checkTrackMagenta.selectedProperty().bindBidirectional(trackMagenta.visibleProperty());
-        checkTrackCyan.selectedProperty().bindBidirectional(trackCyan.visibleProperty());
-        logger.trace("tracks checks done");
+        log.trace("tracks loaded");
         // get the extent of both tracks
         Extent tracksExtent = Extent.forCoordinates(
                 Stream.concat(trackMagenta.getCoordinateStream(), trackCyan.getCoordinateStream())
@@ -533,32 +257,13 @@ public class MapController implements Initializable {
         trackMagenta.visibleProperty().addListener(trackVisibleListener);
         trackCyan.visibleProperty().addListener(trackVisibleListener);
 
-        // add the polygon check handler
-        ChangeListener<Boolean> polygonListener =
-                (observable, oldValue, newValue) -> {
-                    if (!newValue && polygonLine != null) {
-                        mapView.removeCoordinateLine(polygonLine);
-                        polygonLine = null;
-                    }
-                };
-        checkDrawPolygon.selectedProperty().addListener(polygonListener);
-
-        // add the constrain listener
-        checkConstrainGermany.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue) {
-                mapView.constrainExtent(extentGermany);
-            } else {
-                mapView.clearConstrainExtent();
-            }
-        }));
-
         // finally initialize the map view
-        logger.trace("start map initialization");
+        log.trace("start map initialization");
         mapView.initialize(Configuration.builder()
                 .projection(Projection.WEB_MERCATOR)
                 .showZoomControls(false)
                 .build());
-        logger.debug("initialization finished");
+        log.debug("initialization finished");
 
         long animationStart = System.nanoTime();
         new AnimationTimer() {
@@ -635,10 +340,10 @@ public class MapController implements Initializable {
         });
 
         mapView.addEventHandler(MapViewEvent.MAP_POINTER_MOVED, event -> {
-            logger.debug("pointer moved to " + event.getCoordinate());
+            log.debug("pointer moved to " + event.getCoordinate());
         });
 
-        logger.trace("map handlers initialized");
+        log.trace("map handlers initialized");
     }
 
     private void animateClickMarker(Coordinate oldPosition, Coordinate newPosition) {
@@ -692,15 +397,14 @@ public class MapController implements Initializable {
      */
     private void setControlsDisable(boolean flag) {
         topControls.setDisable(flag);
-        leftControls.setDisable(flag);
     }
 
     /**
      * finishes setup after the mpa is initialzed
      */
     private void afterMapIsInitialized() {
-        logger.trace("map intialized");
-        logger.debug("setting center and enabling controls...");
+        log.trace("map intialized");
+        log.debug("setting center and enabling controls...");
         // start at the harbour with default zoom
         mapView.setZoom(ZOOM_DEFAULT);
         mapView.setCenter(coordKarlsruheHarbour);
@@ -744,7 +448,7 @@ public class MapController implements Initializable {
                             .map(values -> new Coordinate(Double.valueOf(values[0]), Double.valueOf(values[1])))
                             .collect(Collectors.toList())));
         } catch (IOException | NumberFormatException e) {
-            logger.error("load {}", url, e);
+            log.error("load {}", url, e);
         }
         return Optional.empty();
     }
