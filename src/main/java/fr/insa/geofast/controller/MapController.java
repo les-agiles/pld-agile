@@ -1,15 +1,11 @@
 package fr.insa.geofast.controller;
 
 import com.sothawo.mapjfx.*;
-import com.sothawo.mapjfx.event.MapLabelEvent;
 import com.sothawo.mapjfx.event.MapViewEvent;
-import com.sothawo.mapjfx.event.MarkerEvent;
 import fr.insa.geofast.services.XMLParser;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -32,7 +29,7 @@ public class MapController implements Initializable {
      */
     private static final int ZOOM_DEFAULT = 14;
 
-    private final ArrayList<Marker> intersections = new ArrayList<>();
+    private final List<Marker> intersections = new ArrayList<>();
 
     /**
      * button to set the map's zoom.
@@ -57,30 +54,6 @@ public class MapController implements Initializable {
      */
     @FXML
     private Slider sliderZoom;
-
-    /**
-     * Label to display the current center
-     */
-    @FXML
-    private Label labelCenter;
-
-    /**
-     * Label to display the current extent
-     */
-    @FXML
-    private Label labelExtent;
-
-    /**
-     * Label to display the current zoom
-     */
-    @FXML
-    private Label labelZoom;
-
-    /**
-     * label to display the last event.
-     */
-    @FXML
-    private Label labelEvent;
 
     private void loadAndDisplayMap() {
         try {
@@ -120,11 +93,6 @@ public class MapController implements Initializable {
         buttonZoom.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
         sliderZoom.valueProperty().bindBidirectional(mapView.zoomProperty());
 
-        // bind the map's center and zoom properties to the corresponding labels and format them
-        labelCenter.textProperty().bind(Bindings.format("center: %s", mapView.centerProperty()));
-        labelZoom.textProperty().bind(Bindings.format("zoom: %.0f", mapView.zoomProperty()));
-        log.trace("options and labels done");
-
         // watch the MapView's initialized property to finish initialization
         mapView.initializedProperty().addListener((observable, oldValue, newValue) -> {
             if (Boolean.TRUE.equals(newValue)) {
@@ -147,44 +115,10 @@ public class MapController implements Initializable {
      * initializes the event handlers.
      */
     private void setupEventHandlers() {
-        // add an event handler for singleclicks, set the click marker to the new position when it's visible
-        mapView.addEventHandler(MapViewEvent.MAP_CLICKED, event -> {
-            event.consume();
-            final Coordinate newPosition = event.getCoordinate().normalize();
-            labelEvent.setText("Event: map clicked at: " + newPosition);
-        });
-
         // add an event handler for MapViewEvent#MAP_EXTENT and set the extent in the map
         mapView.addEventHandler(MapViewEvent.MAP_EXTENT, event -> {
             event.consume();
             mapView.setExtent(event.getExtent());
-        });
-
-        // add an event handler for extent changes and display them in the status label
-        mapView.addEventHandler(MapViewEvent.MAP_BOUNDING_EXTENT, event -> {
-            event.consume();
-            labelExtent.setText(event.getExtent().toString());
-        });
-
-        mapView.addEventHandler(MapViewEvent.MAP_RIGHTCLICKED, event -> {
-            event.consume();
-            labelEvent.setText("Event: map right clicked at: " + event.getCoordinate());
-        });
-        mapView.addEventHandler(MarkerEvent.MARKER_CLICKED, event -> {
-            event.consume();
-            labelEvent.setText("Event: marker clicked: " + event.getMarker().getId());
-        });
-        mapView.addEventHandler(MarkerEvent.MARKER_RIGHTCLICKED, event -> {
-            event.consume();
-            labelEvent.setText("Event: marker right clicked: " + event.getMarker().getId());
-        });
-        mapView.addEventHandler(MapLabelEvent.MAPLABEL_CLICKED, event -> {
-            event.consume();
-            labelEvent.setText("Event: label clicked: " + event.getMapLabel().getText());
-        });
-        mapView.addEventHandler(MapLabelEvent.MAPLABEL_RIGHTCLICKED, event -> {
-            event.consume();
-            labelEvent.setText("Event: label right clicked: " + event.getMapLabel().getText());
         });
 
         mapView.addEventHandler(
