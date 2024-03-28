@@ -20,7 +20,6 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
-        <sonar.jacoco.excludes>**/controller/**/*</sonar.jacoco.excludes>
         <sonar.coverage.exclusions>**/controller/**/*</sonar.coverage.exclusions>
     </properties>
 
@@ -168,11 +167,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>**/controller/**/*</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>
