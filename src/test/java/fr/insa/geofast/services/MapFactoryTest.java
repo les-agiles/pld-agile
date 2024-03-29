@@ -2,6 +2,7 @@ package fr.insa.geofast.services;
 
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 public class MapFactoryTest {
     private static String absolutePath;
 
@@ -25,8 +27,8 @@ public class MapFactoryTest {
 
         try {
             map = MapFactory.buildMap(absolutePath + "/unit-tests-map1.xml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.debug(e.getMessage());
         }
 
         assertNotNull(map);
