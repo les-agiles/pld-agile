@@ -3,7 +3,7 @@ package fr.insa.geofast.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class GeofastController {
     @FXML
     private LeftController leftController;
 
