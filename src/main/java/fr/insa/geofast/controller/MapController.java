@@ -2,10 +2,7 @@ package fr.insa.geofast.controller;
 
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapViewEvent;
-import fr.insa.geofast.models.Intersection;
-import fr.insa.geofast.models.Map;
-import fr.insa.geofast.models.PlanningRequest;
-import fr.insa.geofast.models.Request;
+import fr.insa.geofast.models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -87,7 +84,8 @@ public class MapController implements Initializable {
             Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
 
             MapCircle circle = new MapCircle(coordinate, 10);
-            circle.setColor(Color.RED);
+            DeliveryGuy deliveryGuy = request.getCourier();
+            circle.setColor(deliveryGuy.getColor());
             circle.setVisible(true);
 
             planningRequestCircles.add(circle);

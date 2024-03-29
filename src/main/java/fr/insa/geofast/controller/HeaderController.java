@@ -45,10 +45,8 @@ public class HeaderController implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
         File selectedFile = fileChooser.showOpenDialog(null);
 
-        Map map = null;
-
         try {
-            map = MapFactory.buildMap(selectedFile.getAbsolutePath());
+            Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
             parentController.getMapController().displayMap(map);
             parentController.getMapController().setMap(map);
         } catch (IHMException e) {
@@ -62,10 +60,9 @@ public class HeaderController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         Map map = parentController.getMapController().getMap();
-        PlanningRequest planningRequest = null;
 
         try {
-            planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
+            PlanningRequest planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
             parentController.getMapController().displayPlanningRequest(planningRequest);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
