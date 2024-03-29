@@ -1,6 +1,6 @@
 # GeoFast - Manuel pour les utilisateurs
 
-## 1. Charger un plan
+## 1. Importer un plan
 
 ![import_plan.png](ressource/import_plan.png)
 
@@ -34,7 +34,7 @@ Un fois le plan chargé, les points d'intersections sont visibles en gris sur la
 
 ![chargement_plan.png](ressource/chargement_plan.png)
 
-## 2. Charger un programme de livraison
+## 2. Importer un programme de livraison
 
 ![import_programme.png](ressource/import_programme.png)
 
