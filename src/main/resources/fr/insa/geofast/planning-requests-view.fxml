@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.insa.geofast.controller.PlanningRequestsController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<Accordion prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+    <panes>
+        <TitledPane animated="false" collapsible="false" expanded="false">
 
-</AnchorPane>
+            <graphic>
+                <!-- Add your custom icon here -->
+                <HBox alignment="CENTER_RIGHT"> <!-- Custom control -->
+                    <Label text="Livreurs" /> <!-- Title label -->
+                    <ImageView>
+                        <image>
+                            <Image url="@GeoFastIcon.png" />
+                        </image>
+                    </ImageView> <!-- Plus button icon -->
+                </HBox>
+            </graphic>
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+        </TitledPane>
+        <TitledPane animated="false" ellipsisString="85858+" text="Livreur 1">
+            <graphic>
+                <ImageView>
+                    <image>
+                        <Image url="@GeoFastIcon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+            </content>
+        </TitledPane>
+        <TitledPane animated="false" text="Livreur 2">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+            </content>
+        </TitledPane>
+    </panes>
+</Accordion>

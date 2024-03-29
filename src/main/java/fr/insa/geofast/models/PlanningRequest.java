@@ -36,4 +36,12 @@ public class PlanningRequest {
             request.setup(deliveryIntersection, courier);
         }
     }
+
+    @Override
+    public String toString() {
+        return "PlanningRequest{" +
+                "requests=" + requests +
+                ", couriersMap=" + couriersMap +
+                '}';
+    }
 }
