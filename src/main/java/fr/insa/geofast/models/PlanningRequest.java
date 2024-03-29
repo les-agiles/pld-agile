@@ -19,7 +19,11 @@ public class PlanningRequest {
 
     private java.util.Map<String, DeliveryGuy> couriersMap;
 
+    private Warehouse warehouse;
+
     public void setup(Map map) {
+        warehouse = map.getWarehouse();
+
         // Create couriers
         couriersMap = new HashMap<>();
 
@@ -34,6 +38,11 @@ public class PlanningRequest {
             Intersection deliveryIntersection = map.getIntersectionsMap().get(request.getDeliveryAddressId());
             DeliveryGuy courier = couriersMap.get(request.getCourierId());
             request.setup(deliveryIntersection, courier);
+        }
+
+        // Setup routes
+        for(Request request : requests){
+            request.getCourier().getRoute().getRequests().add(request);
         }
     }
 

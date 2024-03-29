@@ -21,6 +21,10 @@ PLD-AGILE à l'INSA de Lyon.
 
 - [JAXB](https://docs.oracle.com/javase/tutorial/jaxb/intro/index.html) – Architecture Java pour la liaison XML
 
+### Calcul de l'itinéraire
+
+- [GraphHopper](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
+
 ### Divers
 
 - [Github Actions](https://github.com/les-agiles/pld-agile/actions) – Pipeline d'intégration continue (tests,
