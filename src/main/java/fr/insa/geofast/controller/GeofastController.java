@@ -17,7 +17,7 @@ public class GeofastController implements Initializable {
     public static GeofastController instance;
 
     @FXML
-    private VBox leftController;
+    private LeftController leftController;
 
     @FXML
     private RightController rightController;
@@ -35,6 +35,6 @@ public class GeofastController implements Initializable {
         instance = this;
         log.info("aaaaaaaaaaaaaaa--------------------------------aaaaaaaaaaaaaaaaaa");
         log.info(leftController.toString());
-        leftController.
+        //leftController.setParent(this);
     }
 }
