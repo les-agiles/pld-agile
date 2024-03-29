@@ -19,11 +19,11 @@ PLD-AGILE à l'INSA de Lyon.
 
 ### Parsing XML
 
-- [JAXB](https://docs.oracle.com/javase/tutorial/jaxb/intro/index.html) – Architecture Java pour la liaison XML
+- [JAXB (DOC TECHNIQUE)](readme/JAXB.md) – Architecture Java pour la liaison XML
 
 ### Calcul de l'itinéraire
 
-- [GraphHopper](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
+- [GraphHopper (DOC TECHNIQUE)](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
 
 ### Divers
 
