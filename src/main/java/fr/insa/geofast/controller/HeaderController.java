@@ -49,7 +49,7 @@ public class HeaderController implements Initializable {
             log.error(e.getMessage());
         }
 
-        //GeofastController.instance.getLeftController().getMapController().loadAndDisplayMap(map);
+        GeofastController.instance.getLeftController().getMapController().loadAndDisplayMap(map);
     }
 
     private void readXmlFile(){

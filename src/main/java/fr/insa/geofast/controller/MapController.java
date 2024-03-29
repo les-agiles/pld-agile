@@ -30,6 +30,7 @@ public class MapController implements Initializable {
     private static final int ZOOM_DEFAULT = 14;
 
     private final List<MapCircle> intersectionCircles = new ArrayList<>();
+    private final List<Marker> intersectionMarker = new ArrayList<>();
 
     /**
      * button to set the map's zoom.
@@ -61,11 +62,14 @@ public class MapController implements Initializable {
         for (Intersection intersection : map.getIntersections()) {
             Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
 
-            MapCircle circle = new MapCircle(coordinate, 1);
+            MapCircle circle = new MapCircle(coordinate, 50);
+            circle.setVisible(true);
 
             intersectionCircles.add(circle);
             mapView.addMapCircle(circle);
         }
+
+        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     }
 
     /**

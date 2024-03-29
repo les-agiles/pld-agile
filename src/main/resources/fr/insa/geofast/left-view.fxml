@@ -9,6 +9,6 @@
       fx:controller="fr.insa.geofast.controller.LeftController" HBox.hgrow="ALWAYS">
     <children>
         <fx:include source="header.fxml"/>
-        <fx:include source="map-view.fxml"/>
+        <fx:include fx:id="map" source="map-view.fxml"/>
     </children>
 </VBox>

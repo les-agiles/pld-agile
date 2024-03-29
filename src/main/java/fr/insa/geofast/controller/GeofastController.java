@@ -33,8 +33,5 @@ public class GeofastController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
-        log.info("aaaaaaaaaaaaaaa--------------------------------aaaaaaaaaaaaaaaaaa");
-        log.info(leftController.toString());
-        //leftController.setParent(this);
     }
 }
