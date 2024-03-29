@@ -1,5 +1,6 @@
 package fr.insa.geofast.services;
 
+import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,14 +23,14 @@ public class PlanningRequestFactoryTest {
     }
 
     @Test
-    void buildPlanningRequest_ShouldBuildCorrectPlanningRequest(){
+    void buildPlanningRequest_ShouldBuildCorrectPlanningRequest() {
         Map map = null;
         PlanningRequest planningRequest = null;
 
-        try{
+        try {
             map = MapFactory.buildMap(mapAbsolutePath + "/unit-tests-map1.xml");
             planningRequest = PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request1.xml", map);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -44,5 +45,11 @@ public class PlanningRequestFactoryTest {
         assertNotNull(planningRequest.getCouriersMap().get("1").getRoute());
         assertNull(planningRequest.getRequests().get(0).getArrivalDate());
         assertEquals(2, planningRequest.getCouriersMap().get("1").getRoute().getRequests().size());
+    }
+
+    @Test
+    void buildMap_ShouldThrowIHMException() {
+        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/unit-tests-map3.xml"));
+        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/not-exist.xml"));
     }
 }
