@@ -1,11 +1,13 @@
 package fr.insa.geofast.controller;
 
+import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.services.MapFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -16,6 +18,8 @@ import java.util.ResourceBundle;
 
 @Slf4j
 public class HeaderController implements Initializable {
+    @Setter
+    private LeftController parentController;
 
     @FXML
     private Button importerPlan;
@@ -40,14 +44,15 @@ public class HeaderController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
         File selectedFile = fileChooser.showOpenDialog(null);
+
         Map map = null;
+
         try {
             map = MapFactory.buildMap(selectedFile.getAbsolutePath());
-        } catch (Exception e) {
-            log.error(e.getMessage());
+            parentController.getMapController().displayMap(map);
+        }  catch (IHMException e) {
+            parentController.getParentController().displayNotification(e.getMessage());
         }
-
-        GeofastController.instance.getLeftController().getMapController().displayMap(map);
     }
 
     private void readXmlFile(){

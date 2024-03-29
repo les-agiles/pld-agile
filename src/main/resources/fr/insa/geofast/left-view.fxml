@@ -3,6 +3,6 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="fr.insa.geofast.controller.LeftController">
-    <fx:include source="header.fxml"/>
+    <fx:include fx:id="header" source="header.fxml"/>
     <fx:include fx:id="map" source="map-view.fxml" VBox.vgrow="ALWAYS"/>
 </VBox>

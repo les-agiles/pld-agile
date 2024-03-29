@@ -21,9 +21,6 @@ import java.util.ResourceBundle;
 @Getter
 @Slf4j
 public class GeofastController extends StackPane implements Initializable {
-
-    public static GeofastController instance;
-
     @FXML
     private LeftController leftController;
 
@@ -38,7 +35,8 @@ public class GeofastController extends StackPane implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initNotification();
-        instance = this;
+
+        leftController.setParentController(this);
     }
 
     private void initNotification() {
