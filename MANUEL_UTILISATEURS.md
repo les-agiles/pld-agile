@@ -2,13 +2,13 @@
 
 ## 1. Charger un plan
 
-![import_plan.png](ressource%2Fimport_plan.png)
+![import_plan.png](ressource/import_plan.png)
 
 Cette fonctionnalité permet de charger un plan à partir d’un fichier xml.
 
 Après avoir cliquer sur le bouton, vous devez selectionner le fichier xml.
 
-![selection_fichier_plan_xml.png](ressource%2Fselection_fichier_plan_xml.png)
+![selection_fichier_plan_xml.png](ressource/selection_fichier_plan_xml.png)
 
 Le fichier xml doit être semblable à ce qui suit :
 
@@ -32,18 +32,18 @@ Le fichier xml doit être semblable à ce qui suit :
 ```
 Un fois le plan chargé, les points d'intersections sont visibles en gris sur la carte.
 
-![chargement_plan.png](ressource%2Fchargement_plan.png)
+![chargement_plan.png](ressource/chargement_plan.png)
 
 ## 2. Charger un programme de livraison
 
-![import_programme.png](ressource%2Fimport_programme.png)
+![import_programme.png](ressource/import_programme.png)
 
 Cette fonctionnalité permet de charger un programme de livraison à partir d’un fichier xml.
 Au préalable, vous devez avoir importé un plan (voir partie 1)
 
 Après avoir cliqué sur le bouton, vous devez selectionner le fichier xml.
 
-![selection_fichier_programme_xml.png](ressource%2Fselection_fichier_programme_xml.png)
+![selection_fichier_programme_xml.png](ressource/selection_fichier_programme_xml.png)
 
 Le fichier xml doit être semblable à ce qui suit :
 
