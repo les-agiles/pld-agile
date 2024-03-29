@@ -22,7 +22,7 @@ public class GeofastApp extends Application {
 
         stage.getIcons().add(new Image(Objects.requireNonNull(GeofastApp.class.getResourceAsStream("GeoFastIcon.png"))));
 
-        String fxmlFile = "hello-view.fxml";
+        String fxmlFile = "geofast-view.fxml";
         logger.debug("loading fxml file {}", fxmlFile);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent rootNode = fxmlLoader.load();
