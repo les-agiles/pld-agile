@@ -12,13 +12,15 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+@Getter
+@Slf4j
 public class GeofastController extends StackPane implements Initializable {
-
     @FXML
     private LeftController leftController;
 
@@ -34,6 +36,7 @@ public class GeofastController extends StackPane implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initNotification();
 
+        leftController.setParentController(this);
     }
 
     private void initNotification() {
