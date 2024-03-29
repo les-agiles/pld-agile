@@ -13,14 +13,14 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Objects;
 
-public class HelloApplication extends Application {
+public class GeofastApp extends Application {
     protected static final Logger logger = LogManager.getLogger();
 
     @Override
     public void start(Stage stage) throws IOException {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
 
-        stage.getIcons().add(new Image(Objects.requireNonNull(HelloApplication.class.getResourceAsStream("GeoFastIcon.png"))));
+        stage.getIcons().add(new Image(Objects.requireNonNull(GeofastApp.class.getResourceAsStream("GeoFastIcon.png"))));
 
         String fxmlFile = "hello-view.fxml";
         logger.debug("loading fxml file {}", fxmlFile);
