@@ -2,7 +2,8 @@ package fr.insa.geofast.controller;
 
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapViewEvent;
-import fr.insa.geofast.services.XMLParser;
+import fr.insa.geofast.models.Intersection;
+import fr.insa.geofast.models.Map;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,7 +11,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class MapController implements Initializable {
      */
     private static final int ZOOM_DEFAULT = 14;
 
-    private final List<Marker> intersections = new ArrayList<>();
+    private final List<MapCircle> intersectionCircles = new ArrayList<>();
 
     /**
      * button to set the map's zoom.
@@ -55,23 +55,16 @@ public class MapController implements Initializable {
     @FXML
     private Slider sliderZoom;
 
-    private void loadAndDisplayMap() {
-        try {
-            URL mapXmlUrl = getClass().getResource("/smallMap.xml");
-            File mapXmlFile = new File(Objects.requireNonNull(mapXmlUrl).toURI());
-            var map = XMLParser.parseMap(mapXmlFile.getAbsolutePath());
+    public void loadAndDisplayMap(Map map) {
+        intersectionCircles.clear();
 
-            for (var intersection : map.getIntersections()) {
-                Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
-                var marker = Marker.createProvided(Marker.Provided.BLUE)
-                        .setPosition(coordinate)
-                        .setVisible(true);
+        for (Intersection intersection : map.getIntersections()) {
+            Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
 
-                intersections.add(marker);
-                mapView.addMarker(marker);
-            }
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
+            MapCircle circle = new MapCircle(coordinate, 1);
+
+            intersectionCircles.add(circle);
+            mapView.addMapCircle(circle);
         }
     }
 
@@ -150,7 +143,5 @@ public class MapController implements Initializable {
 
         // now enable the controls
         setControlsDisable(false);
-
-        loadAndDisplayMap();
     }
 }
