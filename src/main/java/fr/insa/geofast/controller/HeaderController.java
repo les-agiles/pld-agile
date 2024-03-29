@@ -8,10 +8,8 @@ import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.xml.bind.JAXBException;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -49,7 +47,7 @@ public class HeaderController implements Initializable {
             log.error(e.getMessage());
         }
 
-        GeofastController.instance.getLeftController().getMapController().loadAndDisplayMap(map);
+        GeofastController.instance.getLeftController().getMapController().displayMap(map);
     }
 
     private void readXmlFile(){

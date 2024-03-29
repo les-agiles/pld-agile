@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -56,20 +57,19 @@ public class MapController implements Initializable {
     @FXML
     private Slider sliderZoom;
 
-    public void loadAndDisplayMap(Map map) {
+    public void displayMap(Map map) {
         intersectionCircles.clear();
 
         for (Intersection intersection : map.getIntersections()) {
             Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
 
-            MapCircle circle = new MapCircle(coordinate, 50);
+            MapCircle circle = new MapCircle(coordinate, 10);
+            circle.setColor(Color.GRAY);
             circle.setVisible(true);
 
             intersectionCircles.add(circle);
             mapView.addMapCircle(circle);
         }
-
-        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     }
 
     /**
