@@ -2,8 +2,11 @@ module fr.insa.geofast {
     requires javafx.controls;
     requires javafx.fxml;
     requires atlantafx.base;
+    requires com.sothawo.mapjfx;
+    requires org.apache.logging.log4j;
     requires java.xml.bind;
     requires lombok;
+    requires org.slf4j;
 
     opens fr.insa.geofast to javafx.fxml;
     exports fr.insa.geofast;
