@@ -27,7 +27,7 @@ Certaines classes demandent un parsing en 2 temps. Par exemple sur les classes d
 livraison **"PlanningRequest"** ou le plan **"Map"**. Nous ajoutons donc une fonction "setup", une étape réalisée après
 le parsing par la classe Factory qui orchestre la création et la configuration des objets à partir des données XML
 
-La qui permet de réaliser l'étape Démarshalisation (Passage de XML à Java) est la classe `XMLParser`.
+La classe qui permet de réaliser l'étape Démarshalisation (Passage de XML à Java) est `XMLParser`.
 
 ## Exemple d'utilisation
 
