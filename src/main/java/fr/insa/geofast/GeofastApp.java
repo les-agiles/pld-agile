@@ -1,6 +1,6 @@
 package fr.insa.geofast;
 
-import atlantafx.base.theme.PrimerLight;
+import atlantafx.base.theme.CupertinoLight;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +18,7 @@ public class GeofastApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+        Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
 
         stage.getIcons().add(new Image(Objects.requireNonNull(GeofastApp.class.getResourceAsStream("GeoFastIcon.png"))));
 
