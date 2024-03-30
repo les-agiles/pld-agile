@@ -15,7 +15,6 @@ import java.util.Objects;
 
 public class GeofastApp extends Application {
     protected static final Logger logger = LogManager.getLogger();
-
     @Override
     public void start(Stage stage) throws IOException {
         Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
