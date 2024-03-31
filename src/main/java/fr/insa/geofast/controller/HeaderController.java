@@ -64,6 +64,7 @@ public class HeaderController implements Initializable {
         try {
             PlanningRequest planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
             parentController.getMapController().displayPlanningRequest(planningRequest);
+            parentController.getMapController().setPlanningRequest(planningRequest);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }

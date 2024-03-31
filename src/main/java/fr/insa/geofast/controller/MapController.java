@@ -62,6 +62,10 @@ public class MapController implements Initializable {
     @Setter
     private Map map;
 
+    @Getter
+    @Setter
+    private PlanningRequest planningRequest;
+
     public void displayMap(Map map) {
         intersectionCircles.clear();
 
@@ -74,6 +78,10 @@ public class MapController implements Initializable {
 
             intersectionCircles.add(circle);
             mapView.addMapCircle(circle);
+        }
+
+        if (!planningRequestCircles.isEmpty()) {
+            displayPlanningRequest(getPlanningRequest());
         }
     }
 
