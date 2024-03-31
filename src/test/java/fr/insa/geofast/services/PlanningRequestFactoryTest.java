@@ -1,7 +1,9 @@
 package fr.insa.geofast.services;
 
+import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 public class PlanningRequestFactoryTest {
     private static String mapAbsolutePath, planningRequestAbsolutePath;
 
@@ -22,15 +25,15 @@ public class PlanningRequestFactoryTest {
     }
 
     @Test
-    void buildPlanningRequest_ShouldBuildCorrectPlanningRequest(){
+    void buildPlanningRequest_ShouldBuildCorrectPlanningRequest() {
         Map map = null;
         PlanningRequest planningRequest = null;
 
-        try{
+        try {
             map = MapFactory.buildMap(mapAbsolutePath + "/unit-tests-map1.xml");
             planningRequest = PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request1.xml", map);
-        }catch(Exception ex){
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.debug(e.getMessage());
         }
 
         assertNotNull(planningRequest);
@@ -44,5 +47,11 @@ public class PlanningRequestFactoryTest {
         assertNotNull(planningRequest.getCouriersMap().get("1").getRoute());
         assertNull(planningRequest.getRequests().get(0).getArrivalDate());
         assertEquals(2, planningRequest.getCouriersMap().get("1").getRoute().getRequests().size());
+    }
+
+    @Test
+    void buildMap_ShouldThrowIHMException() {
+        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/unit-tests-map3.xml"));
+        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/not-exist.xml"));
     }
 }

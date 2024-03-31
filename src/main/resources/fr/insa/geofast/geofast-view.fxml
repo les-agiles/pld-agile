@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.HBox?>
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-      prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1">
-        <fx:include fx:id="left" source="left-view.fxml"/>
-        <fx:include fx:id="right" source="right-view.fxml"/>
-</HBox>
+<?import javafx.scene.layout.StackPane?>
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="fr.insa.geofast.controller.GeofastController" prefHeight="800.0" prefWidth="1200.0"
+           style="-fx-background-color: white; -fx-font-family: Inter; src: url('./font/inter.ttf')">
+    <children>
+        <HBox>
+            <children>
+                <fx:include fx:id="left" source="left-view.fxml" HBox.hgrow="ALWAYS"/>
+                <fx:include source="right-view.fxml" prefHeight="400.0" prefWidth="300.0" minWidth="300.0"
+                            maxWidth="300.0"/>
+            </children>
+        </HBox>
+    </children>
+</StackPane>

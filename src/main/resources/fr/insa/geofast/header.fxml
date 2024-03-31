@@ -1,60 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
-<HBox prefHeight="100.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fr.insa.geofast.controller.HeaderController">
-    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"
-               HBox.hgrow="ALWAYS">
-        <Image url="@GeoFast.png"/>
-        <viewport>
-            <Rectangle2D/>
-        </viewport>
-        <HBox.margin>
-            <Insets left="16.0" top="29.0"/>
-        </HBox.margin>
-    </ImageView>
-    <ButtonBar nodeOrientation="LEFT_TO_RIGHT" style="-fx-padding: 21;" HBox.hgrow="ALWAYS">
+<?import javafx.scene.shape.SVGPath?>
+
+<HBox alignment="CENTER_LEFT" fillHeight="false" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.HeaderController">
+    <SVGPath content="M37.9995 12.7937C37.9995 12.7866 37.9991 12.7795 37.9991 12.7724C37.9886 12.2962 37.6062 11.9167 37.1242 11.9167H36.8945L33.3471 5.05833C33.1975 4.76873 32.899 4.58841 32.5695 4.58832L26.5131 4.58706L26.7442 2.75558C26.8101 2.02367 26.5838 1.3326 26.1069 0.809523C25.6308 0.287529 24.9662 0 24.2353 0H5.43844C4.96582 0 4.56434 0.365684 4.51928 0.837134L4.33087 2.3461H15.0404C15.7358 2.3461 16.2848 2.90982 16.2666 3.60522C16.2483 4.30061 15.6699 4.86433 14.9745 4.86433H11.4023L11.4041 4.86964H0.91407C0.422295 4.86964 0.0131716 5.26824 0.000310576 5.76002C-0.0125504 6.25179 0.375618 6.65039 0.867393 6.65039H14.7551C15.3998 6.74968 15.8814 7.3072 15.8637 7.98218C15.8442 8.72344 15.2306 9.32449 14.4906 9.3307H4.91609C4.41936 9.3307 4.00619 9.73334 3.99315 10.2301C3.98011 10.7268 4.37224 11.1294 4.86896 11.1294H14.3307C14.9848 11.2205 15.476 11.7826 15.4582 12.4641C15.4387 13.2091 14.8189 13.8132 14.0738 13.8132H3.21907L2.30701 13.8141C1.81029 13.8141 1.39712 14.2168 1.38408 14.7135C1.37104 15.2102 1.76308 15.6129 2.25989 15.6129H3.04702L2.73916 18.8342C2.67315 19.5661 2.89943 20.2571 3.37646 20.7802C3.8524 21.3023 4.51713 21.5897 5.24804 21.5897H5.92707C6.25066 23.4401 7.85154 24.8382 9.80974 24.8382C11.7679 24.8382 13.442 23.4401 13.8623 21.5898H22.3361C23.0212 21.5898 23.352 21.5898 24.2012 21.5898C24.8846 21.5898 25.2603 21.5898 25.9336 21.5898H26.073C26.3965 23.4401 27.9973 24.8382 29.9556 24.8382C31.9138 24.8382 33.5879 23.4401 34.0082 21.5898H34.5675C36.0246 21.5898 37.3168 20.4053 37.4481 18.9493L37.9962 12.878C37.9969 12.8698 37.9965 12.8617 37.9971 12.8534C37.998 12.8409 37.9997 12.8287 38 12.8161C38.0002 12.8086 37.9995 12.8013 37.9995 12.7937ZM9.85686 23.0394C8.61708 23.0394 7.63479 22.0309 7.66726 20.7911C7.69973 19.5512 8.73481 18.5426 9.97459 18.5426C11.2144 18.5426 12.1966 19.5512 12.1641 20.7911C12.1316 22.0309 11.0966 23.0394 9.85686 23.0394ZM30.0028 23.0394C28.763 23.0394 27.7808 22.0309 27.8131 20.7911C27.8456 19.5512 28.8807 18.5426 30.1205 18.5426C31.3603 18.5426 32.3426 19.5512 32.31 20.7911C32.2775 22.0309 31.2425 23.0394 30.0028 23.0394ZM35.6562 18.8342C35.6094 19.3529 35.1325 19.7911 34.6147 19.7911H34.0097C33.6091 18.0415 32.0541 16.7438 30.1675 16.7438C28.2809 16.7438 26.658 18.0415 26.1659 19.7911H25.9807C25.7521 19.7911 25.5481 19.7054 25.4061 19.5496C25.2632 19.3929 25.1959 19.1797 25.2167 18.9492L26.3507 6.3858L28.9552 6.38634L28.5424 10.9598C28.4763 11.6916 28.7024 12.3827 29.1794 12.9058C29.6553 13.428 30.3202 13.7156 31.0512 13.7156H36.1181L35.6562 18.8342Z" fill="#9747FF" />
+    <ButtonBar>
         <buttons>
-            <Button fx:id="importerPlan" alignment="TOP_CENTER" mnemonicParsing="false"
-                    style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5; -fx-max-width: 105px;"
-                    text="Importer plan" textFill="#020817">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
-            <!-- Buttons -->
-            <Button fx:id="importerProgramme" alignment="TOP_CENTER" mnemonicParsing="false"
-                    style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5;"
-                    text="Importer un programme" textFill="#020817">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
-            <Button fx:id="sauvegarderProgramme" alignment="TOP_CENTER" layoutX="248.0"
-                    layoutY="10.0" mnemonicParsing="false"
-                    style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5;"
-                    text="Sauvegarder le programme" textFill="#020817">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
-            <Button fx:id="exporterProgramme" alignment="TOP_CENTER" layoutX="267.0" layoutY="10.0"
-                    mnemonicParsing="false"
-                    style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5; -fx-max-width: 170px;"
-                    text="Exporter le programme" textFill="#020817">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-            </Button>
+            <Button fx:id="importerPlan" text="Importer plan" />
+            <Button fx:id="importerProgramme" text="Importer un programme" />
+            <Button fx:id="sauvegarderProgramme" text="Sauvegarder le programme" />
+            <Button fx:id="exporterProgramme" text="Exporter le programme" />
         </buttons>
-        <padding>
-            <Insets right="10.0" top="21.0"/>
-        </padding>
     </ButtonBar>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </HBox>

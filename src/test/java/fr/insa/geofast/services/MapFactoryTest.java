@@ -1,6 +1,8 @@
 package fr.insa.geofast.services;
 
+import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +11,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 public class MapFactoryTest {
     private static String absolutePath;
 
@@ -19,13 +22,13 @@ public class MapFactoryTest {
     }
 
     @Test
-    void buildMap_ShouldBuildCorrectMap(){
+    void buildMap_ShouldBuildCorrectMap() {
         Map map = null;
 
-        try{
+        try {
             map = MapFactory.buildMap(absolutePath + "/unit-tests-map1.xml");
-        }catch(Exception ex){
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.debug(e.getMessage());
         }
 
         assertNotNull(map);
@@ -36,5 +39,11 @@ public class MapFactoryTest {
         assertEquals(map.getSegments().get(0), map.getIntersections().get(0).getSegments().get(0));
         assertEquals(1, map.getIntersections().get(1).getSegments().size());
         assertEquals(map.getSegments().get(0), map.getIntersections().get(1).getSegments().get(0));
+    }
+
+    @Test
+    void buildMap_ShouldThrowIHMException() {
+        assertThrows(IHMException.class, () -> MapFactory.buildMap(absolutePath + "/unit-tests-map4.xml"));
+        assertThrows(IHMException.class, () -> MapFactory.buildMap(absolutePath + "/not-exist.xml"));
     }
 }

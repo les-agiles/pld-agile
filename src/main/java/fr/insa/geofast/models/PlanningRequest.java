@@ -1,8 +1,7 @@
 package fr.insa.geofast.models;
 
-import lombok.AllArgsConstructor;
+import fr.insa.geofast.ColorPalette;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @XmlRootElement(name = "planningRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlanningRequest {
@@ -33,7 +30,7 @@ public class PlanningRequest {
 
         for (Request request : requests) {
             if (!couriersMap.containsKey(request.getCourierId())) {
-                couriersMap.put(request.getCourierId(), new DeliveryGuy(request.getCourierId()));
+                couriersMap.put(request.getCourierId(), new DeliveryGuy(request.getCourierId(), ColorPalette.getColor(couriersMap.size())));
             }
         }
 
@@ -49,5 +46,4 @@ public class PlanningRequest {
             request.getCourier().getRoute().getRequests().add(request);
         }
     }
-
 }
