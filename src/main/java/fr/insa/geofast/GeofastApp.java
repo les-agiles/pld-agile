@@ -28,7 +28,7 @@ public class GeofastApp extends Application {
         Parent rootNode = fxmlLoader.load();
         logger.trace("stage loaded");
 
-        Scene scene = new Scene(rootNode);
+        Scene scene = new Scene(rootNode, 1000, 700);
         logger.trace("scene created");
 
         stage.setTitle("GeoFast!");

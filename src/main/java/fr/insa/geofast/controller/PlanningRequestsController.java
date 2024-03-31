@@ -7,5 +7,7 @@ import java.util.List;
 public class PlanningRequestsController {
 
     @FXML
-    private List<PlanningRequestController> planningRequestControllerList; //pas sur non plus xD
+    private List<DeliveryGuyController> deliveryGuyControllerList; //pas sur non plus xD
+
+
 }

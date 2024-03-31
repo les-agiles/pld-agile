@@ -1,12 +1,16 @@
 package fr.insa.geofast.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @XmlRootElement(name = "request")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Request {

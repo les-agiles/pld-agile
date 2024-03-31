@@ -1,6 +1,8 @@
 package fr.insa.geofast.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @XmlRootElement(name = "planningRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlanningRequest {
@@ -41,16 +45,9 @@ public class PlanningRequest {
         }
 
         // Setup routes
-        for(Request request : requests){
+        for (Request request : requests) {
             request.getCourier().getRoute().getRequests().add(request);
         }
     }
 
-    @Override
-    public String toString() {
-        return "PlanningRequest{" +
-                "requests=" + requests +
-                ", couriersMap=" + couriersMap +
-                '}';
-    }
 }

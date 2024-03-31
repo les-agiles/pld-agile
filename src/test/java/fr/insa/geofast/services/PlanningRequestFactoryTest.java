@@ -33,8 +33,6 @@ public class PlanningRequestFactoryTest {
             ex.printStackTrace();
         }
 
-        System.out.println(planningRequest);
-
         assertNotNull(planningRequest);
         assertEquals(1, planningRequest.getCouriersMap().size());
         assertTrue(planningRequest.getCouriersMap().containsKey("1"));
