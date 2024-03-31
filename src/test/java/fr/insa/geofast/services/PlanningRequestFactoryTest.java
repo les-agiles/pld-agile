@@ -3,6 +3,7 @@ package fr.insa.geofast.services;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 public class PlanningRequestFactoryTest {
     private static String mapAbsolutePath, planningRequestAbsolutePath;
 
@@ -30,8 +32,8 @@ public class PlanningRequestFactoryTest {
         try {
             map = MapFactory.buildMap(mapAbsolutePath + "/unit-tests-map1.xml");
             planningRequest = PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request1.xml", map);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.debug(e.getMessage());
         }
 
         assertNotNull(planningRequest);

@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 public class DeliveryGuy {
+  
     private String id;
     private final Route route = new Route();
-
     private Color color;
 
     public DeliveryGuy(String id) {

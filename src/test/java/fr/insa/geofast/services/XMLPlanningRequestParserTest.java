@@ -1,14 +1,18 @@
 package fr.insa.geofast.services;
 
 import fr.insa.geofast.models.PlanningRequest;
+import fr.insa.geofast.models.Request;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 public class XMLPlanningRequestParserTest {
     private static String absolutePath;
 
@@ -25,7 +29,7 @@ public class XMLPlanningRequestParserTest {
         try {
             planningRequest = XMLParser.parsePlanningRequest(absolutePath + "/unit-tests-request1.xml");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.getMessage());
         }
 
         assertNotNull(planningRequest);
@@ -43,7 +47,7 @@ public class XMLPlanningRequestParserTest {
         try {
             planningRequest = XMLParser.parsePlanningRequest(absolutePath + "/unit-tests-request2.xml");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.getMessage());
         }
 
         assertNotNull(planningRequest);
@@ -72,12 +76,13 @@ public class XMLPlanningRequestParserTest {
         try {
             planningRequest = XMLParser.parsePlanningRequest(absolutePath + "/unit-tests-request4.xml");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.getMessage());
         }
 
         assertNotNull(planningRequest);
         assertEquals(0, planningRequest.getRequests().size());
         PlanningRequest finalPlanningRequest = planningRequest;
-        assertThrows(IndexOutOfBoundsException.class, () -> finalPlanningRequest.getRequests().get(0));
+        List<Request> requests = finalPlanningRequest.getRequests();
+        assertThrows(IndexOutOfBoundsException.class, () -> requests.get(0));
     }
 }
