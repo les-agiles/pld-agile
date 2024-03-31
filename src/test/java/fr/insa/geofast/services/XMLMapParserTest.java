@@ -1,6 +1,7 @@
 package fr.insa.geofast.services;
 
 import fr.insa.geofast.models.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 public class XMLMapParserTest {
     private static String absolutePath;
 
@@ -25,7 +27,7 @@ public class XMLMapParserTest {
         try {
             map = XMLParser.parseMap(absolutePath + "/unit-tests-map1.xml");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.getMessage());
         }
 
         assertNotNull(map);
@@ -45,13 +47,13 @@ public class XMLMapParserTest {
     }
 
     @Test
-    void parseMap_ShouldParseASmallSizedXMLMap(){
+    void parseMap_ShouldParseASmallSizedXMLMap() {
         Map map = null;
 
         try {
             map = XMLParser.parseMap(absolutePath + "/unit-tests-map2.xml");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.getMessage());
         }
 
         assertNotNull(map);
@@ -60,13 +62,13 @@ public class XMLMapParserTest {
     }
 
     @Test
-    void parseMap_WharehouseAdressShouldBeNull_DueToNonExistingIntersectionId(){
+    void parseMap_WharehouseAdressShouldBeNull_DueToNonExistingIntersectionId() {
         Map map = null;
 
         try {
             map = XMLParser.parseMap(absolutePath + "/unit-tests-map3.xml");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.getMessage());
         }
 
         assertNotNull(map);
@@ -74,7 +76,7 @@ public class XMLMapParserTest {
     }
 
     @Test
-    void parseMap_ShouldNotWork_DueIncorrectXMLDataFormat(){
+    void parseMap_ShouldNotWork_DueIncorrectXMLDataFormat() {
         assertThrows(Exception.class, () -> XMLParser.parseMap(absolutePath + "/unit-tests-map4.xml"));
     }
 }

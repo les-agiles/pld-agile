@@ -30,7 +30,7 @@ public class GeofastController extends StackPane implements Initializable {
     @FXML
     public StackPane stackPane;
 
-    public Notification errorNotification;
+    private Notification errorNotification;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
