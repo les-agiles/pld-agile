@@ -2,14 +2,15 @@ package fr.insa.geofast.controller;
 
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapViewEvent;
-import fr.insa.geofast.models.Intersection;
-import fr.insa.geofast.models.Map;
+import fr.insa.geofast.models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -31,7 +32,7 @@ public class MapController implements Initializable {
     private static final int ZOOM_DEFAULT = 14;
 
     private final List<MapCircle> intersectionCircles = new ArrayList<>();
-    private final List<Marker> intersectionMarker = new ArrayList<>();
+    private final List<MapCircle> planningRequestCircles = new ArrayList<>();
 
     /**
      * button to set the map's zoom.
@@ -57,6 +58,14 @@ public class MapController implements Initializable {
     @FXML
     private Slider sliderZoom;
 
+    @Getter
+    @Setter
+    private Map map;
+
+    @Getter
+    @Setter
+    private PlanningRequest planningRequest;
+
     public void displayMap(Map map) {
         intersectionCircles.clear();
 
@@ -68,6 +77,26 @@ public class MapController implements Initializable {
             circle.setVisible(true);
 
             intersectionCircles.add(circle);
+            mapView.addMapCircle(circle);
+        }
+
+        if (!planningRequestCircles.isEmpty()) {
+            displayPlanningRequest(getPlanningRequest());
+        }
+    }
+
+    public void displayPlanningRequest(PlanningRequest planningRequest) {
+        planningRequestCircles.clear();
+
+        for (Request request : planningRequest.getRequests()) {
+            Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
+
+            MapCircle circle = new MapCircle(coordinate, 10);
+            DeliveryGuy deliveryGuy = request.getCourier();
+            circle.setColor(deliveryGuy.getColor());
+            circle.setVisible(true);
+
+            planningRequestCircles.add(circle);
             mapView.addMapCircle(circle);
         }
     }
@@ -119,8 +148,8 @@ public class MapController implements Initializable {
         });
 
         mapView.addEventHandler(
-            MapViewEvent.MAP_POINTER_MOVED,
-            event -> log.debug("pointer moved to " + event.getCoordinate())
+                MapViewEvent.MAP_POINTER_MOVED,
+                event -> log.debug("pointer moved to " + event.getCoordinate())
         );
 
         log.trace("map handlers initialized");

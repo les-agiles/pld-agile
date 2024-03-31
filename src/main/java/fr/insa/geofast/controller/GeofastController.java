@@ -56,8 +56,6 @@ public class GeofastController extends StackPane implements Initializable {
             out.setOnFinished(f -> stackPane.getChildren().remove(errorNotification));
             out.playFromStart();
         });
-
-        displayNotification("Hello World!");
     }
 
     public void displayNotification(String message) {

@@ -14,6 +14,11 @@ public class PlanningRequestFactory {
     }
 
     public static PlanningRequest buildPlanningRequest(String path, Map map) throws IHMException {
+        if (map == null) {
+            log.error("No map found");
+            throw new IHMException("Veuillez importer un plan avant de charger un programme");
+        }
+
         PlanningRequest planningRequest;
         try {
             planningRequest = XMLParser.parsePlanningRequest(path);
