@@ -13,9 +13,9 @@ PLD-AGILE à l'INSA de Lyon.
 
 ### Qualité du code
 
-- [Sonarqube](https://www.sonarsource.com/products/sonarqube/) – Outil d'inspection continue de la qualité du code
-- [Jacoco](https://www.eclemma.org/jacoco/) – Bibliothèque de couverture de code Java
-- [JUnit 5](https://junit.org/junit5/) – Framework de test unitaire pour Java
+- [Sonarqube (DOC TECHNIQUE)](readme/SONARQUBE.md) – Outil d'inspection continue de la qualité du code
+- [Jacoco (DOC TECHNIQUE)](readme/JACOCO.md) – Bibliothèque de couverture de code Java
+- [JUnit 5 (DOC TECHNIQUE)](readme/JUNIT5.md) – Framework de test unitaire pour Java
 
 ### Parsing XML
 
@@ -27,9 +27,9 @@ PLD-AGILE à l'INSA de Lyon.
 
 ### Divers
 
-- [Github Actions](https://github.com/les-agiles/pld-agile/actions) – Pipeline d'intégration continue (tests,
+- [Github Actions (DOC TECHNIQUE)](readme/GITHUBACTIONS.md) – Pipeline d'intégration continue (tests,
   construction, qualité du code)
-- [Maven](https://maven.apache.org/) – Gestionnaire de projet et de dépendances
+- [Maven (DOC TECHNIQUE)](readme/MAVEN.md) – Gestionnaire de projet et de dépendances
 
 ## Équipe
 
