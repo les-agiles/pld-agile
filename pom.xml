@@ -13,6 +13,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.0</junit.version>
         <lombok.version>1.18.32</lombok.version>
+        <jsprit-core.version>1.8</jsprit-core.version>
+        <graphhopper-core.version>8.0</graphhopper-core.version>
 
         <javafx.version>17.0.0.1</javafx.version>
 
@@ -101,10 +103,27 @@
             <version>2.0.12</version>
         </dependency>
         <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>graphhopper-core</artifactId>
+            <version>${graphhopper-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>jsprit-core</artifactId>
+            <version>${jsprit-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>graphhopper-web-api</artifactId>
+            <version>8.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>${jacoco.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -189,6 +208,16 @@
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
