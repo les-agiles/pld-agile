@@ -7,6 +7,11 @@ SonarQube est une plateforme open-source conçue pour évaluer et améliorer la 
 
 <https://www.sonarsource.com/products/sonarqube/>
 
+### Lien vers notre serveur SonarQube
+
+<https://sonar.attssystem.fr/projects>
+*Hebergé par Hugues Kadi*
+
 ### Fonctionnement
 
 SonarQube fonctionne en analysant le code source des projets logiciels à l'aide de diverses règles prédéfinies pour différents langages de programmation. L'analyse du code peut être déclenchée automatiquement lors de chaque modification du code ou de manière planifiée à des intervalles réguliers.
