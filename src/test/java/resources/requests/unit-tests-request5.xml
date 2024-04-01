@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<planningRequest>
+
+    <!--    1-->
+    <request courier="1" deliveryAddress="208769083" deliveryDuration="240" deliveryTime="9"/>
+    <!--    2-->
+    <request courier="1" deliveryAddress="1036842078" deliveryDuration="0" deliveryTime="9"/>
+    <!--    3-->
+    <request courier="1" deliveryAddress="21992995" deliveryDuration="420" deliveryTime="9"/>
+    <!--    4-->
+    <request courier="1" deliveryAddress="1288817934" deliveryDuration="540" deliveryTime="9"/>
+    <!--    5-->
+    <request courier="1" deliveryAddress="2129259176" deliveryDuration="480" deliveryTime="9"/>
+
+    <!--    1-->
+    <request courier="2" deliveryAddress="208769083" deliveryDuration="240" deliveryTime="9"/>
+    <!--    2-->
+    <request courier="2" deliveryAddress="21992995" deliveryDuration="420" deliveryTime="9"/>
+    <!--    3-->
+    <request courier="2" deliveryAddress="1036842078" deliveryDuration="0" deliveryTime="10"/>
+    <!--    4-->
+    <request courier="2" deliveryAddress="2129259176" deliveryDuration="480" deliveryTime="10"/>
+    <!--    5-->
+    <request courier="2" deliveryAddress="1288817934" deliveryDuration="540" deliveryTime="11"/>
+
+    <!--    1-->
+    <request courier="3" deliveryAddress="208769083" deliveryDuration="240" deliveryTime="9"/>
+    <!--    2-->
+    <request courier="3" deliveryAddress="21992995" deliveryDuration="420" deliveryTime="9"/>
+    <!--    3-->
+    <request courier="3" deliveryAddress="208769083" deliveryDuration="0" deliveryTime="10"/>
+    <!--    4-->
+    <request courier="3" deliveryAddress="2129259176" deliveryDuration="480" deliveryTime="10"/>
+    <!--    5-->
+    <request courier="3" deliveryAddress="1288817934" deliveryDuration="540" deliveryTime="11"/>
+
+    <!--    1-->
+    <request courier="4" deliveryAddress="21992995" deliveryDuration="240" deliveryTime="13"/>
+    <!--    2-->
+    <request courier="4" deliveryAddress="21992995" deliveryDuration="420" deliveryTime="13"/>
+    <!--    3-->
+    <request courier="4" deliveryAddress="208769083" deliveryDuration="0" deliveryTime="13"/>
+</planningRequest>
