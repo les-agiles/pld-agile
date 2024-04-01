@@ -14,7 +14,6 @@ import com.graphhopper.jsprit.core.problem.vehicle.VehicleTypeImpl;
 import com.graphhopper.jsprit.core.util.Solutions;
 import com.graphhopper.jsprit.core.util.VehicleRoutingTransportCostsMatrix;
 
-import com.graphhopper.reader.osm.Pair;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.utils.GraphHopperSingleton;
 
@@ -22,7 +21,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.Map;
 
 @Slf4j
 @Getter
@@ -32,8 +30,8 @@ public class Route {
     // Latest arrival of deliveryGuy at the warehouse in seconds (starting at 00:00)
     private static final double LATEST_ARRIVAL = 43200.;
 
-    private final Map<String, Request> requests = new HashMap<>();
-    private Map<RelationKey, ResponsePath> intersectionsPathsMatrix = null;
+    private final java.util.Map<String, Request> requests = new HashMap<>();
+    private java.util.Map<RelationKey, ResponsePath> intersectionsPathsMatrix = null;
     private List<Request> requestsOrdered = null;
     private final Warehouse warehouse;
 

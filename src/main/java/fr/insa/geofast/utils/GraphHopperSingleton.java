@@ -5,7 +5,6 @@ import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.Profile;
 import com.graphhopper.util.CustomModel;
 import fr.insa.geofast.Launcher;
-import fr.insa.geofast.exceptions.IHMException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +14,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermissions;
 
 import static com.graphhopper.json.Statement.Else;
 import static com.graphhopper.json.Statement.If;
@@ -52,7 +53,8 @@ public class GraphHopperSingleton {
         }
 
         try {
-            Path tempFile = Files.createTempFile("rhone-alpes", ".osm.pbf");
+            FileAttribute<?> attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-x---"));
+            Path tempFile = Files.createTempFile("rhone-alpes", ".osm.pbf", attrs);
             tempFile.toFile().deleteOnExit();
             try (OutputStream out = Files.newOutputStream(tempFile)) {
                 byte[] buffer = new byte[8192];
@@ -71,7 +73,8 @@ public class GraphHopperSingleton {
     private Path createTempCacheDirectory() {
         Path tempCacheDirectory;
         try {
-            tempCacheDirectory = Files.createTempDirectory("routing-graph");
+            FileAttribute<?> attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-x---"));
+            tempCacheDirectory = Files.createTempDirectory("routing-graph", attrs);
             tempCacheDirectory.toFile().deleteOnExit();
             String[] cacheFiles = {"edgekv_keys", "edgekv_vals", "edges", "geometry", "location_index", "nodes", "nodes_ch_bike", "properties", "shortcuts_bike"};
 

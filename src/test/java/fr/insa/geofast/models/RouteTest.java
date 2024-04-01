@@ -1,6 +1,5 @@
 package fr.insa.geofast.models;
 
-import com.graphhopper.reader.osm.Pair;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.services.MapFactory;
 import fr.insa.geofast.services.PlanningRequestFactory;
@@ -44,10 +43,10 @@ public class RouteTest {
         assertNotNull(requestsOrdered);
 
         requestsOrdered.forEach(request -> {
-            System.out.println("DeliveryAddress ID : " + request.getDeliveryAddressId());
-            System.out.println(request.getDeliveryAddress().getLatitude()
+            log.info("DeliveryAddress ID : " + request.getDeliveryAddressId());
+            log.info(request.getDeliveryAddress().getLatitude()
                                 + "," + request.getDeliveryAddress().getLongitude());
-            System.out.println("Time : " + request.getArrivalDate() + "\n");
+            log.info("Time : " + request.getArrivalDate() + "\n");
         });
     }
 
@@ -100,7 +99,7 @@ public class RouteTest {
     }
 
     @Test
-    void computeBestRequestOrder_testWithMultipleRequestAtSameIntersection() throws IHMException {
+    void computeBestRequestOrder_testWithMultipleRequestAtSameIntersection() {
         Route route = planningRequest.getCouriersMap().get("3").getRoute();
 
         try {
