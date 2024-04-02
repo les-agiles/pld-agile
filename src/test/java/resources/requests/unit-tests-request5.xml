@@ -40,4 +40,19 @@
     <request courier="4" deliveryAddress="21992995" deliveryDuration="420" deliveryTime="13"/>
     <!--    3-->
     <request courier="4" deliveryAddress="208769083" deliveryDuration="0" deliveryTime="13"/>
+
+    <!--    1-->
+    <request courier="5" deliveryAddress="21992995" deliveryDuration="240" deliveryTime="9"/>
+
+    <!--    1-->
+    <request courier="6" deliveryAddress="208769083" deliveryDuration="240" deliveryTime="9"/>
+    <!--    2-->
+    <request courier="6" deliveryAddress="21992995" deliveryDuration="420" deliveryTime="9"/>
+    <!--    3-->
+    <request courier="6" deliveryAddress="208769083" deliveryDuration="0" deliveryTime="10"/>
+    <!--    5-->
+    <request courier="6" deliveryAddress="2129259176" deliveryDuration="480" deliveryTime="10"/>
+
+    <!--    1-->
+    <request courier="7" deliveryAddress="208769083" deliveryDuration="240" deliveryTime="9"/>
 </planningRequest>
