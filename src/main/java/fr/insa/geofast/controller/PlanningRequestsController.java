@@ -83,14 +83,12 @@ public class PlanningRequestsController {
                     VBox requestInfoBox = new VBox();
                     requestInfoBox.setSpacing(10);
 
-
-                    courier.getRoute().getRequests().forEach(request -> {
+                    courier.getRoute().getRequests().values().forEach(request -> {
                         Label requestLabel = new Label(LocalTime.of(request.getDeliveryTime(), request.getDeliveryDuration() / 60).format(DateTimeFormatter.ofPattern("HH:mm")));
                         requestInfoBox.getChildren().add(requestLabel);
                     });
 
                     titledPane.setContent(requestInfoBox);
-
 
                     accordion.getPanes().add(titledPane);
                     allCheckBoxes.add(checkBox);
