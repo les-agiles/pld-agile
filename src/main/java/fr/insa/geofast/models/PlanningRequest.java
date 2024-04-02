@@ -1,6 +1,7 @@
 package fr.insa.geofast.models;
 
 import fr.insa.geofast.ColorPalette;
+
 import lombok.Getter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -30,20 +31,23 @@ public class PlanningRequest {
 
         for (Request request : requests) {
             if (!couriersMap.containsKey(request.getCourierId())) {
-                couriersMap.put(request.getCourierId(), new DeliveryGuy(request.getCourierId(), ColorPalette.getColor(couriersMap.size())));
+                couriersMap.put(request.getCourierId(), new DeliveryGuy(request.getCourierId(), warehouse, ColorPalette.getColor(couriersMap.size())));
             }
         }
 
+        int requestCounter = 0;
         // Setup requests
         for (Request request : requests) {
             Intersection deliveryIntersection = map.getIntersectionsMap().get(request.getDeliveryAddressId());
             DeliveryGuy courier = couriersMap.get(request.getCourierId());
-            request.setup(deliveryIntersection, courier);
+            String requestId = deliveryIntersection.getId() + "-" + requestCounter;
+            request.setup(deliveryIntersection, courier, requestId);
+            requestCounter++;
         }
 
         // Setup routes
-        for (Request request : requests) {
-            request.getCourier().getRoute().getRequests().add(request);
+        for(Request request : requests){
+            request.getCourier().getRoute().getRequests().put(request.getId(), request);
         }
     }
 }
