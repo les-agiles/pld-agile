@@ -25,7 +25,7 @@ public class PlanningRequestsController {
     private RightController parentController;
 
     @FXML
-    public CheckBox globalCheckbox;
+    public CheckBox globalCheckBox;
     @FXML
     public RequestDetailsController requestViewController;
 
@@ -36,15 +36,15 @@ public class PlanningRequestsController {
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
-        globalCheckbox.setDisable(true);
+        globalCheckBox.setDisable(true);
 
-        // Add event listener for globalCheckbox
-        globalCheckbox.setOnAction(e -> handleGlobalCheckbox());
+        // Add event listener for globalCheckBox
+        globalCheckBox.setOnAction(e -> handleGlobalCheckbox());
     }
 
     private void handleGlobalCheckbox() {
         log.trace("Global Checkbox clicked");
-        if (globalCheckbox.isSelected()) {
+        if (globalCheckBox.isSelected()) {
             checkBoxes.forEach(checkBox -> checkBox.setSelected(true));
         } else {
             checkBoxes.forEach(checkBox -> checkBox.setSelected(false));
@@ -52,8 +52,8 @@ public class PlanningRequestsController {
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
-        globalCheckbox.setDisable(false);
-        globalCheckbox.setSelected(true);
+        globalCheckBox.setDisable(false);
+        globalCheckBox.setSelected(true);
 
         java.util.Map<String, DeliveryGuy> couriersMap = planningRequest.getCouriersMap();
 
