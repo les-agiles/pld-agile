@@ -25,35 +25,35 @@ public class PlanningRequestsController {
     private RightController parentController;
 
     @FXML
-    public CheckBox livreursCheckbox;
+    public CheckBox globalCheckbox;
     @FXML
     public RequestDetailsController requestViewController;
 
     @FXML
     public Accordion accordion;
 
-    private final List<CheckBox> allCheckBoxes = new ArrayList<>();
+    private final List<CheckBox> checkBoxes = new ArrayList<>();
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
-        livreursCheckbox.setDisable(true);
+        globalCheckbox.setDisable(true);
 
-        // Add event listener for livreursCheckbox
-        livreursCheckbox.setOnAction(e -> handleLivreursCheckbox());
+        // Add event listener for globalCheckbox
+        globalCheckbox.setOnAction(e -> handleGlobalCheckbox());
     }
 
-    private void handleLivreursCheckbox() {
-        log.trace("Livreurs checkbox clicked");
-        if (livreursCheckbox.isSelected()) {
-            allCheckBoxes.forEach(checkBox -> checkBox.setSelected(true));
+    private void handleGlobalCheckbox() {
+        log.trace("Global Checkbox clicked");
+        if (globalCheckbox.isSelected()) {
+            checkBoxes.forEach(checkBox -> checkBox.setSelected(true));
         } else {
-            allCheckBoxes.forEach(checkBox -> checkBox.setSelected(false));
+            checkBoxes.forEach(checkBox -> checkBox.setSelected(false));
         }
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
-        livreursCheckbox.setDisable(false);
-        livreursCheckbox.setSelected(true);
+        globalCheckbox.setDisable(false);
+        globalCheckbox.setSelected(true);
 
         java.util.Map<String, DeliveryGuy> couriersMap = planningRequest.getCouriersMap();
 
@@ -87,7 +87,7 @@ public class PlanningRequestsController {
                     titledPane.setContent(requestInfoBox);
 
                     accordion.getPanes().add(titledPane);
-                    allCheckBoxes.add(checkBox);
+                    checkBoxes.add(checkBox);
                 });
     }
 

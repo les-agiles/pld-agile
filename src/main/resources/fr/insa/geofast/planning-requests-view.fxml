@@ -13,7 +13,7 @@
         <TitledPane animated="false" collapsible="false" expanded="false">
             <graphic>
                 <HBox alignment="CENTER_LEFT" spacing="170">
-                    <CheckBox fx:id="livreursCheckbox" text="Livreurs"/>
+                    <CheckBox fx:id="globalCheckbox" text="Livreurs"/>
                     <FontIcon iconLiteral="mdal-add_circle_outline"/>
                 </HBox>
             </graphic>
