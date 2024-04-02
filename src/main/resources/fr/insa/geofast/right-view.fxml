@@ -7,31 +7,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ButtonBar buttonMinWidth="160.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="71.0" prefWidth="369.0" VBox.vgrow="NEVER">
-         <buttons>
-            <Button fx:id="creerPoint" alignment="CENTER" layoutX="248.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5;" text="Créer un point" textAlignment="CENTER" textFill="#020817">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Button>
-            <Button fx:id="calculerTournees" alignment="CENTER" contentDisplay="CENTER" layoutX="267.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-border-color: #020817; -fx-border-radius: 5;" text="Calculer les tournées" textAlignment="CENTER" textFill="#020817">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Button>
-         </buttons>
-         <VBox.margin>
-            <Insets bottom="32.0" top="32.0" />
-         </VBox.margin>
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
-         <padding>
-            <Insets right="20.0" />
-         </padding>
-      </ButtonBar>
-       <fx:include fx:id="planningRequests" source="planning-requests-view.fxml" />
-   </children>
+<VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="1000" prefHeight="400.0" prefWidth="1000" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RightController">
+    <children>
+        <ButtonBar buttonMinWidth="10.0" maxWidth="9000000" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0" prefWidth="5000">
+            <buttons>
+                <Button fx:id="calculerTournees" alignment="CENTER" contentDisplay="CENTER" depthTest="DISABLE" minWidth="0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="27.0" prefWidth="176.0" text="Calculer les tournées" textAlignment="CENTER" textFill="#020817" wrapText="true">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+                <Button fx:id="creerPoint" alignment="CENTER" contentDisplay="TOP" minWidth="0.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="20.0" text="Créer un point" textAlignment="CENTER" textFill="#020817" maxWidth="120">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+            </buttons>
+            <VBox.margin>
+                <Insets bottom="65.0" top="11.0" />
+            </VBox.margin>
+            <cursor>
+                <Cursor fx:constant="DEFAULT" />
+            </cursor>
+        </ButtonBar>
+        <fx:include fx:id="planningRequests" source="planning-requests-view.fxml" />
+    </children>
 </VBox>

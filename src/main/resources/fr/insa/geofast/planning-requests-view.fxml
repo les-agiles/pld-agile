@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-
-<Accordion prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.shape.SVGPath?>
+<Accordion fx:id="accordion" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="fr.insa.geofast.controller.PlanningRequestsController">
     <panes>
-        <TitledPane animated="false" collapsible="false" expanded="false" text="Livreurs">
+        <TitledPane animated="false" collapsible="false" expanded="false">
             <graphic>
-                <HBox alignment="CENTER_RIGHT">
-                    <ImageView>
-                        <Image url="@GeoFastIcon.png"/>
-                    </ImageView>
+                <HBox alignment="CENTER_LEFT" spacing="170">
+                    <CheckBox fx:id="livreursCheckbox" text="Livreurs"/>
+                    <SVGPath
+                            content="M7.99998 5.33333V10.6667M5.33331 7.99999H10.6666M14.6666 7.99999C14.6666 11.6819 11.6819 14.6667 7.99998 14.6667C4.31808 14.6667 1.33331 11.6819 1.33331 7.99999C1.33331 4.3181 4.31808 1.33333 7.99998 1.33333C11.6819 1.33333 14.6666 4.3181 14.6666 7.99999Z"
+                            stroke="#020817" fill="white" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
                 </HBox>
             </graphic>
             <content>
