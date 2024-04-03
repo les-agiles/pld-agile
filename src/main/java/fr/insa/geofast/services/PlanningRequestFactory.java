@@ -29,6 +29,9 @@ public class PlanningRequestFactory {
         } catch (FileNotFoundException e) {
             log.error(e.getMessage());
             throw new IHMException("Fichier introuvable");
+        } catch (IHMException e) {
+            log.error(e.getMessage());
+            throw new IHMException(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new IHMException("Erreur inconnue");
