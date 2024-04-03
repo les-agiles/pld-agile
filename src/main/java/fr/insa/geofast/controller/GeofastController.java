@@ -35,6 +35,7 @@ public class GeofastController extends StackPane implements Initializable {
         initNotification();
         rightController.setParentController(this);
         leftController.setParentController(this);
+        rightController.setParentController(this);
     }
 
     private void initNotification() {

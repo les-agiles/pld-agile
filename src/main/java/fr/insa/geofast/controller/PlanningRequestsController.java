@@ -3,6 +3,7 @@ package fr.insa.geofast.controller;
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.models.Request;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
@@ -114,6 +115,11 @@ public class PlanningRequestsController {
 
                     accordion.getPanes().add(titledPane);
                     checkBoxes.add(checkBox);
+
+                    MapController mapController = parentController.getParentController().getLeftController().getMapController();
+                    checkBox.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+                        mapController.setLabelsVisible(courier.getId(), new_val);
+                    });
                 });
     }
 
