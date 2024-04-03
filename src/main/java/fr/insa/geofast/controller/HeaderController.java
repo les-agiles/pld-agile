@@ -4,6 +4,7 @@ import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.services.MapFactory;
+import fr.insa.geofast.services.PdfGenerator;
 import fr.insa.geofast.services.PlanningRequestFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,6 +39,8 @@ public class HeaderController implements Initializable {
         importerPlan.setOnAction(e -> readMapXml());
 
         importerProgramme.setOnAction(e -> readPlanningRequestXml());
+
+        exporterProgramme.setOnAction(e -> export());
     }
 
     private void readMapXml() {
@@ -79,5 +82,9 @@ public class HeaderController implements Initializable {
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }
+    }
+
+    private void export() {
+        PdfGenerator.generatePdf();
     }
 }
