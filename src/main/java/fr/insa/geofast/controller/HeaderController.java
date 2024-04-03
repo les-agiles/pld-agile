@@ -52,6 +52,7 @@ public class HeaderController implements Initializable {
         try {
             Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
             parentController.getMapController().displayMap(map);
+            parentController.getMapController().setMap(map);
             importerProgramme.setVisible(true);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
@@ -74,9 +75,13 @@ public class HeaderController implements Initializable {
             PlanningRequest planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
             parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
             parentController.getMapController().displayPlanningRequest(planningRequest);
-            exporterProgramme.setVisible(true);
+            parentController.getMapController().setPlanningRequest(planningRequest);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }
+    }
+
+    public void setExportButtonVisible(boolean visible) {
+        exporterProgramme.setVisible(visible);
     }
 }

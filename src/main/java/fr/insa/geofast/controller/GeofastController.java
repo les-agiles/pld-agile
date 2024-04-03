@@ -4,8 +4,6 @@ import atlantafx.base.controls.Notification;
 import atlantafx.base.theme.Styles;
 import atlantafx.base.util.Animations;
 import javafx.fxml.FXML;
-
-
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -35,8 +33,9 @@ public class GeofastController extends StackPane implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initNotification();
-
+        rightController.setParentController(this);
         leftController.setParentController(this);
+        rightController.setParentController(this);
     }
 
     private void initNotification() {
