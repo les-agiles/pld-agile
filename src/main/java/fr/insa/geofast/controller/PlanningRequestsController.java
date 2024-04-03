@@ -24,8 +24,6 @@ public class PlanningRequestsController {
 
     @FXML
     public CheckBox globalCheckBox;
-    @FXML
-    public RequestDetailsController requestViewController;
 
     @FXML
     public Accordion accordion;
@@ -38,6 +36,7 @@ public class PlanningRequestsController {
 
         // Add event listener for globalCheckBox
         globalCheckBox.setOnAction(e -> handleGlobalCheckbox());
+
     }
 
     private void handleGlobalCheckbox() {
@@ -98,7 +97,7 @@ public class PlanningRequestsController {
     }
 
     private void displayRequestInformation(Request request) {
-        System.out.println("Clicked on request: " + request.getId());
+        parentController.getRequestDetailsController().updateRequestDetails(request);
     }
 
 }
