@@ -15,7 +15,7 @@
         <lombok.version>1.18.32</lombok.version>
         <jsprit-core.version>1.8</jsprit-core.version>
         <graphhopper-core.version>8.0</graphhopper-core.version>
-
+        <itext.version>8.0.2</itext.version>
         <javafx.version>17.0.0.1</javafx.version>
 
         <!-- JaCoCo Properties -->
@@ -132,6 +132,17 @@
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-material2-pack</artifactId>
             <version>12.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-core</artifactId>
+            <version>${itext.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>bouncy-castle-adapter</artifactId>
+            <version>${itext.version}</version>
         </dependency>
     </dependencies>
 
