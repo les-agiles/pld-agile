@@ -13,7 +13,6 @@
         <buttons>
             <Button fx:id="importerPlan" text="Importer plan"/>
             <Button fx:id="importerProgramme" text="Importer un programme"/>
-            <Button fx:id="sauvegarderProgramme" text="Sauvegarder le programme"/>
             <Button fx:id="exporterProgramme" text="Exporter le programme"/>
         </buttons>
     </ButtonBar>
