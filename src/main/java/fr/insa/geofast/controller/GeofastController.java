@@ -28,7 +28,7 @@ public class GeofastController extends StackPane implements Initializable {
     private RightController rightController;
 
     @FXML
-    public StackPane stackPane;
+    private StackPane stackPane;
 
     private Notification errorNotification;
 
