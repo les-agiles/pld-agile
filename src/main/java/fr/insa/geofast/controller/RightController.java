@@ -51,6 +51,6 @@ public class RightController implements Initializable {
             parentController.displayNotification(e.getMessage());
         }
 
-        parentController.displayNotification(planningRequest.getCouriersMap().values().stream().findFirst().get().getRoute().getRequestsOrdered().size() + "");
+        parentController.getLeftController().getMapController().displayComputedRoutes(planningRequest);
     }
 }
