@@ -33,12 +33,10 @@ public class MapController implements Initializable {
      */
     private static final int ZOOM_DEFAULT = 14;
 
-    private MapCircle warehouseCircle = null;
+    private Marker warehouseMarker = null;
     private final List<CoordinateLine> routeLines = new ArrayList<>();
     private final java.util.Map<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
     private final java.util.Map<DeliveryGuy, List<MapCircle>> deliveryGuyCircles = new java.util.HashMap<>();
-
-    private Marker warehouseMarker = null;
 
     /**
      * button to set the map's zoom.
@@ -71,8 +69,8 @@ public class MapController implements Initializable {
     private PlanningRequest planningRequest;
 
     public void displayMap(Map map) {
-        if(!Objects.isNull(warehouseCircle)){
-            mapView.removeMapCircle(warehouseCircle);
+        if(!Objects.isNull(warehouseMarker)){
+            mapView.removeMarker(warehouseMarker);
         }
 
         this.map = map;
@@ -80,21 +78,15 @@ public class MapController implements Initializable {
         Intersection warehouse = map.getWarehouse().getAddress();
         Coordinate coordinate = new Coordinate(warehouse.getLatitude(), warehouse.getLongitude());
 
-        warehouseCircle = new MapCircle(coordinate, 30);
-        warehouseCircle.setColor(Color.ORANGE);
-        warehouseCircle.setVisible(true);
-        mapView.addMapCircle(warehouseCircle);
+        // Affichage de la warehouse
+        warehouseMarker = new Marker(Objects.requireNonNull(GeofastApp.class.getResource("warehouse.png")), -10, -10)
+                .setPosition(coordinate)
+                .setVisible(true);
+        mapView.addMarker(warehouseMarker);
 
         if (!deliveryGuyCircles.isEmpty()) {
             displayPlanningRequest(getPlanningRequest());
         }
-
-        // affichage de la warehouse
-        Intersection warehousePosition = map.getWarehouse().getAddress();
-        warehouseMarker = new Marker(GeofastApp.class.getResource("warehouse.png"), -10, -10)
-                .setPosition(new Coordinate(warehousePosition.getLatitude(), warehousePosition.getLongitude()))
-                .setVisible(true);
-        mapView.addMarker(warehouseMarker);
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
