@@ -29,7 +29,7 @@ public class RequestDetailsController implements Initializable {
     private Label deliveryGuy;
 
     @FXML
-    private HBox rowHeureDePassage;
+    private HBox rowArrivalDate;
 
     @FXML
     private VBox streets;
@@ -64,12 +64,12 @@ public class RequestDetailsController implements Initializable {
 
         if (request.getArrivalDate() !=  0)
         {
-            rowHeureDePassage.setVisible(true);
+            rowArrivalDate.setVisible(true);
             this.deliveryTime.setText(String.format("%d:%d", (int)request.getArrivalDate(), (int)(request.getArrivalDate()) + 1));
         }
         else
         {
-            rowHeureDePassage.setVisible(false);
+            rowArrivalDate.setVisible(false);
         }
     }
 }
