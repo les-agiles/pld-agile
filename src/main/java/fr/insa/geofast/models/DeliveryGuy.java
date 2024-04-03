@@ -7,7 +7,7 @@ import lombok.Getter;
 public class DeliveryGuy {
     private final String id;
     private final Route route;
-    private Color color;
+    private final Color color;
 
     public DeliveryGuy(String id, Warehouse warehouse) {
         this.id = id;
