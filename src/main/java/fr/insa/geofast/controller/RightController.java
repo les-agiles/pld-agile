@@ -3,8 +3,6 @@ package fr.insa.geofast.controller;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -33,10 +31,10 @@ public class RightController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        computeRoutes.setOnAction(e -> onCalculerTourneePressed());
+        computeRoutes.setOnAction(e -> onComputeRoutesPressed());
     }
 
-    private void onCalculerTourneePressed(){
+    private void onComputeRoutesPressed(){
         PlanningRequest planningRequest = parentController.getLeftController().getMapController().getPlanningRequest();
 
         if(Objects.isNull(planningRequest)){
