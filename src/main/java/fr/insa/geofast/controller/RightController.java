@@ -14,9 +14,6 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 @Getter
 @Slf4j
 public class RightController implements Initializable {
@@ -34,8 +31,8 @@ public class RightController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    	planningRequestsController.setParentController(this);
-    	
+        planningRequestsController.setParentController(this);
+
         computeRoutes.setOnAction(e -> onComputeRoutesPressed());
     }
 
@@ -60,5 +57,6 @@ public class RightController implements Initializable {
         // Le calcul a réussi
         mapController.updateLabels(planningRequest);
         parentController.getLeftController().getMapController().displayComputedRoutes(planningRequest);
+        parentController.getLeftController().getHeaderController().setExportButtonVisible(true);
     }
 }

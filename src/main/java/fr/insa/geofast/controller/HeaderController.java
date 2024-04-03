@@ -76,9 +76,12 @@ public class HeaderController implements Initializable {
             parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
             parentController.getMapController().displayPlanningRequest(planningRequest);
             parentController.getMapController().setPlanningRequest(planningRequest);
-            exporterProgramme.setVisible(true);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }
+    }
+
+    public void setExportButtonVisible(boolean visible) {
+        exporterProgramme.setVisible(visible);
     }
 }
