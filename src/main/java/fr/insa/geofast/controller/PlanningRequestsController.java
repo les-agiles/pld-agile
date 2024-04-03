@@ -2,6 +2,7 @@ package fr.insa.geofast.controller;
 
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
+import fr.insa.geofast.models.Request;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
@@ -11,10 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,9 +71,7 @@ public class PlanningRequestsController {
 
                     HBox titledPaneLayout = new HBox(143);
 
-                    var outerIcon1 = new FontIcon("mdal-delete_outline");
-
-                    titledPaneLayout.getChildren().addAll(checkBox, outerIcon1);
+                    titledPaneLayout.getChildren().add(checkBox);
                     titledPane.setGraphic(titledPaneLayout);
 
                     // Create a VBox to hold the request information
@@ -83,8 +79,15 @@ public class PlanningRequestsController {
                     requestInfoBox.setSpacing(10);
 
                     courier.getRoute().getRequests().values().forEach(request -> {
-                        Label requestLabel = new Label(LocalTime.of(request.getDeliveryTime(), request.getDeliveryDuration() / 60).format(DateTimeFormatter.ofPattern("HH:mm")));
-                        requestInfoBox.getChildren().add(requestLabel);
+                        HBox requestHBox = new HBox();
+                        requestHBox.setSpacing(30);
+
+                        Label coordinates = new Label("x : " + request.getDeliveryAddress().getLongitude() + " ; y : " + request.getDeliveryAddress().getLatitude());
+                        requestHBox.getChildren().add(coordinates);
+
+                        requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
+                        requestInfoBox.getChildren().add(requestHBox);
+
                     });
 
                     titledPane.setContent(requestInfoBox);
@@ -92,6 +95,10 @@ public class PlanningRequestsController {
                     accordion.getPanes().add(titledPane);
                     checkBoxes.add(checkBox);
                 });
+    }
+
+    private void displayRequestInformation(Request request) {
+        System.out.println("Clicked on request: " + request.getId());
     }
 
 }
