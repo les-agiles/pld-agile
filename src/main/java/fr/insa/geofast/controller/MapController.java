@@ -177,4 +177,24 @@ public class MapController implements Initializable {
         // now enable the controls
         setControlsDisable(false);
     }
+
+    public void displaySelectedDeliveryGuys(List<DeliveryGuy> selectedDeliveryGuys) {
+        planningRequestCircles.forEach(c -> mapView.removeMapCircle(c));
+
+        for (DeliveryGuy deliveryGuy : selectedDeliveryGuys) {
+            for (Request request : planningRequest.getRequests()) {
+                if (request.getCourier().equals(deliveryGuy)) {
+                    Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
+
+                    MapCircle circle = new MapCircle(coordinate, 10);
+                    circle.setColor(deliveryGuy.getColor());
+                    circle.setVisible(true);
+
+                    planningRequestCircles.add(circle);
+                    mapView.addMapCircle(circle);
+                }
+            }
+        }
+    }
+
 }
