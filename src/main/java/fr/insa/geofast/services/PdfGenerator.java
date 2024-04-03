@@ -3,8 +3,10 @@ package fr.insa.geofast.services;
 import com.itextpdf.io.exceptions.IOException;
 
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
@@ -26,6 +28,10 @@ import java.util.Date;
 
 @Slf4j
 public class PdfGenerator {
+
+    private static final String GEOFAST_LOGO = "src/main/resources/fr/insa/geofast/GeoFast-compressed.png";
+    private static final String BACKGROUND = "src/main/resources/fr/insa/geofast/pdf-background.png";
+
 
     private PdfGenerator() {
 
@@ -53,8 +59,17 @@ public class PdfGenerator {
     public void manipulatePdf(String dest) throws IOException, FileNotFoundException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(dest));
         Document document = new Document(pdf);
+        PageSize pageSize = new PageSize(PageSize.A4);
         document.setTopMargin(50);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new TextFooterEventHandler(document));
+
+        // Background image
+        try {
+            PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
+            canvas.addImageFittedIntoRectangle(ImageDataFactory.create(BACKGROUND), pageSize, false);
+        } catch (MalformedURLException e) {
+            log.error(e.getMessage());
+        }
 
 
         List topLevel = new List();
@@ -101,7 +116,7 @@ public class PdfGenerator {
 
             Image geoFastLogo = null;
             try {
-                geoFastLogo = new Image(ImageDataFactory.create("src/main/resources/fr/insa/geofast/GeoFast-compressed.png"));
+                geoFastLogo = new Image(ImageDataFactory.create(GEOFAST_LOGO));
                 geoFastLogo.setFixedPosition(leftX + 20, headerY - 10);
                 geoFastLogo.setHeight(25);
             } catch (MalformedURLException e) {
