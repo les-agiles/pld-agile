@@ -140,7 +140,7 @@ public class Route {
     private ResponsePath getPathBetweenIntersections(Intersection from, Intersection to) throws IHMException {
         GHRequest req = new GHRequest(from.getLatitude(), from.getLongitude(), to.getLatitude(), to.getLongitude())
                             .setProfile("bike")
-                            .setLocale(Locale.ENGLISH);
+                            .setLocale(Locale.FRENCH);
         GHResponse rsp = GraphHopperSingleton.getInstance().getGraphHopper().route(req);
 
         if (rsp.hasErrors()) {

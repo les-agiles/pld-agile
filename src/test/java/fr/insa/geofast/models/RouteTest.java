@@ -230,17 +230,8 @@ public class RouteTest {
             assertEquals(latitudesSecondRoute[i], secondRoutePoints.get(i).getLat(), 0.0001);
             assertEquals(longitudesSecondRoute[i], secondRoutePoints.get(i).getLon(), 0.0001);
         }
-
-//        bestRoute.get(1).getPoints().forEach(ghPoint3D -> {
-//            System.out.println(ghPoint3D.getLat() + ",");
-//        });
-//        System.out.println();
-//        bestRoute.get(1).getPoints().forEach(ghPoint3D -> {
-//            System.out.println(ghPoint3D.getLon() + ",");
-//        });
     }
 
-    // test N points
     @Test
     void computeBestRoute_tesMultipleRequests() {
         Route route = planningRequest.getCouriersMap().get("6").getRoute();
