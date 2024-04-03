@@ -33,11 +33,37 @@ public class Route {
     private final java.util.Map<String, Request> requests = new HashMap<>();
     private java.util.Map<RelationKey, ResponsePath> intersectionsPathsMatrix = null;
     private List<Request> requestsOrdered = null;
+    private List<ResponsePath> bestRoute = null;
     private final Warehouse warehouse;
 
 
     public Route(Warehouse warehouse) {
         this.warehouse = warehouse;
+    }
+
+    public void computeBestRoute() throws IHMException {
+        if(requestsOrdered == null) {
+            throw new IHMException("La tournée doit être ordonnée avant de trouver le meilleur chemin");
+        }
+
+        bestRoute = new ArrayList<>();
+
+        int requestsOrderedSize = requestsOrdered.size();
+
+        Request firstRequest = requestsOrdered.get(0);
+        RelationKey startRelationKey = new RelationKey(warehouse.getAddress().getId(), firstRequest.getId());
+        bestRoute.add(intersectionsPathsMatrix.get(startRelationKey));
+
+        for (int i = 0; i < requestsOrderedSize - 1; i++) {
+            Request currentRequest = requestsOrdered.get(i);
+            Request nextRequest = requestsOrdered.get(i + 1);
+            RelationKey relationKey = new RelationKey(currentRequest.getId(), nextRequest.getId());
+            bestRoute.add(intersectionsPathsMatrix.get(relationKey));
+        }
+
+        Request lastRequest = requestsOrdered.get(requestsOrderedSize - 1);
+        RelationKey endRelationKey = new RelationKey(lastRequest.getId(), warehouse.getAddress().getId());
+        bestRoute.add(intersectionsPathsMatrix.get(endRelationKey));
     }
 
     /**
