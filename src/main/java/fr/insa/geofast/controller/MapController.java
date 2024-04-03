@@ -14,7 +14,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,12 +32,10 @@ public class MapController implements Initializable {
      */
     private static final int ZOOM_DEFAULT = 14;
 
-    private final List<MapCircle> intersectionCircles = new ArrayList<>();
-    private final List<CoordinateLine> routeLines = new ArrayList<>();
-    private final HashMap<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
-    private final java.util.Map<DeliveryGuy, List<MapCircle>> deliveryGuyCircles = new java.util.HashMap<>();
     private MapCircle warehouseCircle = null;
-    private final List<MapCircle> planningRequestCircles = new ArrayList<>();
+    private final List<CoordinateLine> routeLines = new ArrayList<>();
+    private final java.util.Map<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
+    private final java.util.Map<DeliveryGuy, List<MapCircle>> deliveryGuyCircles = new java.util.HashMap<>();
 
     /**
      * button to set the map's zoom.
@@ -83,6 +80,7 @@ public class MapController implements Initializable {
         warehouseCircle = new MapCircle(coordinate, 30);
         warehouseCircle.setColor(Color.ORANGE);
         warehouseCircle.setVisible(true);
+        mapView.addMapCircle(warehouseCircle);
 
         if (!deliveryGuyCircles.isEmpty()) {
             displayPlanningRequest(getPlanningRequest());
@@ -90,7 +88,7 @@ public class MapController implements Initializable {
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
-        planningRequestCircles.clear();
+        deliveryGuyCircles.clear();
 
         for (Request request : planningRequest.getRequests()) {
             Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
@@ -100,7 +98,7 @@ public class MapController implements Initializable {
             circle.setColor(deliveryGuy.getColor());
             circle.setVisible(true);
 
-            planningRequestCircles.add(circle);
+            deliveryGuyCircles.computeIfAbsent(deliveryGuy, k -> new ArrayList<>()).add(circle);
             mapView.addMapCircle(circle);
         }
 
