@@ -13,7 +13,7 @@
         <ButtonBar buttonMinWidth="10.0" maxWidth="9000000" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0"
                    prefWidth="5000">
             <buttons>
-                <Button fx:id="computeRoutes" alignment="CENTER" contentDisplay="CENTER" defaultButton="true"
+                <Button fx:id="computeRoutesButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true"
                         depthTest="DISABLE" minWidth="0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT"
                         prefHeight="27.0" prefWidth="176.0" text="Calculer les tournées" textAlignment="CENTER"
                         wrapText="true">

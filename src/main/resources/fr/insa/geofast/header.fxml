@@ -13,7 +13,7 @@
         <buttons>
             <Button fx:id="importMapButton" text="Importer plan"/>
             <Button fx:id="importPlanningRequestButton" text="Importer un programme"/>
-            <Button fx:id="exporterProgramme" text="Exporter le programme"/>
+            <Button fx:id="exportToPDFButton" text="Exporter le programme"/>
         </buttons>
     </ButtonBar>
     <padding>

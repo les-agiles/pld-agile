@@ -28,7 +28,7 @@ public class HeaderController implements Initializable {
     private Button importPlanningRequestButton;
 
     @FXML
-    private Button exporterProgramme;
+    private Button exportToPDFButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -36,7 +36,7 @@ public class HeaderController implements Initializable {
 
         importPlanningRequestButton.setOnAction(e -> readPlanningRequestXml());
         importPlanningRequestButton.setVisible(false);
-        exporterProgramme.setVisible(false);
+        exportToPDFButton.setVisible(false);
     }
 
     private void readMapXml() {
@@ -81,6 +81,6 @@ public class HeaderController implements Initializable {
     }
 
     public void setExportButtonVisible(boolean visible) {
-        exporterProgramme.setVisible(visible);
+        exportToPDFButton.setVisible(visible);
     }
 }

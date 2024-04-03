@@ -13,7 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +41,7 @@ public class MapController implements Initializable {
      * button to set the map's zoom.
      */
     @FXML
-    private Button buttonZoom;
+    private Button zoomButton;
 
     /**
      * the MapView containing the map
@@ -153,7 +152,7 @@ public class MapController implements Initializable {
         setControlsDisable(true);
 
         // wire the zoom button and connect the slider to the map's zoom
-        buttonZoom.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
+        zoomButton.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
         sliderZoom.valueProperty().bindBidirectional(mapView.zoomProperty());
 
         // watch the MapView's initialized property to finish initialization

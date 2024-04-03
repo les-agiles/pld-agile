@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PlanningRequestsController {
     private RightController parentController;
 
     @FXML
-    public CheckBox globalCheckBox;
+    private CheckBox globalCheckBox;
 
     @FXML
     private Accordion accordion;
@@ -44,11 +45,13 @@ public class PlanningRequestsController {
 
     private void handleGlobalCheckbox() {
         log.trace("Global Checkbox clicked");
+
         if (globalCheckBox.isSelected()) {
             checkBoxes.forEach(checkBox -> checkBox.setSelected(true));
         } else {
             checkBoxes.forEach(checkBox -> checkBox.setSelected(false));
         }
+
         updateSelectedDeliveryGuys();
     }
 
@@ -61,66 +64,75 @@ public class PlanningRequestsController {
 
         couriersMap = planningRequest.getCouriersMap(); // Assign the couriersMap
 
-        couriersMap.values()
-                .forEach(courier -> {
-                    CheckBox checkBox = new CheckBox();
-                    checkBox.setSelected(true);
-                    checkBox.setText("Livreur " + courier.getId());
-                    checkBox.setTextFill(courier.getColor());
+        couriersMap.values().forEach(this::setupCourierAccodion);
+    }
 
-                    checkBox.setOnAction(e -> {
-                        if (!checkBox.isSelected()) {
-                            globalCheckBox.setSelected(false);
-                        } else {
-                            boolean allSelected = true;
-                            for (CheckBox cb : checkBoxes) {
-                                if (!cb.isSelected()) {
-                                    allSelected = false;
-                                    break;
-                                }
-                            }
-                            if (allSelected) {
-                                globalCheckBox.setSelected(true);
-                            }
-                        }
-                        updateSelectedDeliveryGuys();
-                    });
+    private void setupCourierAccodion(DeliveryGuy courier){
+        CheckBox checkBox = getCheckBox(courier);
 
-                    TitledPane titledPane = new TitledPane();
-                    titledPane.setTextFill(courier.getColor());
-                    titledPane.setCollapsible(true);
+        TitledPane titledPane = new TitledPane();
+        titledPane.setTextFill(courier.getColor());
+        titledPane.setCollapsible(true);
 
-                    HBox titledPaneLayout = new HBox(143);
+        HBox titledPaneLayout = new HBox(143);
 
-                    titledPaneLayout.getChildren().add(checkBox);
-                    titledPane.setGraphic(titledPaneLayout);
+        titledPaneLayout.getChildren().add(checkBox);
+        titledPane.setGraphic(titledPaneLayout);
 
-                    // Create a VBox to hold the request information
-                    VBox requestInfoBox = new VBox();
-                    requestInfoBox.setSpacing(10);
+        // Create a VBox to hold the request information
+        VBox requestInfoBox = new VBox();
+        requestInfoBox.setSpacing(10);
 
-                    courier.getRoute().getRequests().values().forEach(request -> {
-                        HBox requestHBox = new HBox();
-                        requestHBox.setSpacing(30);
+        courier.getRoute().getRequests().values().forEach(request -> {
+            HBox requestHBox = new HBox();
+            requestHBox.setSpacing(30);
 
-                        Label coordinates = new Label("x : " + request.getDeliveryAddress().getLongitude() + " ; y : " + request.getDeliveryAddress().getLatitude());
-                        requestHBox.getChildren().add(coordinates);
+            Label coordinates = new Label("x : " + request.getDeliveryAddress().getLongitude() + " ; y : " + request.getDeliveryAddress().getLatitude());
+            requestHBox.getChildren().add(coordinates);
 
-                        requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
-                        requestInfoBox.getChildren().add(requestHBox);
+            requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
+            requestInfoBox.getChildren().add(requestHBox);
 
-                    });
+        });
 
-                    titledPane.setContent(requestInfoBox);
+        titledPane.setContent(requestInfoBox);
 
-                    accordion.getPanes().add(titledPane);
-                    checkBoxes.add(checkBox);
+        accordion.getPanes().add(titledPane);
+        checkBoxes.add(checkBox);
 
-                    MapController mapController = parentController.getParentController().getLeftController().getMapController();
-                    checkBox.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-                        mapController.setLabelsVisible(courier.getId(), new_val);
-                    });
-                });
+        MapController mapController = parentController.getParentController().getLeftController().getMapController();
+        checkBox.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean oldVal, Boolean newVal) -> mapController.setLabelsVisible(courier.getId(), newVal));
+    }
+
+    @NotNull
+    private CheckBox getCheckBox(DeliveryGuy courier) {
+        CheckBox checkBox = new CheckBox();
+        checkBox.setSelected(true);
+        checkBox.setText("Livreur " + courier.getId());
+        checkBox.setTextFill(courier.getColor());
+
+        checkBox.setOnAction(e -> {
+            if (!checkBox.isSelected()) {
+                globalCheckBox.setSelected(false);
+            } else {
+                boolean allSelected = true;
+
+                for (CheckBox cb : checkBoxes) {
+                    if (!cb.isSelected()) {
+                        allSelected = false;
+                        break;
+                    }
+                }
+
+                if (allSelected) {
+                    globalCheckBox.setSelected(true);
+                }
+            }
+
+            updateSelectedDeliveryGuys();
+        });
+
+        return checkBox;
     }
 
     private void displayRequestInformation(Request request) {
@@ -131,16 +143,20 @@ public class PlanningRequestsController {
         if (couriersMap == null) {
             return;
         }
+
         List<DeliveryGuy> selectedDeliveryGuys = new ArrayList<>();
+
         for (CheckBox checkBox : checkBoxes) {
             if (checkBox.isSelected()) {
                 String idString = checkBox.getText().replace("Livreur ", "");
                 DeliveryGuy deliveryGuy = couriersMap.get(idString);
+
                 if (deliveryGuy != null) {
                     selectedDeliveryGuys.add(deliveryGuy);
                 }
             }
         }
+
         parentController.getParentController().getLeftController().getMapController().displaySelectedDeliveryGuys(selectedDeliveryGuys);
     }
 
