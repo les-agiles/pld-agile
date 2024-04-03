@@ -1,6 +1,6 @@
 package fr.insa.geofast.models;
 
-import fr.insa.geofast.ColorPalette;
+import fr.insa.geofast.utils.ColorPalette;
 
 import lombok.Getter;
 
@@ -46,7 +46,7 @@ public class PlanningRequest {
         }
 
         // Setup routes
-        for(Request request : requests){
+        for (Request request : requests) {
             request.getCourier().getRoute().getRequests().put(request.getId(), request);
         }
     }

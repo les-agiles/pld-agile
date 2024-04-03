@@ -56,6 +56,9 @@ public class PlanningRequestsController {
         globalCheckBox.setDisable(false);
         globalCheckBox.setSelected(true);
 
+        // remove all the panes from the accordion except the first one containing the global checkbox
+        accordion.getPanes().remove(1, accordion.getPanes().size());
+
         couriersMap = planningRequest.getCouriersMap(); // Assign the couriersMap
 
         couriersMap.values()

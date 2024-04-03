@@ -28,9 +28,6 @@ public class HeaderController implements Initializable {
     private Button importerProgramme;
 
     @FXML
-    public Button sauvegarderProgramme;
-
-    @FXML
     public Button exporterProgramme;
 
     @Override
@@ -38,6 +35,8 @@ public class HeaderController implements Initializable {
         importerPlan.setOnAction(e -> readMapXml());
 
         importerProgramme.setOnAction(e -> readPlanningRequestXml());
+        importerProgramme.setVisible(false);
+        exporterProgramme.setVisible(false);
     }
 
     private void readMapXml() {
@@ -54,6 +53,7 @@ public class HeaderController implements Initializable {
             Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
             parentController.getMapController().displayMap(map);
             parentController.getMapController().setMap(map);
+            importerProgramme.setVisible(true);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }
@@ -76,6 +76,7 @@ public class HeaderController implements Initializable {
             parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
             parentController.getMapController().displayPlanningRequest(planningRequest);
             parentController.getMapController().setPlanningRequest(planningRequest);
+            exporterProgramme.setVisible(true);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }
