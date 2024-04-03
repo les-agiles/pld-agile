@@ -2,10 +2,8 @@ package fr.insa.geofast.models;
 
 import javafx.scene.paint.Color;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 public class DeliveryGuy {
     private final String id;
     private final Route route;
