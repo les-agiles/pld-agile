@@ -5,7 +5,6 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
 <Accordion fx:id="accordion" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="fr.insa.geofast.controller.PlanningRequestsController">
@@ -14,12 +13,9 @@
             <graphic>
                 <HBox alignment="CENTER_LEFT" spacing="170">
                     <CheckBox fx:id="globalCheckBox" text="Livreurs"/>
-                    <FontIcon iconLiteral="mdal-add_circle_outline"/>
                 </HBox>
             </graphic>
-            <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
-            </content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
         </TitledPane>
     </panes>
 </Accordion>

@@ -11,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -73,9 +72,7 @@ public class PlanningRequestsController {
 
                     HBox titledPaneLayout = new HBox(143);
 
-                    var outerIcon1 = new FontIcon("mdal-delete_outline");
-
-                    titledPaneLayout.getChildren().addAll(checkBox, outerIcon1);
+                    titledPaneLayout.getChildren().add(checkBox);
                     titledPane.setGraphic(titledPaneLayout);
 
                     // Create a VBox to hold the request information
