@@ -41,7 +41,7 @@ public class RightController implements Initializable {
         PlanningRequest planningRequest = mapController.getPlanningRequest();
 
         if (Objects.isNull(planningRequest)) {
-            parentController.displayNotification("Pas de planning request chargé");
+            parentController.displayNotification("Pas de programme de livraison chargé");
             return;
         }
 
