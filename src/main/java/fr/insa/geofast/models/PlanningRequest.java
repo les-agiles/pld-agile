@@ -1,5 +1,6 @@
 package fr.insa.geofast.models;
 
+import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.utils.ColorPalette;
 
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class PlanningRequest {
 
     private Warehouse warehouse;
 
-    public void setup(Map map) {
+    public void setup(Map map)  throws IHMException {
         warehouse = map.getWarehouse();
 
         // Create couriers
@@ -32,6 +33,12 @@ public class PlanningRequest {
         for (Request request : requests) {
             if (!couriersMap.containsKey(request.getCourierId())) {
                 couriersMap.put(request.getCourierId(), new DeliveryGuy(request.getCourierId(), warehouse, ColorPalette.getColor(couriersMap.size())));
+            }
+            // vérification que la requete fait bien partie des intersections du plan qui a été chargé au préalable
+            if(map.getIntersectionsMap().get(request.getDeliveryAddress().getId()) == null)
+            {
+                String msgErr = "la requete(id: "+request.getId()+") est associée à une intersection(id: "+request.getDeliveryAddress().getId()+") qui n'existe pas dans le plan chargé.";
+                throw new IHMException(msgErr);
             }
         }
 
