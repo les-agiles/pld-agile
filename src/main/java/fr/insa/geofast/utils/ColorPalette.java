@@ -1,4 +1,4 @@
-package fr.insa.geofast;
+package fr.insa.geofast.utils;
 
 import javafx.scene.paint.Color;
 
