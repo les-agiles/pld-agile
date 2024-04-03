@@ -11,7 +11,7 @@ import com.itextpdf.layout.element.ListItem;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
-import java.io.File;
+import java.util.Date;
 
 
 @Slf4j
@@ -23,15 +23,17 @@ public class PdfGenerator {
 
     public static void generatePdf() throws IOException {
         log.info("Generating PDF...");
+        String fileName = getNewFileName();
         try {
-            File file = new File("./hello-pdf.pdf");
-            file.getParentFile().mkdirs();
-
-            new PdfGenerator().manipulatePdf("./hello-pdf.pdf");
+            new PdfGenerator().manipulatePdf(fileName);
             log.info("PDF generation ended.");
         } catch (IOException | FileNotFoundException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private static String getNewFileName() {
+        return "planning-request-" + new Date().getTime() + ".pdf";
     }
 
     public void manipulatePdf(String dest) throws IOException, FileNotFoundException {
