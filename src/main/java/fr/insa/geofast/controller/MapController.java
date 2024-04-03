@@ -6,6 +6,7 @@ import com.graphhopper.util.shapes.GHPoint3D;
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapViewEvent;
 import fr.insa.geofast.models.Map;
+import fr.insa.geofast.GeofastApp;
 import fr.insa.geofast.models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,6 +38,8 @@ public class MapController implements Initializable {
     private final List<CoordinateLine> routeLines = new ArrayList<>();
     private final HashMap<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
     private final java.util.Map<DeliveryGuy, List<MapCircle>> deliveryGuyCircles = new java.util.HashMap<>();
+
+    private Marker warehouseMarker = null;
 
     /**
      * button to set the map's zoom.
@@ -87,6 +90,13 @@ public class MapController implements Initializable {
         if (!deliveryGuyCircles.isEmpty()) {
             displayPlanningRequest(getPlanningRequest());
         }
+
+        // affichage de la warehouse
+        Intersection warehousePosition = map.getWarehouse().getAddress();
+        warehouseMarker = new Marker(GeofastApp.class.getResource("warehouse.png"), -10, -10)
+                .setPosition(new Coordinate(warehousePosition.getLatitude(), warehousePosition.getLongitude()))
+                .setVisible(true);
+        mapView.addMarker(warehouseMarker);
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
