@@ -3,7 +3,6 @@ package fr.insa.geofast.controller;
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.models.Request;
-import fr.insa.geofast.utils.IconsHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
@@ -11,13 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.SVGPath;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,20 +81,6 @@ public class PlanningRequestsController {
 
                         Label coordinates = new Label("x : " + request.getDeliveryAddress().getLongitude() + " ; y : " + request.getDeliveryAddress().getLatitude());
                         requestHBox.getChildren().add(coordinates);
-
-                        var timeIcon = new SVGPath();
-
-                        timeIcon.setContent(IconsHelper.readIcon("clock-icon"));
-                        timeIcon.setFill(Paint.valueOf("#020817"));
-                        timeIcon.setStroke(Paint.valueOf("#020817"));
-
-                        Label deliveryTime = new Label(LocalTime.of(request.getDeliveryTime(), request.getDeliveryDuration() / 60).format(DateTimeFormatter.ofPattern("HH:mm")));
-
-                        var timeHBox = new HBox();
-                        timeHBox.setSpacing(5);
-
-                        timeHBox.getChildren().addAll(timeIcon, deliveryTime);
-                        requestHBox.getChildren().add(timeHBox);
 
                         requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
                         requestInfoBox.getChildren().add(requestHBox);
