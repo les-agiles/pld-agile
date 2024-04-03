@@ -13,8 +13,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermissions;
 
 import static com.graphhopper.json.Statement.Else;
 import static com.graphhopper.json.Statement.If;
@@ -45,8 +43,7 @@ public class GraphHopperSingleton {
     private Path createTempCacheDirectory() {
         Path tempCacheDirectory;
         try {
-            FileAttribute<?> attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-x---"));
-            tempCacheDirectory = Files.createTempDirectory("routing-graph", attrs);
+            tempCacheDirectory = Files.createTempDirectory("routing-graph");
             tempCacheDirectory.toFile().deleteOnExit();
             String[] cacheFiles = {"edgekv_keys", "edgekv_vals", "edges", "geometry", "location_index", "nodes", "nodes_ch_bike", "properties", "shortcuts_bike"};
 
