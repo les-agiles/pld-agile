@@ -28,7 +28,7 @@ public class HeaderController implements Initializable {
     private Button importerProgramme;
 
     @FXML
-    public Button exporterProgramme;
+    private Button exporterProgramme;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

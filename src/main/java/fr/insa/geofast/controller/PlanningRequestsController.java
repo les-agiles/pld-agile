@@ -26,7 +26,7 @@ public class PlanningRequestsController {
     public CheckBox globalCheckBox;
 
     @FXML
-    public Accordion accordion;
+    private Accordion accordion;
 
     private final List<CheckBox> checkBoxes = new ArrayList<>();
 
