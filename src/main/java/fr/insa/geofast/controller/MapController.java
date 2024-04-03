@@ -109,7 +109,7 @@ public class MapController implements Initializable {
     }
 
     public void displayComputedRoutes(PlanningRequest planningRequest){
-        routeLines.forEach(line -> line.setVisible(false));
+        routeLines.forEach(line -> mapView.removeCoordinateLine(line));
 
         routeLines.clear();
 
