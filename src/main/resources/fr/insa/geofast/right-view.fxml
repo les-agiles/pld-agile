@@ -11,7 +11,7 @@
     <children>
         <ButtonBar buttonMinWidth="10.0" maxWidth="9000000" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0" prefWidth="5000">
             <buttons>
-                <Button fx:id="calculerTournees" alignment="CENTER" contentDisplay="CENTER" depthTest="DISABLE" minWidth="0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="27.0" prefWidth="176.0" text="Calculer les tournées" textAlignment="CENTER" textFill="#020817" wrapText="true">
+                <Button fx:id="computeRoutes" alignment="CENTER" contentDisplay="CENTER" depthTest="DISABLE" minWidth="0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="27.0" prefWidth="176.0" text="Calculer les tournées" textAlignment="CENTER" textFill="#020817" wrapText="true">
                     <font>
                         <Font size="13.0" />
                     </font>

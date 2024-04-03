@@ -29,11 +29,11 @@ public class RightController implements Initializable {
     private RequestDetailsController requestDetailsController;
 
     @FXML
-    private Button calculerTournees;
+    private Button computeRoutes;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        calculerTournees.setOnAction(e -> onCalculerTourneePressed());
+        computeRoutes.setOnAction(e -> onCalculerTourneePressed());
     }
 
     private void onCalculerTourneePressed(){
