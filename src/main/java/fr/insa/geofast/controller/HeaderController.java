@@ -28,9 +28,6 @@ public class HeaderController implements Initializable {
     private Button importerProgramme;
 
     @FXML
-    public Button sauvegarderProgramme;
-
-    @FXML
     public Button exporterProgramme;
 
     @Override
