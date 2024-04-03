@@ -8,8 +8,9 @@ PLD-AGILE à l'INSA de Lyon.
 
 ### Interface Utilisateur (UI)
 
-- [JavaFX](https://openjfx.io/) – Bibliothèque Java pour créer des applications de bureau multiplateformes
-- [Scene Builder](https://gluonhq.com/products/scene-builder/) – Outil de conception d'interface graphique pour JavaFX
+- [JavaFX (DOC TECHNIQUE)](readme/JAVAFX.md) – Bibliothèque Java pour créer des applications de bureau multiplateformes
+- [AtlantaFX (DOC TECHNIQUE)](readme/ATLANTAFX.md) – "Collection de thèmes CSS modernes pour JavaFX avec des contrôles
+  supplémentaires
 
 ### Qualité du code
 
