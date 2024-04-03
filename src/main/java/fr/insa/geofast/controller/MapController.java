@@ -1,6 +1,5 @@
 package fr.insa.geofast.controller;
 
-import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.graphhopper.ResponsePath;
 import com.graphhopper.util.PointList;
 import com.graphhopper.util.shapes.GHPoint3D;
@@ -10,7 +9,6 @@ import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.PointLight;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
@@ -107,12 +105,12 @@ public class MapController implements Initializable {
         }
     }
 
-    public void displayComputedRoutes(PlanningRequest planningRequest){
+    public void displayComputedRoutes(PlanningRequest planningRequest) {
         routeLines.forEach(line -> mapView.removeCoordinateLine(line));
 
         routeLines.clear();
 
-        for(DeliveryGuy courrier : planningRequest.getCouriersMap().values()){
+        for (DeliveryGuy courrier : planningRequest.getCouriersMap().values()) {
             CoordinateLine line = getCoordinateLine(courrier);
             line.setVisible(true);
             line.setColor(courrier.getColor());
@@ -125,10 +123,10 @@ public class MapController implements Initializable {
     private static CoordinateLine getCoordinateLine(DeliveryGuy courrier) {
         List<Coordinate> coords = new ArrayList<>();
 
-        for(ResponsePath path : courrier.getRoute().getBestRoute()){
+        for (ResponsePath path : courrier.getRoute().getBestRoute()) {
             PointList points = path.getPoints();
 
-            for(int i = 0; i < points.size(); i++){
+            for (int i = 0; i < points.size(); i++) {
                 GHPoint3D point = points.get(i);
                 Coordinate coord = new Coordinate(point.getLat(), point.getLon());
                 coords.add(coord);
@@ -217,7 +215,7 @@ public class MapController implements Initializable {
 
     public void displaySelectedDeliveryGuys(List<DeliveryGuy> selectedDeliveryGuys) {
         deliveryGuyCircles.forEach((deliveryGuy, circles) -> {
-            if(selectedDeliveryGuys.contains(deliveryGuy)) {
+            if (selectedDeliveryGuys.contains(deliveryGuy)) {
                 circles.forEach(circle -> mapView.addMapCircle(circle));
             } else {
                 circles.forEach(circle -> mapView.removeMapCircle(circle));
