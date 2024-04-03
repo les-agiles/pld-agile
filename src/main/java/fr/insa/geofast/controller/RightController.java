@@ -31,13 +31,16 @@ public class RightController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        planningRequestsController.setParentController(this);
+
         computeRoutes.setOnAction(e -> onComputeRoutesPressed());
     }
 
-    private void onComputeRoutesPressed(){
-        PlanningRequest planningRequest = parentController.getLeftController().getMapController().getPlanningRequest();
+    private void onComputeRoutesPressed() {
+        MapController mapController = parentController.getLeftController().getMapController();
+        PlanningRequest planningRequest = mapController.getPlanningRequest();
 
-        if(Objects.isNull(planningRequest)){
+        if (Objects.isNull(planningRequest)) {
             parentController.displayNotification("Pas de planning request chargé");
             return;
         }
@@ -47,10 +50,12 @@ public class RightController implements Initializable {
                 deliveryGuy.getRoute().computeBestRequestsOrder();
                 deliveryGuy.getRoute().computeBestRoute();
             }
-        }catch (IHMException e){
+        } catch (IHMException e) {
             parentController.displayNotification(e.getMessage());
         }
 
+        // Le calcul a réussi
+        mapController.updateLabels(planningRequest);
         parentController.getLeftController().getMapController().displayComputedRoutes(planningRequest);
     }
 }
