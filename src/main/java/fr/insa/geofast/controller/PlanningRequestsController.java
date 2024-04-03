@@ -40,7 +40,6 @@ public class PlanningRequestsController {
 
         // Add event listener for globalCheckBox
         globalCheckBox.setOnAction(e -> handleGlobalCheckbox());
-
     }
 
     private void handleGlobalCheckbox() {
@@ -159,5 +158,4 @@ public class PlanningRequestsController {
 
         parentController.getParentController().getLeftController().getMapController().displaySelectedDeliveryGuys(selectedDeliveryGuys);
     }
-
 }
