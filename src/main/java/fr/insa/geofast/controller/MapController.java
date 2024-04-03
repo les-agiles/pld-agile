@@ -10,7 +10,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -31,7 +30,7 @@ public class MapController implements Initializable {
      */
     private static final int ZOOM_DEFAULT = 14;
 
-    private final List<MapCircle> intersectionCircles = new ArrayList<>();
+    private MapCircle warehouseCircle = null;
     private final List<MapCircle> planningRequestCircles = new ArrayList<>();
 
     /**
@@ -59,30 +58,26 @@ public class MapController implements Initializable {
     private Slider sliderZoom;
 
     @Getter
-    @Setter
     private Map map;
 
     @Getter
-    @Setter
     private PlanningRequest planningRequest;
 
     public void displayMap(Map map) {
-        intersectionCircles.clear();
-
-        for (Intersection intersection : map.getIntersections()) {
-            Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
-
-            MapCircle circle = new MapCircle(coordinate, 10);
-            circle.setColor(Color.GRAY);
-            circle.setVisible(true);
-
-            intersectionCircles.add(circle);
-            mapView.addMapCircle(circle);
+        if(!Objects.isNull(warehouseCircle)){
+            mapView.removeMapCircle(warehouseCircle);
         }
 
-        if (!planningRequestCircles.isEmpty()) {
-            displayPlanningRequest(getPlanningRequest());
-        }
+        this.map = map;
+
+        Intersection warehouse = map.getWarehouse().getAddress();
+        Coordinate coordinate = new Coordinate(warehouse.getLatitude(), warehouse.getLongitude());
+
+        warehouseCircle = new MapCircle(coordinate, 30);
+        warehouseCircle.setColor(Color.ORANGE);
+        warehouseCircle.setVisible(true);
+
+        mapView.addMapCircle(warehouseCircle);
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
@@ -99,6 +94,8 @@ public class MapController implements Initializable {
             planningRequestCircles.add(circle);
             mapView.addMapCircle(circle);
         }
+
+        this.planningRequest = planningRequest;
     }
 
     /**
