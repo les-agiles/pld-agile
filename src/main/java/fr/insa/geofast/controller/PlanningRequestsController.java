@@ -11,12 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -31,7 +31,8 @@ public class PlanningRequestsController {
     @FXML
     private Accordion accordion;
 
-    private final List<CheckBox> checkBoxes = new ArrayList<>();
+    @Getter
+    private final Map<DeliveryGuy, CheckBox> checkBoxes = new HashMap<>();
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -45,9 +46,9 @@ public class PlanningRequestsController {
         log.trace("Global Checkbox clicked");
 
         if (globalCheckBox.isSelected()) {
-            checkBoxes.forEach(checkBox -> checkBox.setSelected(true));
+            checkBoxes.values().forEach(checkBox -> checkBox.setSelected(true));
         } else {
-            checkBoxes.forEach(checkBox -> checkBox.setSelected(false));
+            checkBoxes.values().forEach(checkBox -> checkBox.setSelected(false));
         }
 
     }
@@ -95,7 +96,7 @@ public class PlanningRequestsController {
         titledPane.setContent(requestInfoBox);
 
         accordion.getPanes().add(titledPane);
-        checkBoxes.add(checkBox);
+        checkBoxes.put(courier, checkBox);
 
         final MapController mapController = parentController.getParentController().getLeftController().getMapController();
 
@@ -119,7 +120,7 @@ public class PlanningRequestsController {
             } else {
                 boolean allSelected = true;
 
-                for (CheckBox cb : checkBoxes) {
+                for (CheckBox cb : checkBoxes.values()) {
                     if (!cb.isSelected()) {
                         allSelected = false;
                         break;

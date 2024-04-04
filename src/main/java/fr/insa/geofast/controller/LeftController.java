@@ -22,5 +22,6 @@ public final class LeftController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         headerController.setParentController(this);
+        mapController.setParentController(this);
     }
 }
