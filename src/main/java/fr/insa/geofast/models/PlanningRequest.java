@@ -37,7 +37,7 @@ public class PlanningRequest {
             // vérification que la requete fait bien partie des intersections du plan qui a été chargé au préalable
             if(map.getIntersectionsMap().get(request.getDeliveryAddressId()) == null)
             {
-                String msgErr = "la requete(id: "+request.getId()+") est associée à une intersection(id: "+request.getDeliveryAddress().getId()+") qui n'existe pas dans le plan chargé.";
+                String msgErr = "la requete (id livreur : "+request.getCourierId()+") est associée à une intersection (id: "+request.getDeliveryAddressId()+") qui n'existe pas dans le plan chargé.";
                 throw new IHMException(msgErr);
             }
         }

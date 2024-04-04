@@ -51,6 +51,9 @@ public class HeaderController implements Initializable {
         }
 
         try {
+            parentController.getMapController().reset();
+            parentController.getParentController().getRightController().reset();
+
             Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
             parentController.getMapController().displayMap(map);
             importPlanningRequestButton.setVisible(true);
@@ -75,6 +78,9 @@ public class HeaderController implements Initializable {
         Map map = parentController.getMapController().getMap();
 
         try {
+            parentController.getMapController().resetMapPlanningRequest();
+            parentController.getParentController().getRightController().reset();
+
             PlanningRequest planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
             parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
 
