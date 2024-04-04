@@ -33,9 +33,9 @@ public class MapController implements Initializable {
     private static final int ZOOM_DEFAULT = 14;
 
     private Marker warehouseMarker = null;
-    private final List<CoordinateLine> routeLines = new ArrayList<>();
+    private final java.util.Map<String, CoordinateLine> routeLines = new HashMap<>();
     private final java.util.Map<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
-    private final java.util.Map<DeliveryGuy, List<MapCircle>> deliveryGuyCircles = new java.util.HashMap<>();
+    private final java.util.Map<String, List<MapCircle>> deliveryGuyCircles = new HashMap<>();
 
     /**
      * button to set the map's zoom.
@@ -90,24 +90,26 @@ public class MapController implements Initializable {
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
         deliveryGuyCircles.clear();
+        for (DeliveryGuy deliveryGuy : planningRequest.getCouriersMap().values()) {
+            List<MapCircle> circles = new ArrayList<>();
+            for (Request request : deliveryGuy.getRoute().getRequests().values()) {
+                Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
 
-        for (Request request : planningRequest.getRequests()) {
-            Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
+                MapCircle circle = new MapCircle(coordinate, 10);
+                circle.setColor(deliveryGuy.getColor());
+                circle.setVisible(true);
 
-            MapCircle circle = new MapCircle(coordinate, 10);
-            DeliveryGuy deliveryGuy = request.getCourier();
-            circle.setColor(deliveryGuy.getColor());
-            circle.setVisible(true);
-
-            deliveryGuyCircles.computeIfAbsent(deliveryGuy, k -> new ArrayList<>()).add(circle);
-            mapView.addMapCircle(circle);
+                circles.add(circle);
+                mapView.addMapCircle(circle);
+            }
+            deliveryGuyCircles.put(deliveryGuy.getId(), circles);
         }
 
         this.planningRequest = planningRequest;
     }
 
     public void displayComputedRoutes(PlanningRequest planningRequest) {
-        routeLines.forEach(line -> mapView.removeCoordinateLine(line));
+        routeLines.values().forEach(line -> mapView.removeCoordinateLine(line));
 
         routeLines.clear();
 
@@ -116,7 +118,7 @@ public class MapController implements Initializable {
             line.setVisible(true);
             line.setColor(courrier.getColor());
             mapView.addCoordinateLine(line);
-            routeLines.add(line);
+            routeLines.put(courrier.getId(), line);
         }
     }
 
@@ -214,16 +216,6 @@ public class MapController implements Initializable {
         setControlsDisable(false);
     }
 
-    public void displaySelectedDeliveryGuys(List<DeliveryGuy> selectedDeliveryGuys) {
-        deliveryGuyCircles.forEach((deliveryGuy, circles) -> {
-            if (selectedDeliveryGuys.contains(deliveryGuy)) {
-                circles.forEach(circle -> mapView.addMapCircle(circle));
-            } else {
-                circles.forEach(circle -> mapView.removeMapCircle(circle));
-            }
-        });
-    }
-
     public void setLabelsVisible(String deliveryGuyId, Boolean isVisible) {
         // Si l'ordre des livraison n'a pas encore été calculé, on ne fait rien car on a pas encore de labels à afficher
         if (!planningRequestLabels.containsKey(deliveryGuyId))
@@ -232,6 +224,26 @@ public class MapController implements Initializable {
         for (MapLabel label : planningRequestLabels.get(deliveryGuyId)) {
             label.setVisible(isVisible);
         }
+    }
+
+    public void setDeliveryPointsVisible(String deliveryGuyId, Boolean isVisible) {
+        if (!deliveryGuyCircles.containsKey(deliveryGuyId)) {
+            return;
+        }
+
+        if (Boolean.TRUE.equals(isVisible)) {
+            deliveryGuyCircles.get(deliveryGuyId).forEach(mapView::addMapCircle);
+        } else {
+            deliveryGuyCircles.get(deliveryGuyId).forEach(mapView::removeMapCircle);
+        }
+    }
+
+    public void setRouteVisible(String id, Boolean isVisible) {
+        if (!routeLines.containsKey(id)) {
+            return;
+        }
+
+        routeLines.get(id).setVisible(isVisible);
     }
 
     public void updateLabels(PlanningRequest planningRequest) {
