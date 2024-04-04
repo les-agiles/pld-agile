@@ -5,8 +5,8 @@ import com.graphhopper.util.PointList;
 import com.graphhopper.util.shapes.GHPoint3D;
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapViewEvent;
-import fr.insa.geofast.models.Map;
 import fr.insa.geofast.GeofastApp;
+import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -68,7 +68,7 @@ public class MapController implements Initializable {
     private PlanningRequest planningRequest;
 
     public void displayMap(Map map) {
-        if(!Objects.isNull(warehouseMarker)){
+        if (!Objects.isNull(warehouseMarker)) {
             mapView.removeMarker(warehouseMarker);
         }
 
@@ -245,7 +245,7 @@ public class MapController implements Initializable {
 
                 Coordinate position = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
 
-                MapLabel label = new MapLabel(String.valueOf(i)).setPosition(position).setVisible(true);
+                MapLabel label = new MapLabel(String.valueOf(i + 1)).setPosition(position).setVisible(true);
                 labels.add(label);
                 mapView.addLabel(label);
             }
