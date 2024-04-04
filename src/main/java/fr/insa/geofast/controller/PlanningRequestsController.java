@@ -57,15 +57,14 @@ public class PlanningRequestsController {
         globalCheckBox.setDisable(false);
         globalCheckBox.setSelected(true);
 
-        // remove all the panes from the accordion except the first one containing the global checkbox
-        accordion.getPanes().remove(1, accordion.getPanes().size());
+        resetAccordionPanes();
 
         Map<String, DeliveryGuy> couriersMap = planningRequest.getCouriersMap(); // Assign the couriersMap
 
-        couriersMap.values().forEach(this::setupCourierAccodion);
+        couriersMap.values().forEach(this::setupCourierAccordion);
     }
 
-    private void setupCourierAccodion(DeliveryGuy courier) {
+    private void setupCourierAccordion(DeliveryGuy courier) {
         CheckBox checkBox = getCheckBox(courier);
 
         TitledPane titledPane = new TitledPane();
@@ -138,5 +137,16 @@ public class PlanningRequestsController {
 
     private void displayRequestInformation(Request request) {
         parentController.getRequestDetailsController().updateRequestDetails(request);
+    }
+
+    private void resetAccordionPanes() {
+        // remove all the panes from the accordion except the first one containing the global checkbox
+        accordion.getPanes().remove(1, accordion.getPanes().size());
+    }
+
+    public void reset() {
+        globalCheckBox.setDisable(true);
+        checkBoxes.clear();
+        resetAccordionPanes();
     }
 }

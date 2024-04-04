@@ -114,9 +114,7 @@ public class MapController implements Initializable {
     }
 
     public void displayComputedRoutes(PlanningRequest planningRequest) {
-        routeLines.values().forEach(line -> mapView.removeCoordinateLine(line));
-        routeLines.clear();
-
+        clearRouteLines();
         java.util.Map<DeliveryGuy, CheckBox> checkBoxes = parentController.getParentController().getRightController().getPlanningRequestsController().getCheckBoxes();
 
         for (DeliveryGuy courrier : planningRequest.getCouriersMap().values()) {
@@ -275,5 +273,30 @@ public class MapController implements Initializable {
 
             planningRequestLabels.put(deliveryGuy.getId(), labels);
         }
+    }
+
+    private void clearRouteLines() {
+        routeLines.values().forEach(line -> mapView.removeCoordinateLine(line));
+        routeLines.clear();
+    }
+
+    public void resetMapPlanningRequest() {
+        if(!Objects.isNull(planningRequest)) {
+            planningRequest.getCouriersMap().values().forEach(deliveryGuy -> {
+                setDeliveryPointsVisible(deliveryGuy.getId(), false);
+                setLabelsVisible(deliveryGuy.getId(), false);
+            });
+            planningRequest = null;
+
+            clearRouteLines();
+
+            deliveryGuyCircles.clear();
+            planningRequestLabels.clear();
+        }
+    }
+
+    public void reset() {
+        resetMapPlanningRequest();
+        warehouseMarker = null;
     }
 }

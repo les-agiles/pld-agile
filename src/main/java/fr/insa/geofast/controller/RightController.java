@@ -57,7 +57,12 @@ public class RightController implements Initializable {
 
         // Le calcul a réussi
         mapController.updateLabels(planningRequest);
-        parentController.getLeftController().getMapController().displayComputedRoutes(planningRequest);
+        mapController.displayComputedRoutes(planningRequest);
         parentController.getLeftController().getHeaderController().setExportButtonVisible(true);
+    }
+
+    public void reset() {
+        planningRequestsController.reset();
+        requestDetailsController.reset();
     }
 }
