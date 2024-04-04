@@ -38,7 +38,7 @@ public class RequestDetailsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        details.setVisible(false);
+        reset();
     }
 
     public void updateRequestDetails(Request request){
@@ -66,5 +66,9 @@ public class RequestDetailsController implements Initializable {
         } else {
             rowArrivalDate.setVisible(false);
         }
+    }
+
+    public void reset() {
+        details.setVisible(false);
     }
 }
