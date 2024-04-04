@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="details" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RequestDetailsController">
+<VBox fx:id="details" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RequestDetailsController">
     <children>
         <HBox prefHeight="0.0" prefWidth="0.0">
             <children>
@@ -30,22 +32,13 @@
         </HBox>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
             <children>
-            <Label text="Horaire">
+            <Label fx:id="timeLabel" text="Horaire">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="deliveryRange" text="XX-XX" />
-            </children>
-        </HBox>
-        <HBox fx:id="rowArrivalDate" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-            <children>
-            <Label text="Heure de passage">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="deliveryTime" text="XX:XX" />
+            <Label fx:id="timeValue" text="XX-XX" />
+
             </children>
         </HBox>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
@@ -58,14 +51,16 @@
             <Label fx:id="deliveryGuy" text="Livreur X" />
             </children>
         </HBox>
-        <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+        <HBox spacing="20.0" HBox.hgrow="ALWAYS">
             <children>
             <Label text="Rues de l'intersection">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-                <VBox fx:id="streets" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS" />
+                <ScrollPane prefHeight="200.0" HBox.hgrow="ALWAYS">
+                    <VBox fx:id="streets" spacing="10.0" HBox.hgrow="ALWAYS" />
+                </ScrollPane>
             </children>
         </HBox>
     </children>

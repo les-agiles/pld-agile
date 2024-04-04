@@ -4,12 +4,16 @@ import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.models.Request;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,7 +88,11 @@ public class PlanningRequestsController {
                         Label coordinates = new Label("x : " + request.getDeliveryAddress().getLongitude() + " ; y : " + request.getDeliveryAddress().getLatitude());
                         requestHBox.getChildren().add(coordinates);
 
-                        requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
+                        requestHBox.setOnMouseClicked(event -> {
+                            resetBackground();
+                            ((HBox) event.getSource()).setBackground(new Background(new BackgroundFill(Color.web("#E7D4FF"), null,null)));
+                            displayRequestInformation(request);
+                        });
                         requestInfoBox.getChildren().add(requestHBox);
 
                     });
@@ -94,6 +102,18 @@ public class PlanningRequestsController {
                     accordion.getPanes().add(titledPane);
                     checkBoxes.add(checkBox);
                 });
+    }
+
+    private void resetBackground(){
+        for (TitledPane titledPane : this.accordion.getPanes())
+        {
+            if(titledPane.getContent() instanceof VBox vbox){
+                for(Node node : vbox.getChildren())
+                {
+                    ((HBox)node).setBackground(new Background(new BackgroundFill(Color.WHITE, null,null)));
+                }
+            }
+        }
     }
 
     private void displayRequestInformation(Request request) {
