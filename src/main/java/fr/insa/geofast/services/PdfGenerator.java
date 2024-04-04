@@ -64,14 +64,9 @@ public class PdfGenerator {
         PageSize pageSize = new PageSize(PageSize.A4);
         document.setTopMargin(50);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new TextFooterEventHandler(document));
+        pdf.addEventHandler(PdfDocumentEvent.INSERT_PAGE, new BackgroundEventHandler(document, pageSize));
 
-        // Background image
-        try {
-            PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
-            canvas.addImageFittedIntoRectangle(ImageDataFactory.create(BACKGROUND), pageSize, false);
-        } catch (MalformedURLException e) {
-            log.error(e.getMessage());
-        }
+        pdf.addNewPage();
 
         Paragraph title = new Paragraph("Programme de livraison")
                 .setFontColor(new DeviceRgb(0,0,0))
@@ -93,7 +88,6 @@ public class PdfGenerator {
 
     private void addDeliveryGuyProgram(Document document, PageSize pageSize, int index)
     {
-
         float[] columnsWidth = {150f, pageSize.getWidth() - 150f};
 
         Table deliveryGuyHeader = new Table(columnsWidth);
@@ -168,6 +162,26 @@ public class PdfGenerator {
         document.add(route);
     }
 
+    private static class BackgroundEventHandler implements IEventHandler {
+
+        protected Document doc;
+        protected PageSize pageSize;
+
+        public BackgroundEventHandler(Document doc, PageSize pageSize) {
+            this.doc = doc;
+            this.pageSize = pageSize;
+        }
+
+        @Override
+        public void handleEvent(Event event) {
+            try {
+                PdfCanvas canvas = new PdfCanvas(doc.getPdfDocument().getLastPage());
+                canvas.addImageFittedIntoRectangle(ImageDataFactory.create(BACKGROUND), pageSize, false);
+            } catch (MalformedURLException e) {
+                log.error(e.getMessage());
+            }
+        }
+    }
 
     private static class TextFooterEventHandler implements IEventHandler {
         protected Document doc;
