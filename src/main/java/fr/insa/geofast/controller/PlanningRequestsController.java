@@ -84,7 +84,7 @@ public class PlanningRequestsController {
             HBox requestHBox = new HBox();
             requestHBox.setSpacing(30);
 
-            Label coordinates = new Label("x : " + request.getDeliveryAddress().getLongitude() + " ; y : " + request.getDeliveryAddress().getLatitude());
+            Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
             requestHBox.getChildren().add(coordinates);
 
             requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
