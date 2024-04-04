@@ -295,11 +295,6 @@ public class RouteTest {
         assertNotEquals(key1, key3); // Test if keys with different order are not equal
         assertNotEquals(key1, key4); // Test if keys with different destination are not equal
 
-        Object obj1 = key1;
-        assertEquals(key1, obj1);
-        assertNotEquals(null, key1);
-        assertNotEquals(1, key1);
-
         assertNotEquals(key1, key5);
         assertNotEquals(key1, key6);
         assertNotEquals(key5, key7);

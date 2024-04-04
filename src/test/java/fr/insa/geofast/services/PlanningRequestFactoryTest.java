@@ -50,8 +50,25 @@ public class PlanningRequestFactoryTest {
     }
 
     @Test
-    void buildMap_ShouldThrowIHMException() {
-        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/unit-tests-map3.xml"));
-        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/not-exist.xml"));
+    void buildPlanningRequest_ShouldThrowIHMExceptionBecauseMapIsNull(){
+        assertThrows(IHMException.class, () -> PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request1.xml", null));
+    }
+
+    @Test
+    void buildPlanningRequest_ShouldThrowIHMExceptionBecauseParsingError(){
+        Map map = null;
+
+        try {
+            map = MapFactory.buildMap(mapAbsolutePath + "/unit-tests-map1.xml");
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+
+        Map finalMap = map;
+        IHMException ex =  assertThrows(IHMException.class, () -> PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request3.xml", finalMap));
+        assertEquals("Erreur lors de la lecture du fichier XML", ex.getMessage());
+
+        ex = assertThrows(IHMException.class, () -> PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/not-exist.xml", finalMap));
+        assertEquals("Fichier introuvable", ex.getMessage());
     }
 }
