@@ -32,7 +32,6 @@ public class PlanningRequestsController {
     private Accordion accordion;
 
     private final List<CheckBox> checkBoxes = new ArrayList<>();
-    private Map<String, DeliveryGuy> couriersMap;
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -51,7 +50,6 @@ public class PlanningRequestsController {
             checkBoxes.forEach(checkBox -> checkBox.setSelected(false));
         }
 
-        updateSelectedDeliveryGuys();
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
@@ -61,12 +59,12 @@ public class PlanningRequestsController {
         // remove all the panes from the accordion except the first one containing the global checkbox
         accordion.getPanes().remove(1, accordion.getPanes().size());
 
-        couriersMap = planningRequest.getCouriersMap(); // Assign the couriersMap
+        Map<String, DeliveryGuy> couriersMap = planningRequest.getCouriersMap(); // Assign the couriersMap
 
         couriersMap.values().forEach(this::setupCourierAccodion);
     }
 
-    private void setupCourierAccodion(DeliveryGuy courier){
+    private void setupCourierAccodion(DeliveryGuy courier) {
         CheckBox checkBox = getCheckBox(courier);
 
         TitledPane titledPane = new TitledPane();
@@ -99,8 +97,13 @@ public class PlanningRequestsController {
         accordion.getPanes().add(titledPane);
         checkBoxes.add(checkBox);
 
-        MapController mapController = parentController.getParentController().getLeftController().getMapController();
-        checkBox.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean oldVal, Boolean newVal) -> mapController.setLabelsVisible(courier.getId(), newVal));
+        final MapController mapController = parentController.getParentController().getLeftController().getMapController();
+
+        checkBox.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean oldVal, Boolean newVal) -> {
+            mapController.setLabelsVisible(courier.getId(), newVal);
+            mapController.setDeliveryPointsVisible(courier.getId(), newVal);
+            mapController.setRouteVisible(courier.getId(), newVal);
+        });
     }
 
     @NotNull
@@ -127,8 +130,6 @@ public class PlanningRequestsController {
                     globalCheckBox.setSelected(true);
                 }
             }
-
-            updateSelectedDeliveryGuys();
         });
 
         return checkBox;
@@ -136,26 +137,5 @@ public class PlanningRequestsController {
 
     private void displayRequestInformation(Request request) {
         parentController.getRequestDetailsController().updateRequestDetails(request);
-    }
-
-    private void updateSelectedDeliveryGuys() {
-        if (couriersMap == null) {
-            return;
-        }
-
-        List<DeliveryGuy> selectedDeliveryGuys = new ArrayList<>();
-
-        for (CheckBox checkBox : checkBoxes) {
-            if (checkBox.isSelected()) {
-                String idString = checkBox.getText().replace("Livreur ", "");
-                DeliveryGuy deliveryGuy = couriersMap.get(idString);
-
-                if (deliveryGuy != null) {
-                    selectedDeliveryGuys.add(deliveryGuy);
-                }
-            }
-        }
-
-        parentController.getParentController().getLeftController().getMapController().displaySelectedDeliveryGuys(selectedDeliveryGuys);
     }
 }
