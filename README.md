@@ -8,24 +8,29 @@ PLD-AGILE à l'INSA de Lyon.
 
 ### Interface Utilisateur (UI)
 
-- [JavaFX](https://openjfx.io/) – Bibliothèque Java pour créer des applications de bureau multiplateformes
-- [Scene Builder](https://gluonhq.com/products/scene-builder/) – Outil de conception d'interface graphique pour JavaFX
+- [JavaFX (DOC TECHNIQUE)](readme/JAVAFX.md) – Bibliothèque Java pour créer des applications de bureau multiplateformes
+- [AtlantaFX (DOC TECHNIQUE)](readme/ATLANTAFX.md) – "Collection de thèmes CSS modernes pour JavaFX avec des contrôles
+  supplémentaires
 
 ### Qualité du code
 
-- [Sonarqube](https://www.sonarsource.com/products/sonarqube/) – Outil d'inspection continue de la qualité du code
-- [Jacoco](https://www.eclemma.org/jacoco/) – Bibliothèque de couverture de code Java
-- [JUnit 5](https://junit.org/junit5/) – Framework de test unitaire pour Java
+- [Sonarqube (DOC TECHNIQUE)](readme/SONARQUBE.md) – Outil d'inspection continue de la qualité du code
+- [Jacoco (DOC TECHNIQUE)](readme/JACOCO.md) – Bibliothèque de couverture de code Java
+- [JUnit 5 (DOC TECHNIQUE)](readme/JUNIT5.md) – Framework de test unitaire pour Java
 
 ### Parsing XML
 
-- [JAXB](https://docs.oracle.com/javase/tutorial/jaxb/intro/index.html) – Architecture Java pour la liaison XML
+- [JAXB (DOC TECHNIQUE)](readme/JAXB.md) – Architecture Java pour la liaison XML
+
+### Calcul de l'itinéraire
+
+- [GraphHopper (DOC TECHNIQUE)](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
 
 ### Divers
 
-- [Github Actions](https://github.com/les-agiles/pld-agile/actions) – Pipeline d'intégration continue (tests,
+- [Github Actions (DOC TECHNIQUE)](readme/GITHUBACTIONS.md) – Pipeline d'intégration continue (tests,
   construction, qualité du code)
-- [Maven](https://maven.apache.org/) – Gestionnaire de projet et de dépendances
+- [Maven (DOC TECHNIQUE)](readme/MAVEN.md) – Gestionnaire de projet et de dépendances
 
 ## Équipe
 
