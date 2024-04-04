@@ -1,5 +1,6 @@
 package fr.insa.geofast.controller;
 
+import atlantafx.base.theme.Styles;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
@@ -53,9 +54,12 @@ public class HeaderController implements Initializable {
             Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
             parentController.getMapController().displayMap(map);
             importPlanningRequestButton.setVisible(true);
+
+            parentController.getParentController().displayNotification("Plan importé avec succès", Styles.SUCCESS);
         } catch (IHMException e) {
-            parentController.getParentController().displayNotification(e.getMessage());
+            parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
         }
+
     }
 
     private void readPlanningRequestXml() {
@@ -75,8 +79,10 @@ public class HeaderController implements Initializable {
             parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
 
             parentController.getMapController().displayPlanningRequest(planningRequest);
+            
+            parentController.getParentController().displayNotification("Programme importé avec succès", Styles.SUCCESS);
         } catch (IHMException e) {
-            parentController.getParentController().displayNotification(e.getMessage());
+            parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
         }
     }
 
