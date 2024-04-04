@@ -1,14 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.insa.geofast.controller.RequestDetailsController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox fx:id="details" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RequestDetailsController">
+    <children>
+        <HBox prefHeight="0.0" prefWidth="0.0">
+            <children>
+            <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" text="Détail d'un point de livraison" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            </children>
+        </HBox>
+        <HBox maxHeight="1.7976931348623157E308" prefHeight="35.0" prefWidth="600.0" spacing="5.0">
+            <children>
+            <Label text="Coordonnées">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label text="lat. : " />
+            <Label fx:id="latValue" text="0" />
+            <Label text="lon. : " HBox.hgrow="ALWAYS" />
+            <Label fx:id="lonValue" maxHeight="-Infinity" text="0" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+            <Label text="Horaire">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="deliveryRange" text="XX-XX" />
+            </children>
+        </HBox>
+        <HBox fx:id="rowArrivalDate" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+            <Label text="Heure de passage">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="deliveryTime" text="XX:XX" />
+            </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+            <Label text="Livreur">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="deliveryGuy" text="Livreur X" />
+            </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+            <Label text="Rues de l'intersection">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+                <VBox fx:id="streets" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </children>
+</VBox>
