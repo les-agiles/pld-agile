@@ -26,7 +26,7 @@
             <padding>
                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
             </padding>
-            <Button fx:id="buttonZoom" text="Zoom 14"/>
+            <Button fx:id="zoomButton" text="Zoom 14"/>
             <Slider fx:id="sliderZoom" blockIncrement="1.0" majorTickUnit="7.0" max="28.0" minorTickCount="6"
                     showTickLabels="true" showTickMarks="true" snapToTicks="true" value="14.0" HBox.hgrow="ALWAYS"/>
         </HBox>

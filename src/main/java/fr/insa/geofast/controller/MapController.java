@@ -13,9 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,18 +32,16 @@ public class MapController implements Initializable {
      */
     private static final int ZOOM_DEFAULT = 14;
 
-    private final List<MapCircle> intersectionCircles = new ArrayList<>();
-    private final List<CoordinateLine> routeLines = new ArrayList<>();
-    private final HashMap<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
-    private final java.util.Map<DeliveryGuy, List<MapCircle>> deliveryGuyCircles = new java.util.HashMap<>();
-
     private Marker warehouseMarker = null;
+    private final List<CoordinateLine> routeLines = new ArrayList<>();
+    private final java.util.Map<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
+    private final java.util.Map<DeliveryGuy, List<MapCircle>> deliveryGuyCircles = new java.util.HashMap<>();
 
     /**
      * button to set the map's zoom.
      */
     @FXML
-    private Button buttonZoom;
+    private Button zoomButton;
 
     /**
      * the MapView containing the map
@@ -66,37 +62,30 @@ public class MapController implements Initializable {
     private Slider sliderZoom;
 
     @Getter
-    @Setter
     private Map map;
 
     @Getter
-    @Setter
     private PlanningRequest planningRequest;
 
     public void displayMap(Map map) {
-        intersectionCircles.clear();
-
-        for (Intersection intersection : map.getIntersections()) {
-            Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
-
-            MapCircle circle = new MapCircle(coordinate, 10);
-            circle.setColor(Color.GRAY);
-            circle.setVisible(true);
-
-            intersectionCircles.add(circle);
-            mapView.addMapCircle(circle);
+        if(!Objects.isNull(warehouseMarker)){
+            mapView.removeMarker(warehouseMarker);
         }
+
+        this.map = map;
+
+        Intersection warehouse = map.getWarehouse().getAddress();
+        Coordinate coordinate = new Coordinate(warehouse.getLatitude(), warehouse.getLongitude());
+
+        // Affichage de la warehouse
+        warehouseMarker = new Marker(Objects.requireNonNull(GeofastApp.class.getResource("warehouse.png")), -10, -10)
+                .setPosition(coordinate)
+                .setVisible(true);
+        mapView.addMarker(warehouseMarker);
 
         if (!deliveryGuyCircles.isEmpty()) {
             displayPlanningRequest(getPlanningRequest());
         }
-
-        // affichage de la warehouse
-        Intersection warehousePosition = map.getWarehouse().getAddress();
-        warehouseMarker = new Marker(GeofastApp.class.getResource("warehouse.png"), -10, -10)
-                .setPosition(new Coordinate(warehousePosition.getLatitude(), warehousePosition.getLongitude()))
-                .setVisible(true);
-        mapView.addMarker(warehouseMarker);
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
@@ -113,6 +102,8 @@ public class MapController implements Initializable {
             deliveryGuyCircles.computeIfAbsent(deliveryGuy, k -> new ArrayList<>()).add(circle);
             mapView.addMapCircle(circle);
         }
+
+        this.planningRequest = planningRequest;
     }
 
     public void displayComputedRoutes(PlanningRequest planningRequest) {
@@ -161,7 +152,7 @@ public class MapController implements Initializable {
         setControlsDisable(true);
 
         // wire the zoom button and connect the slider to the map's zoom
-        buttonZoom.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
+        zoomButton.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
         sliderZoom.valueProperty().bindBidirectional(mapView.zoomProperty());
 
         // watch the MapView's initialized property to finish initialization

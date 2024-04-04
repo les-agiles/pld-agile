@@ -26,14 +26,14 @@ public class GeofastController extends StackPane implements Initializable {
     private RightController rightController;
 
     @FXML
-    public StackPane stackPane;
+    private StackPane stackPane;
 
     private Notification errorNotification;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initNotification();
-        rightController.setParentController(this);
+
         leftController.setParentController(this);
         rightController.setParentController(this);
     }

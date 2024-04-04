@@ -22,21 +22,21 @@ public class HeaderController implements Initializable {
     private LeftController parentController;
 
     @FXML
-    private Button importerPlan;
+    private Button importMapButton;
 
     @FXML
-    private Button importerProgramme;
+    private Button importPlanningRequestButton;
 
     @FXML
-    public Button exporterProgramme;
+    private Button exportToPDFButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        importerPlan.setOnAction(e -> readMapXml());
+        importMapButton.setOnAction(e -> readMapXml());
 
-        importerProgramme.setOnAction(e -> readPlanningRequestXml());
-        importerProgramme.setVisible(false);
-        exporterProgramme.setVisible(false);
+        importPlanningRequestButton.setOnAction(e -> readPlanningRequestXml());
+        importPlanningRequestButton.setVisible(false);
+        exportToPDFButton.setVisible(false);
     }
 
     private void readMapXml() {
@@ -52,8 +52,7 @@ public class HeaderController implements Initializable {
         try {
             Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
             parentController.getMapController().displayMap(map);
-            parentController.getMapController().setMap(map);
-            importerProgramme.setVisible(true);
+            importPlanningRequestButton.setVisible(true);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }
@@ -74,14 +73,14 @@ public class HeaderController implements Initializable {
         try {
             PlanningRequest planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
             parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
+
             parentController.getMapController().displayPlanningRequest(planningRequest);
-            parentController.getMapController().setPlanningRequest(planningRequest);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage());
         }
     }
 
     public void setExportButtonVisible(boolean visible) {
-        exporterProgramme.setVisible(visible);
+        exportToPDFButton.setVisible(visible);
     }
 }

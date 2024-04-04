@@ -27,13 +27,13 @@ public class RightController implements Initializable {
     private RequestDetailsController requestDetailsController;
 
     @FXML
-    private Button computeRoutes;
+    private Button computeRoutesButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         planningRequestsController.setParentController(this);
 
-        computeRoutes.setOnAction(e -> onComputeRoutesPressed());
+        computeRoutesButton.setOnAction(e -> onComputeRoutesPressed());
     }
 
     private void onComputeRoutesPressed() {

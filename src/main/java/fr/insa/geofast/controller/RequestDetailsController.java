@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RequestDetailsController implements Initializable {
-
     @FXML
     private Label latValue;
 
@@ -55,20 +54,16 @@ public class RequestDetailsController implements Initializable {
 
         this.streets.getChildren().clear();
 
-        for (Segment segment : request.getDeliveryAddress().getSegments())
-        {
+        for (Segment segment : request.getDeliveryAddress().getSegments()) {
             Label street = new Label();
             street.setText(segment.getName());
             this.streets.getChildren().add(street);
         }
 
-        if (request.getArrivalDate() !=  0)
-        {
+        if (request.getArrivalDate() !=  0) {
             rowArrivalDate.setVisible(true);
             this.deliveryTime.setText(String.format("%d:%d", (int)request.getArrivalDate(), (int)(request.getArrivalDate()) + 1));
-        }
-        else
-        {
+        } else {
             rowArrivalDate.setVisible(false);
         }
     }
