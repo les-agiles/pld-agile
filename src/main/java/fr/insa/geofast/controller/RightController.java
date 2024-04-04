@@ -1,5 +1,6 @@
 package fr.insa.geofast.controller;
 
+import atlantafx.base.theme.Styles;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
@@ -41,7 +42,7 @@ public class RightController implements Initializable {
         PlanningRequest planningRequest = mapController.getPlanningRequest();
 
         if (Objects.isNull(planningRequest)) {
-            parentController.displayNotification("Pas de programme de livraison chargé");
+            parentController.displayNotification("Pas de programme de livraison chargé", Styles.DANGER);
             return;
         }
 
@@ -51,7 +52,7 @@ public class RightController implements Initializable {
                 deliveryGuy.getRoute().computeBestRoute();
             }
         } catch (IHMException e) {
-            parentController.displayNotification(e.getMessage());
+            parentController.displayNotification(e.getMessage(), Styles.DANGER);
         }
 
         // Le calcul a réussi
