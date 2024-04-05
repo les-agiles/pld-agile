@@ -252,7 +252,8 @@ public class MapController implements Initializable {
     }
 
     public void updateLabels(PlanningRequest planningRequest) {
-        planningRequestLabels.clear();
+        planningRequestLabels.values().forEach(labels -> labels.forEach(mapView::removeLabel));
+
         java.util.Map<DeliveryGuy, CheckBox> checkBoxes = parentController.getParentController().getRightController().getPlanningRequestsController().getCheckBoxes();
 
         for (DeliveryGuy deliveryGuy : planningRequest.getCouriersMap().values()) {
