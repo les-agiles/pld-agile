@@ -86,8 +86,8 @@ public class ColorPalette {
     /**
      * Return the color name
      *
-     * @param c
-     * @return
+     * @param c the color tp retrieve the color from
+     * @return the color name
      */
     public static String getColorName(Color c) throws IHMException {
         for (Field f : Color.class.getDeclaredFields()) {
