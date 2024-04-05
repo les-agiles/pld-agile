@@ -73,7 +73,7 @@ public class RouteTest {
 
         for(int i = 0; i < requestsOrdered.size(); i++) {
             assertEquals(ids[i], requestsOrdered.get(i).getDeliveryAddressId());
-            assertEquals(times[i], requestsOrdered.get(i).getArrivalDate(), 0.99);
+            assertEquals(times[i], requestsOrdered.get(i).getArrivalDate().toSecondOfDay(), 0.99);
         }
     }
 
@@ -97,7 +97,7 @@ public class RouteTest {
 
         for(int i = 0; i < requestsOrdered.size(); i++) {
             assertEquals(ids[i], requestsOrdered.get(i).getDeliveryAddressId());
-            assertEquals(times[i], requestsOrdered.get(i).getArrivalDate(), 0.99);
+            assertEquals(times[i], requestsOrdered.get(i).getArrivalDate().toSecondOfDay(), 0.99);
         }
     }
 
@@ -121,7 +121,7 @@ public class RouteTest {
 
         for(int i = 0; i < requestsOrdered.size(); i++) {
             assertEquals(ids[i], requestsOrdered.get(i).getDeliveryAddressId());
-            assertEquals(times[i], requestsOrdered.get(i).getArrivalDate(), 0.99);
+            assertEquals(times[i], requestsOrdered.get(i).getArrivalDate().toSecondOfDay(), 0.99);
         }
     }
 

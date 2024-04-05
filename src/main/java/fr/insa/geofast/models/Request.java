@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.xml.bind.annotation.*;
+import java.time.LocalTime;
 
 @Getter
 @XmlRootElement(name = "request")
@@ -34,7 +35,7 @@ public class Request {
     private int deliveryTime;
 
     @Setter
-    private double arrivalDate = 0;
+    private LocalTime arrivalDate;
 
     public void setup(Intersection intersection, DeliveryGuy deliveryGuy, String id){
         deliveryAddress = intersection;
