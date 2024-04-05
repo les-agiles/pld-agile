@@ -105,10 +105,10 @@ public class HeaderController implements Initializable {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf", "*.PDF"));
             File selectedFile = fileChooser.showSaveDialog(null);
 
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 PdfGenerator.generatePdf(this.parentController.getMapController().getPlanningRequest().getCouriersMap(), selectedFile.getAbsolutePath());
             }
-            parentController.getParentController().displayNotification("Exportation réussie", Styles.SUCCESS);
+            parentController.getParentController().displayNotification("Export réussi", Styles.SUCCESS);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
         }
