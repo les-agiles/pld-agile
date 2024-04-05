@@ -33,9 +33,6 @@ import java.util.*;
 @Slf4j
 public class PdfGenerator {
 
-    private static final String GEOFAST_LOGO = "src/main/resources/fr/insa/geofast/GeoFast-compressed.png";
-    private static final String BACKGROUND = "src/main/resources/fr/insa/geofast/pdf-background.png";
-
     private static final String STR_LAT_LONG_FORMAT = "lat. : %f; lon. : %f";
 
     private final Map<String, DeliveryGuy> deliveryGuysMap;
@@ -65,7 +62,6 @@ public class PdfGenerator {
         PageSize pageSize = new PageSize(PageSize.A4);
         document.setTopMargin(50);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new TextFooterEventHandler(document));
-        pdf.addEventHandler(PdfDocumentEvent.INSERT_PAGE, new BackgroundEventHandler(pageSize));
 
         pdf.addNewPage();
         Paragraph title = new Paragraph("Programme de livraison")
@@ -153,8 +149,7 @@ public class PdfGenerator {
         int arrivalMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate().getMinute();
         requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Arrivée prévue à %02d:%02d", arrivalHour, arrivalMinutes))).setBorder(Border.NO_BORDER).setPadding(0));
 
-        if(deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() > 0)
-        {
+        if (deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() > 0) {
             int durationMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() / 60;
             int durationSeconds = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() % 60;
 
@@ -242,27 +237,6 @@ public class PdfGenerator {
         };
     }
 
-    private static class BackgroundEventHandler implements IEventHandler {
-
-        protected PageSize pageSize;
-
-        public BackgroundEventHandler(PageSize pageSize) {
-            this.pageSize = pageSize;
-        }
-
-        @Override
-        public void handleEvent(Event event) {
-            try {
-                PdfDocumentEvent pdfDocumentEvent = (PdfDocumentEvent) event;
-
-                PdfCanvas canvas = new PdfCanvas(pdfDocumentEvent.getPage());
-                canvas.addImageFittedIntoRectangle(ImageDataFactory.create(BACKGROUND), pageSize, false);
-            } catch (MalformedURLException e) {
-                log.error(e.getMessage());
-            }
-        }
-    }
-
     private static class TextFooterEventHandler implements IEventHandler {
         protected Document doc;
 
@@ -275,30 +249,19 @@ public class PdfGenerator {
             PdfDocumentEvent docEvent = (PdfDocumentEvent) currentEvent;
             Rectangle pageSize = docEvent.getPage().getPageSize();
 
-            float leftX = pageSize.getLeft() + doc.getLeftMargin();
             float rightX = ((pageSize.getLeft() + doc.getLeftMargin())
                     + (pageSize.getRight() - doc.getRightMargin())) - 100;
             float centerX = (pageSize.getLeft() + doc.getLeftMargin() + pageSize.getRight() - doc.getRightMargin()) / 2;
             float headerY = pageSize.getTop() - doc.getTopMargin() + doc.getTopMargin() / 2;
             float footerY = doc.getBottomMargin();
 
-            Image geoFastLogo = null;
-            try {
-                geoFastLogo = new Image(ImageDataFactory.create(GEOFAST_LOGO));
-                geoFastLogo.setFixedPosition(leftX + 20, headerY - 10);
-                geoFastLogo.setHeight(25);
-            } catch (MalformedURLException e) {
-                log.error(e.getMessage());
-            }
-
-            try( Canvas canvas = new Canvas(docEvent.getPage(), pageSize)){
+            try (Canvas canvas = new Canvas(docEvent.getPage(), pageSize)) {
                 canvas
                         .setFontSize(8)
-                        .add(geoFastLogo)
                         .showTextAligned("Exporté le " + getFormattedDate(), rightX, headerY, TextAlignment.CENTER)
                         .showTextAligned("GeoFast", centerX, footerY, TextAlignment.CENTER)
                         .close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error(e.getMessage());
             }
         }
