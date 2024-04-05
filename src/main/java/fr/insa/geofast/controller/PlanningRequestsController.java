@@ -38,7 +38,7 @@ public class PlanningRequestsController {
     @Getter
     private final Map<DeliveryGuy, CheckBox> checkBoxes = new HashMap<>();
 
-    private final Map<String, HBox> requestsHBoxes = new HashMap<>();
+    private final Map<String, HBox> requestsTimeHBoxes = new HashMap<>();
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -95,7 +95,13 @@ public class PlanningRequestsController {
 
             requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
             requestInfoBox.getChildren().add(requestHBox);
-            requestsHBoxes.put(request.getId(), requestHBox);
+
+            // Setting arrival time HBoxes
+            HBox timeHBox = new HBox();
+            timeHBox.setSpacing(5);
+
+            requestsTimeHBoxes.put(request.getId(), timeHBox);
+            requestHBox.getChildren().add(timeHBox);
         });
 
         titledPane.setContent(requestInfoBox);
@@ -157,15 +163,13 @@ public class PlanningRequestsController {
     }
 
     public void updateArrivalTimes(PlanningRequest planningRequest) {
-        planningRequest.getRequests().forEach(request -> {
-            HBox timeHBox = new HBox();
-            timeHBox.setSpacing(5);
 
+        requestsTimeHBoxes.values().forEach(timeHBox -> timeHBox.getChildren().clear());
+
+        planningRequest.getRequests().forEach(request -> {
             Label arrivalTime = new Label(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
             SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
-            timeHBox.getChildren().addAll(svg, arrivalTime);
-
-            requestsHBoxes.get(request.getId()).getChildren().add(timeHBox);
+            requestsTimeHBoxes.get(request.getId()).getChildren().addAll(svg, arrivalTime);
         });
     }
 }
