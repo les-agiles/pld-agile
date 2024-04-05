@@ -1,7 +1,6 @@
 package fr.insa.geofast.services;
 
-import com.graphhopper.util.Translation;
-import com.graphhopper.util.TranslationMap;
+import com.graphhopper.ResponsePath;
 import com.itextpdf.io.exceptions.IOException;
 
 import com.itextpdf.io.image.ImageDataFactory;
@@ -124,26 +123,16 @@ public class PdfGenerator {
 
     private void addBackToWarehouse(Document document, PageSize pageSize, DeliveryGuy deliveryGuy){
         addDeliveryRequestHeader(document, pageSize, deliveryGuy);
-        addRoute(document, pageSize);
+        addRoute(document, pageSize, deliveryGuy.getRoute().getBestRoute().get(deliveryGuy.getRoute().getBestRoute().size() - 1));
         SolidLine solidLine = new SolidLine(1f);
         document.add(new LineSeparator(solidLine));
     }
 
     private void addDeliveryRequest(Document document, PageSize pageSize, DeliveryGuy deliveryGuy, int index)
     {
-
         addDeliveryRequestHeader(document, pageSize, deliveryGuy, index);
 
-        log.info(""+deliveryGuy.getRoute().getRequestsOrdered().size());
-        log.info(""+deliveryGuy.getRoute().getBestRoute().size());
-        log.info(deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getName());
-        log.info(""+deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getDistance());
-
-        TranslationMap.TranslationHashMap translationHashMap = new TranslationMap.TranslationHashMap(Locale.FRENCH);
-        log.info(""+deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getTurnDescription(translationHashMap));
-        log.info(""+deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getSign());
-
-        addRoute(document, pageSize);
+        addRoute(document, pageSize, deliveryGuy.getRoute().getBestRoute().get(index));
 
         SolidLine solidLine = new SolidLine(1f);
         document.add(new LineSeparator(solidLine));
@@ -206,10 +195,11 @@ public class PdfGenerator {
         requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG,lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
 
         document.add(requestHeader);
-
     }
 
-    private void addRoute(Document document, PageSize pageSize){
+    private void addRoute(Document document, PageSize pageSize, ResponsePath responsePath){
+
+        log.info(""+responsePath.getInstructions().get(1).getSign());
 
         Table route = new Table(new float[]{pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin()})
                 .setHorizontalBorderSpacing(0)
@@ -217,21 +207,47 @@ public class PdfGenerator {
 
         Paragraph routeLabel = new Paragraph("Itinéraire").setBold().setFontSize(14f).setMarginLeft(20f);
         route.addCell(new Cell().add(routeLabel).setBorder(Border.NO_BORDER).setPaddings(0,0,0,0));
-        for(int i = 0; i < 5 ;i++){
 
-            Paragraph step = new Paragraph("Emprunter rue "+i).setFontSize(12f).setMarginLeft(40f);
-            Paragraph next = new Paragraph("puis").setFontSize(10f).setMarginLeft(40f).setFontColor(ColorConstants.GRAY);
+        for(int i = 0; i < responsePath.getInstructions().size() ;i++){
+            String stepStr = translateInstruction(responsePath.getInstructions().get(i).getSign());
+            if (!responsePath.getInstructions().get(i).getName().isEmpty()) {
+                stepStr += " sur " + responsePath.getInstructions().get(i).getName();
+            }
+            Paragraph step = new Paragraph(stepStr).setFontSize(12f).setMarginLeft(40f);
+            Paragraph next = new Paragraph(String.format("puis dans %dm", (int)responsePath.getInstructions().get(i).getDistance())).setFontSize(10f).setMarginLeft(40f).setFontColor(ColorConstants.GRAY);
 
             route.addCell(new Cell().add(step).setBorder(Border.NO_BORDER).setPadding(0));
-            if (i < 5-1) {
+            if (i < responsePath.getInstructions().size()-1) {
                 route.addCell(new Cell().add(next).setBorder(Border.NO_BORDER).setPadding(0));
             }
-
         }
-        Paragraph arrivalLabel = new Paragraph("Arrivée").setBold().setFontSize(14f).setMarginLeft(20f);
-        route.addCell(new Cell().add(arrivalLabel).setBorder(Border.NO_BORDER).setPadding(0));
-
         document.add(route);
+    }
+
+    private String translateInstruction(int sign){
+
+        return switch (sign) {
+            case -98 -> "Faire un demi-tour";
+            case -8 -> "Faire un demi-tour à gauche";
+            case -7 -> "Rester à gauche";
+            case -6 -> "Sortir du rond point";
+            case -3 -> "Bifurquer à gauche";
+            case -2 -> "Tourner à gauche";
+            case -1 -> "Tourner légèrement à gauche";
+            case 0 -> "Continuer";
+            case 1 -> "Tourner légèrement à droite";
+            case 2 -> "Tourner à droite";
+            case 3 -> "Bifurquer à droite";
+            case 4 -> "Arrivée à destination";
+            case 5 -> "VIA WTF";
+            case 6 -> "Prendre le rond-point";
+            case 7 -> "Rester à droite";
+            case 8 -> "Faire un demi-tour à droite";
+            case 101 -> "START";
+            case 102 -> "TRANSFER";
+            case 103 -> "END";
+            default -> "Emprunter";
+        };
     }
 
     private static class BackgroundEventHandler implements IEventHandler {
@@ -292,6 +308,4 @@ public class PdfGenerator {
                     .close();
         }
     }
-
-
 }
