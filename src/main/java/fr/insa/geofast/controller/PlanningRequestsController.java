@@ -191,7 +191,9 @@ public class PlanningRequestsController {
 
     public void refresh(PlanningRequest planningRequest) {
         updateRequestsOrder(planningRequest);
+
         updateArrivalTimes(planningRequest);
+
     }
 
     private void updateRequestsOrder(PlanningRequest planningRequest) {
