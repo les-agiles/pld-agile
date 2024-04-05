@@ -29,6 +29,9 @@ PLD-AGILE à l'INSA de Lyon.
 - [GraphHopper (DOC TECHNIQUE)](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
 - [JSPRIT (DOC TECHNIQUE)](readme/JSPRIT.md) – Calcul du plus court chemin entre N points
 
+### Génération du PDF
+- [Génération du PDF (DOC TECHNIQUE)](readme/ITEXT.md) - Export de la feuille de route au format PDF
+
 ### Divers
 
 - [Github Actions (DOC TECHNIQUE)](readme/GITHUBACTIONS.md) – Pipeline d'intégration continue (tests,
