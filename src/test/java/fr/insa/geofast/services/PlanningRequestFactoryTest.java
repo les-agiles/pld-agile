@@ -45,7 +45,7 @@ public class PlanningRequestFactoryTest {
         assertEquals("1", planningRequest.getRequests().get(0).getCourier().getId());
         assertEquals(map.getWarehouse(), planningRequest.getWarehouse());
         assertNotNull(planningRequest.getCouriersMap().get("1").getRoute());
-        assertEquals(0, planningRequest.getRequests().get(0).getArrivalDate(), 0.1);
+        assertNull(planningRequest.getRequests().get(0).getArrivalDate());
         assertEquals(2, planningRequest.getCouriersMap().get("1").getRoute().getRequests().size());
     }
 
