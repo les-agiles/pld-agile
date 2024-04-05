@@ -57,6 +57,7 @@ public class RightController implements Initializable {
 
         // Le calcul a réussi
         parentController.displayNotification("Tournées calculées avec succès", Styles.SUCCESS);
+        planningRequestsController.updateArrivalTimes(planningRequest);
         mapController.updateLabels(planningRequest);
         mapController.displayComputedRoutes(planningRequest);
         parentController.getLeftController().getHeaderController().setExportButtonVisible(true);

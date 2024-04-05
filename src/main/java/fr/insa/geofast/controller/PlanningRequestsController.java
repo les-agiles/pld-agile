@@ -3,6 +3,7 @@ package fr.insa.geofast.controller;
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.models.Request;
+import fr.insa.geofast.utils.IconsHelper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,8 @@ public class PlanningRequestsController {
 
     @Getter
     private final Map<DeliveryGuy, CheckBox> checkBoxes = new HashMap<>();
+
+    private final Map<String, HBox> requestsHBoxes = new HashMap<>();
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -89,7 +93,7 @@ public class PlanningRequestsController {
 
             requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
             requestInfoBox.getChildren().add(requestHBox);
-
+            requestsHBoxes.put(request.getId(), requestHBox);
         });
 
         titledPane.setContent(requestInfoBox);
@@ -148,5 +152,19 @@ public class PlanningRequestsController {
         globalCheckBox.setDisable(true);
         checkBoxes.clear();
         resetAccordionPanes();
+    }
+
+    public void updateArrivalTimes(PlanningRequest planningRequest) {
+        planningRequest.getRequests().forEach(request -> {
+            HBox timeHBox = new HBox();
+
+            SVGPath clockIcon = new SVGPath();
+            clockIcon.setContent(IconsHelper.readIcon("clock-icon"));
+
+            Label arrivalTime = new Label("HH:mm");
+
+            timeHBox.getChildren().add(arrivalTime);
+            requestsHBoxes.get(request.getId()).getChildren().add(timeHBox);
+        });
     }
 }
