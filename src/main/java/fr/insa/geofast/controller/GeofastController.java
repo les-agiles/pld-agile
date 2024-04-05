@@ -79,8 +79,9 @@ public class GeofastController extends StackPane implements Initializable {
             try {
                 Thread.sleep(5000);
                 closeNotification(notification);
-            } catch (Exception e) {
-                System.err.println(e);
+            } catch (InterruptedException ie) {
+                log.error("Erreur lors de la fermeture automatique de la notification", ie);
+                Thread.currentThread().interrupt();
             }
         }).start();
     }
