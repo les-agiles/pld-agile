@@ -17,7 +17,6 @@ import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.*;
 import fr.insa.geofast.models.DeliveryGuy;
-import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 
 import com.itextpdf.kernel.events.Event;
@@ -26,7 +25,6 @@ import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.layout.Canvas;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.*;
@@ -40,8 +38,6 @@ public class PdfGenerator {
     private static final String LAT_LONG = "lat. : %f; lon. : %f";
 
     private static final ArrayList<DeliveryGuy> deliveryGuys = new ArrayList<>();
-
-    private PdfGenerator(){}
 
     private PdfGenerator(Map<String, DeliveryGuy> deliveryGuyMap) {
         deliveryGuys.addAll(deliveryGuyMap.values());
