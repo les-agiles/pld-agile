@@ -49,14 +49,10 @@ public class GeofastController extends StackPane implements Initializable {
         );
         notification.setPrefHeight(Region.USE_PREF_SIZE);
         notification.setMaxHeight(Region.USE_PREF_SIZE);
-        StackPane.setAlignment(notification, Pos.TOP_RIGHT);
-        StackPane.setMargin(notification, new Insets(10, 10, 0, 0));
+        StackPane.setAlignment(notification, Pos.BOTTOM_LEFT);
+        StackPane.setMargin(notification, new Insets(0, 0, 10, 10));
 
-        notification.setOnClose(e -> {
-            var out = Animations.slideOutUp(notification, Duration.millis(250));
-            out.setOnFinished(f -> stackPane.getChildren().remove(notification));
-            out.playFromStart();
-        });
+        notification.setOnClose(e -> closeNotification(notification));
     }
 
     public void displayNotification(String message, String style) {
@@ -69,10 +65,29 @@ public class GeofastController extends StackPane implements Initializable {
         }
 
         notification.setMessage(message);
-        var in = Animations.slideInDown(notification, Duration.millis(250));
+        var in = Animations.slideInUp(notification, Duration.millis(250));
         if (!stackPane.getChildren().contains(notification)) {
             stackPane.getChildren().add(notification);
         }
         in.playFromStart();
+
+        closeNotificationTimeout(notification);
+    }
+
+    private void closeNotificationTimeout(Notification notification) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+                closeNotification(notification);
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }).start();
+    }
+
+    private void closeNotification(Notification notification) {
+        var out = Animations.slideOutDown(notification, Duration.millis(250));
+        out.setOnFinished(f -> stackPane.getChildren().remove(notification));
+        out.playFromStart();
     }
 }
