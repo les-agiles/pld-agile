@@ -44,12 +44,12 @@ public class RequestDetailsController implements Initializable {
         this.latValue.setText(Double.toString(request.getDeliveryAddress().getLatitude()));
         this.lonValue.setText(Double.toString(request.getDeliveryAddress().getLongitude()));
 
-        if (request.getArrivalDate() != 0) // calculation not done
+        if (request.getArrivalDate() != null) // calculation done
         {
             this.timeLabel.setText("Heure de passage");
 
-            int arrivalHour = (int)(request.getArrivalDate()/3600);
-            int arrivalMinutes = (int)((request.getArrivalDate() - arrivalHour*3600)/60);
+            int arrivalHour = request.getArrivalDate().toSecondOfDay()/3600;
+            int arrivalMinutes = (request.getArrivalDate().toSecondOfDay() - arrivalHour*3600)/60;
             this.timeValue.setText(String.format("%d:%d", arrivalHour, arrivalMinutes));
         }
         else
@@ -65,13 +65,6 @@ public class RequestDetailsController implements Initializable {
             Label street = new Label();
             street.setText(segment.getName());
             this.streets.getChildren().add(street);
-        }
-
-        if (request.getArrivalDate() != null) {
-            rowArrivalDate.setVisible(true);
-            this.deliveryTime.setText(String.format("%d:%d", request.getArrivalDate().toSecondOfDay(), request.getArrivalDate().toSecondOfDay() + 1));
-        } else {
-            rowArrivalDate.setVisible(false);
         }
     }
 
