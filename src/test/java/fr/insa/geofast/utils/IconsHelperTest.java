@@ -13,6 +13,7 @@ class IconsHelperTest {
         assertNotNull(icon);
     }
 
+    @Test
     void getIcon_ShouldNotFindIconAndReturnNull(){
         SVGPath icon = IconsHelper.getIcon("xoxo", Color.BLACK, null);
         assertNull(icon);
