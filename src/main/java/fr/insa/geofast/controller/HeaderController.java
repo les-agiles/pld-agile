@@ -5,6 +5,7 @@ import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.services.MapFactory;
+import fr.insa.geofast.services.PdfGenerator;
 import fr.insa.geofast.services.PlanningRequestFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,6 +39,8 @@ public class HeaderController implements Initializable {
         importPlanningRequestButton.setOnAction(e -> readPlanningRequestXml());
         importPlanningRequestButton.setVisible(false);
         exportToPDFButton.setVisible(false);
+
+        exportToPDFButton.setOnAction(e -> export());
     }
 
     private void readMapXml() {
@@ -100,5 +103,20 @@ public class HeaderController implements Initializable {
 
     public void setExportButtonVisible(boolean visible) {
         exportToPDFButton.setVisible(visible);
+    }
+
+    private void export() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf", "*.PDF"));
+            File selectedFile = fileChooser.showSaveDialog(null);
+
+            if (selectedFile != null) {
+                PdfGenerator.generatePdf(this.parentController.getMapController().getPlanningRequest().getCouriersMap(), selectedFile.getAbsolutePath());
+            }
+            parentController.getParentController().displayNotification("Export réussi", Styles.SUCCESS);
+        } catch (IHMException e) {
+            parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
+        }
     }
 }
