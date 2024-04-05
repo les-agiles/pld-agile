@@ -25,6 +25,7 @@ PLD-AGILE à l'INSA de Lyon.
 ### Calcul de l'itinéraire
 
 - [GraphHopper (DOC TECHNIQUE)](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
+- [JSPRIT (DOC TECHNIQUE)](readme/JSPRIT.md) – Calcul du plus court chemin entre N points
 
 ### Divers
 
