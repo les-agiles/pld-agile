@@ -199,8 +199,6 @@ public class PdfGenerator {
 
     private void addRoute(Document document, PageSize pageSize, ResponsePath responsePath){
 
-        log.info(""+responsePath.getInstructions().get(1).getSign());
-
         Table route = new Table(new float[]{pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin()})
                 .setHorizontalBorderSpacing(0)
                 .setVerticalBorderSpacing(0);
