@@ -3,7 +3,6 @@ package fr.insa.geofast.controller;
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.models.Request;
-import fr.insa.geofast.utils.IconsHelper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -25,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -42,9 +42,12 @@ public class PlanningRequestsController {
     @Getter
     private final Map<DeliveryGuy, CheckBox> checkBoxes = new HashMap<>();
 
-    private final Map<String, HBox> requestsTimeHBoxes = new HashMap<>();
+    private Map<String, HBox> requestsTimeHBoxes = new HashMap<>();
 
-    private final Map<String, VBox> requestsVBoxes = new HashMap<>();
+    private Map<String, VBox> requestsVBoxes = new HashMap<>();
+
+    private Map<String, TitledPane> titledPanes = new HashMap<>();
+
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -95,6 +98,7 @@ public class PlanningRequestsController {
         setRequestsForRequestInfoBox(requestInfoBox, courier.getRoute().getRequests().values());
 
         titledPane.setContent(requestInfoBox);
+        titledPanes.put(courier.getId(), titledPane);
 
         accordion.getPanes().add(titledPane);
         checkBoxes.put(courier, checkBox);
@@ -187,32 +191,68 @@ public class PlanningRequestsController {
 
     public void refresh(PlanningRequest planningRequest) {
         updateRequestsOrder(planningRequest);
-//        updateArrivalTimes(planningRequest);
+        updateArrivalTimes(planningRequest);
     }
 
     private void updateRequestsOrder(PlanningRequest planningRequest) {
-        requestsVBoxes.values().forEach(vBox -> vBox.getChildren().clear());
+        // for every titled pane, clear its content
+        titledPanes.values().forEach(titledPane -> {
+            VBox requestInfoBox = (VBox) titledPane.getContent();
+            requestInfoBox.getChildren().clear();
+        });
+        requestsTimeHBoxes.clear();
+
+
+
+        Map<String, VBox> requestsVBoxes = new HashMap<>();
 
         planningRequest.getCouriersMap().values().forEach(courier -> {
-            VBox requestInfoBox = requestsVBoxes.get(courier.getId());
-            setRequestsForRequestInfoBox(requestInfoBox, courier.getRoute().getRequestsOrdered());
+            // we go through the requests of the courier
+            VBox requestInfoBox = new VBox();
+            requestsVBoxes.put(courier.getId(), requestInfoBox);
+            courier.getRoute().getRequestsOrdered().forEach(request -> {
+                HBox requestHBox = new HBox();
+                requestHBox.setSpacing(30);
+
+                requestHBox.setStyle("-fx-padding: 10px");
+
+                Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
+                requestHBox.getChildren().add(coordinates);
+
+                requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
+                requestInfoBox.getChildren().add(requestHBox);
+
+                // Setting arrival time HBoxes
+
+                HBox timeHBox = new HBox();
+                timeHBox.setSpacing(5);
+
+                requestsTimeHBoxes.put(request.getId(), timeHBox);
+                requestHBox.getChildren().add(timeHBox);
+
+
+
+            });
+
+        });
+
+        titledPanes.forEach((courierId, titledPane) -> {
+            VBox requestInfoBox = requestsVBoxes.get(courierId);
+            titledPane.setContent(requestInfoBox);
         });
 
     }
 
     public void updateArrivalTimes(PlanningRequest planningRequest) {
-        requestsTimeHBoxes.values().forEach(request -> request.setVisible(false));
-        requestsTimeHBoxes.clear();
+
 
         requestsTimeHBoxes.values().forEach(timeHBox -> timeHBox.getChildren().clear());
 
         planningRequest.getCouriersMap().values().forEach(courier -> {
             courier.getRoute().getRequestsOrdered().forEach(request -> {
                 Label arrivalTime = new Label(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
-                SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
-                HBox box = new HBox();
-                box.getChildren().addAll(svg, arrivalTime);
-                requestsTimeHBoxes.put(request.getId(), box);
+
+                requestsTimeHBoxes.get(request.getId()).getChildren().add(arrivalTime);
 
             });
         });
