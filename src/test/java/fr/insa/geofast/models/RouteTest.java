@@ -32,6 +32,7 @@ public class RouteTest {
     @Test
     void computeBestRequestOrder() {
         Route route = planningRequest.getCouriersMap().get("1").getRoute();
+        assertNotNull(route.getWarehouse());
 
         try {
             route.computeBestRequestsOrder();
@@ -277,5 +278,26 @@ public class RouteTest {
     void computeBestRoute_testThrowException() {
         Route route = planningRequest.getCouriersMap().get("7").getRoute();
         assertThrows(IHMException.class, route::computeBestRoute);
+    }
+
+    @Test
+    void testRelationKeyEquals() {
+        Route.RelationKey key1 = Route.RelationKey.newKey("A", "B");
+        Route.RelationKey key2 = Route.RelationKey.newKey("A", "B");
+        Route.RelationKey key3 = Route.RelationKey.newKey("B", "A");
+        Route.RelationKey key4 = Route.RelationKey.newKey("A", "C");
+        Route.RelationKey key5 = Route.RelationKey.newKey(null, "C");
+        Route.RelationKey key6 = Route.RelationKey.newKey("A", null);
+        Route.RelationKey key7 = Route.RelationKey.newKey(null, null);
+
+        assertEquals(key1, key2); // Test if equal keys are indeed equal
+        assertEquals(key2, key1); // Test if equal keys are reflexive
+        assertNotEquals(key1, key3); // Test if keys with different order are not equal
+        assertNotEquals(key1, key4); // Test if keys with different destination are not equal
+
+        assertNotEquals(key1, key5);
+        assertNotEquals(key1, key6);
+        assertNotEquals(key5, key7);
+        assertNotEquals(key6, key7);
     }
 }

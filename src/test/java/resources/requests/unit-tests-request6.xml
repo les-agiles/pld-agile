@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<planningRequest>
+    <request courier="1" deliveryAddress="3" deliveryDuration="540" deliveryTime="8"/>
+</planningRequest>
