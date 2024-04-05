@@ -23,7 +23,6 @@ public class ColorPalette {
             Color.ORANGE,
             Color.PINK,
             Color.CYAN,
-            Color.MAGENTA,
             Color.LIME/*,
             Color.TEAL,
             Color.OLIVE,

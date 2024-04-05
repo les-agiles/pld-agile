@@ -5,17 +5,14 @@ import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.models.Request;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -42,12 +38,13 @@ public class PlanningRequestsController {
     @Getter
     private final Map<DeliveryGuy, CheckBox> checkBoxes = new HashMap<>();
 
-    private Map<String, HBox> requestsTimeHBoxes = new HashMap<>();
+    private final Map<String, HBox> requestsTimeHBoxes = new HashMap<>();
 
-    private Map<String, VBox> requestsVBoxes = new HashMap<>();
+    private final Map<String, VBox> requestsVBoxes = new HashMap<>();
 
-    private Map<String, TitledPane> titledPanes = new HashMap<>();
+    private final Map<String, TitledPane> titledPanes = new HashMap<>();
 
+    private HBox selectedHBox = null;
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -122,7 +119,19 @@ public class PlanningRequestsController {
             Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
             requestHBox.getChildren().add(coordinates);
 
-            requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
+            requestHBox.setOnMouseClicked(event -> {
+                displayRequestInformation(request);
+
+                if (selectedHBox != requestHBox) {
+                    parentController.getParentController().getLeftController().getMapController().selectRequest(request.getCourier().getId(), request.getId());
+                }
+
+                selectRequest(requestHBox);
+            });
+
+            requestHBox.setOnMouseEntered(e -> enterHoverRequest(requestHBox));
+            requestHBox.setOnMouseExited(e -> exitHoverRequest(requestHBox));
+
             requestInfoBox.getChildren().add(requestHBox);
 
             // Setting arrival time HBoxes
@@ -132,6 +141,22 @@ public class PlanningRequestsController {
             requestsTimeHBoxes.put(request.getId(), timeHBox);
             requestHBox.getChildren().add(timeHBox);
         });
+    }
+
+    private void selectRequest(HBox requestHBox) {
+        if (selectedHBox != null) {
+            selectedHBox.setBackground(new Background(new BackgroundFill(Color.WHITE, null, Insets.EMPTY)));
+        }
+
+        if (selectedHBox != requestHBox) {
+            selectedHBox = requestHBox;
+            requestHBox.setBackground(new Background(new BackgroundFill(Color.VIOLET, new CornerRadii(5), Insets.EMPTY)));
+        } else {
+            selectedHBox = null;
+            parentController.getRequestDetailsController().reset();
+
+            parentController.getParentController().getLeftController().getMapController().unselectRequest();
+        }
     }
 
     @NotNull
@@ -186,12 +211,14 @@ public class PlanningRequestsController {
         globalCheckBox.setDisable(true);
         checkBoxes.clear();
         resetAccordionPanes();
+        parentController.getParentController().getLeftController().getMapController().unselectRequest();
     }
 
 
     public void refresh(PlanningRequest planningRequest) {
         updateRequestsOrder(planningRequest);
         updateArrivalTimes(planningRequest);
+        parentController.getParentController().getLeftController().getMapController().unselectRequest();
     }
 
     private void updateRequestsOrder(PlanningRequest planningRequest) {
@@ -201,7 +228,6 @@ public class PlanningRequestsController {
             requestInfoBox.getChildren().clear();
         });
         requestsTimeHBoxes.clear();
-
 
 
         Map<String, VBox> requestsVBoxes = new HashMap<>();
@@ -219,7 +245,19 @@ public class PlanningRequestsController {
                 Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
                 requestHBox.getChildren().add(coordinates);
 
-                requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
+                requestHBox.setOnMouseClicked(event -> {
+                    displayRequestInformation(request);
+
+                    if (selectedHBox != requestHBox) {
+                        parentController.getParentController().getLeftController().getMapController().selectRequest(courier.getId(), request.getId());
+                    }
+
+                    selectRequest(requestHBox);
+                });
+
+                requestHBox.setOnMouseEntered(e -> enterHoverRequest(requestHBox));
+                requestHBox.setOnMouseExited(e -> exitHoverRequest(requestHBox));
+
                 requestInfoBox.getChildren().add(requestHBox);
 
                 // Setting arrival time HBoxes
@@ -229,7 +267,6 @@ public class PlanningRequestsController {
 
                 requestsTimeHBoxes.put(request.getId(), timeHBox);
                 requestHBox.getChildren().add(timeHBox);
-
 
 
             });
@@ -243,9 +280,19 @@ public class PlanningRequestsController {
 
     }
 
+    private void enterHoverRequest(HBox requestHBox) {
+        if (requestHBox != selectedHBox) {
+            requestHBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(5), Insets.EMPTY)));
+        }
+    }
+
+    private void exitHoverRequest(HBox requestHBox) {
+        if (requestHBox != selectedHBox) {
+            requestHBox.setBackground(new Background(new BackgroundFill(Color.WHITE, null, Insets.EMPTY)));
+        }
+    }
+
     public void updateArrivalTimes(PlanningRequest planningRequest) {
-
-
         requestsTimeHBoxes.values().forEach(timeHBox -> timeHBox.getChildren().clear());
 
         planningRequest.getCouriersMap().values().forEach(courier -> {
@@ -256,6 +303,5 @@ public class PlanningRequestsController {
 
             });
         });
-
     }
 }

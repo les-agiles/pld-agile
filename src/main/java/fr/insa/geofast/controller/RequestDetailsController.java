@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class RequestDetailsController implements Initializable {
@@ -37,7 +38,7 @@ public class RequestDetailsController implements Initializable {
         reset();
     }
 
-    public void updateRequestDetails(Request request){
+    public void updateRequestDetails(Request request) {
 
         details.setVisible(true);
 
@@ -48,13 +49,9 @@ public class RequestDetailsController implements Initializable {
         {
             this.timeLabel.setText("Heure de passage");
 
-            int arrivalHour = request.getArrivalDate().toSecondOfDay()/3600;
-            int arrivalMinutes = (request.getArrivalDate().toSecondOfDay() - arrivalHour*3600)/60;
-            this.timeValue.setText(String.format("%d:%d", arrivalHour, arrivalMinutes));
-        }
-        else
-        {
-            this.timeValue.setText(String.format("%dh-%dh", request.getDeliveryTime(), request.getDeliveryTime()+1));
+            this.timeValue.setText(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
+        } else {
+            this.timeValue.setText(String.format("%dh-%dh", request.getDeliveryTime(), request.getDeliveryTime() + 1));
         }
 
         this.deliveryGuy.setText(request.getCourier().getId());
