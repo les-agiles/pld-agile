@@ -100,6 +100,6 @@ public class HeaderController implements Initializable {
     }
 
     private void export() {
-        PdfGenerator.generatePdf();
+        PdfGenerator.generatePdf(this.parentController.getMapController().getPlanningRequest().getCouriersMap());
     }
 }

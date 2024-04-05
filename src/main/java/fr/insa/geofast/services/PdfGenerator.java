@@ -1,5 +1,7 @@
 package fr.insa.geofast.services;
 
+import com.graphhopper.util.Translation;
+import com.graphhopper.util.TranslationMap;
 import com.itextpdf.io.exceptions.IOException;
 
 import com.itextpdf.io.image.ImageDataFactory;
@@ -15,6 +17,7 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.*;
+import fr.insa.geofast.models.DeliveryGuy;
 import lombok.extern.slf4j.Slf4j;
 
 import com.itextpdf.kernel.events.Event;
@@ -25,7 +28,7 @@ import com.itextpdf.layout.Canvas;
 
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
-import java.util.Date;
+import java.util.*;
 
 
 @Slf4j
@@ -34,16 +37,18 @@ public class PdfGenerator {
     private static final String GEOFAST_LOGO = "src/main/resources/fr/insa/geofast/GeoFast-compressed.png";
     private static final String BACKGROUND = "src/main/resources/fr/insa/geofast/pdf-background.png";
 
+    private static final String LAT_LONG = "lat. : %f; lon. : %f";
 
-    private PdfGenerator() {
-
+    private final ArrayList<DeliveryGuy> deliveryGuys = new ArrayList<>();
+    private PdfGenerator(Map<String, DeliveryGuy> deliveryGuyMap) {
+        deliveryGuys.addAll(deliveryGuyMap.values());
     }
 
-    public static void generatePdf() throws IOException {
+    public static void generatePdf(Map<String, DeliveryGuy> deliveryGuyMap) throws IOException {
         log.info("Generating PDF...");
         String fileName = getNewFileName();
         try {
-            new PdfGenerator().manipulatePdf(fileName);
+            new PdfGenerator(deliveryGuyMap).manipulatePdf(fileName);
             log.info("PDF generation ended.");
         } catch (IOException | FileNotFoundException e) {
             log.error(e.getMessage());
@@ -77,10 +82,10 @@ public class PdfGenerator {
                         .setTextAlignment(TextAlignment.CENTER)
         );
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < deliveryGuys.size(); i++)
         {
-            addDeliveryGuyProgram(document, pageSize, i);
-            if(i < 5-1)
+            addDeliveryGuyProgram(document, pageSize, deliveryGuys.get(i));
+            if(i < deliveryGuys.size()-1)
             {
                 document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             }
@@ -89,55 +94,119 @@ public class PdfGenerator {
         document.close();
     }
 
-    private void addDeliveryGuyProgram(Document document, PageSize pageSize, int index)
+    private void addDeliveryGuyProgram(Document document, PageSize pageSize, DeliveryGuy deliveryGuy)
     {
-        float[] columnsWidth = {150f, pageSize.getWidth() - 150f};
+        float[] columnsWidth = {150f, 200f, pageSize.getWidth() - 350f};
 
         Table deliveryGuyHeader = new Table(columnsWidth);
-        deliveryGuyHeader.addCell(new Cell().add(new Paragraph("Livreur "+index).setBold().setFontSize(18f)).setVerticalAlignment(VerticalAlignment.BOTTOM).setBorder(Border.NO_BORDER));
+        deliveryGuyHeader.addCell(new Cell().add(new Paragraph(String.format("Livreur %s", deliveryGuy.getId())).setBold().setFontSize(18f)).setVerticalAlignment(VerticalAlignment.BOTTOM).setBorder(Border.NO_BORDER));
         deliveryGuyHeader.addCell(new Cell().add(new Paragraph("Départ du dépôt : 8h").setFontSize(14f)).setVerticalAlignment(VerticalAlignment.BOTTOM).setBorder(Border.NO_BORDER));
+        deliveryGuyHeader.addCell(
+                new Cell().add(
+                        new Paragraph(String.format(LAT_LONG, deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude(), deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude()))
+                                .setFontSize(14f)
+                        )
+                        .setVerticalAlignment(VerticalAlignment.BOTTOM)
+                        .setBorder(Border.NO_BORDER)
+        );
 
         document.add(deliveryGuyHeader);
         SolidLine solidLine = new SolidLine(1f);
         document.add(new LineSeparator(solidLine));
 
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < deliveryGuy.getRoute().getRequestsOrdered().size(); i++)
         {
-            addDeliveryRequest(document, pageSize, i);
+            addDeliveryRequest(document, pageSize, deliveryGuy, i);
         }
+
+        addBackToWarehouse(document, pageSize, deliveryGuy);
     }
 
-    private void addDeliveryRequest(Document document, PageSize pageSize, int index)
-    {
-        Table requestHeader = new Table(new float[]{50f, (pageSize.getWidth()-50f)/2, (pageSize.getWidth()-50f)/2});
-        requestHeader.addCell(
-            new Cell().add(
-                new Paragraph(""+index)
-                    .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                    .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                    .setHeight(30f)
-                    .setWidth(30f)
-                    .setFontSize(20f)
-                    .setBold()
-                    .setBorder(new SolidBorder(2))
-                .setBorderRadius(new BorderRadius(100))
-            )
-            .setTextAlignment(TextAlignment.CENTER)
-            .setBorder(Border.NO_BORDER)
-        );
-        Table requestTimeInfo = new Table(new float[]{ (pageSize.getWidth()-50f)/2});
-
-        requestTimeInfo.addCell(new Cell().add(new Paragraph("Arrivée prévue à 8:20")).setBorder(Border.NO_BORDER).setPadding(0));
-        requestTimeInfo.addCell(new Cell().add(new Paragraph("Temps de livraison : 2min")).setBorder(Border.NO_BORDER).setPadding(0));
-
-        requestHeader.addCell(new Cell().add(requestTimeInfo).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
-        requestHeader.addCell(new Cell().add(new Paragraph("lat. : 45.002011; lon. : 2.645644")).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
-
-        document.add(requestHeader);
-
+    private void addBackToWarehouse(Document document, PageSize pageSize, DeliveryGuy deliveryGuy){
+        addDeliveryRequestHeader(document, pageSize, deliveryGuy);
         addRoute(document, pageSize);
         SolidLine solidLine = new SolidLine(1f);
         document.add(new LineSeparator(solidLine));
+    }
+
+    private void addDeliveryRequest(Document document, PageSize pageSize, DeliveryGuy deliveryGuy, int index)
+    {
+
+        addDeliveryRequestHeader(document, pageSize, deliveryGuy, index);
+
+        log.info(""+deliveryGuy.getRoute().getRequestsOrdered().size());
+        log.info(""+deliveryGuy.getRoute().getBestRoute().size());
+        log.info(deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getName());
+        log.info(""+deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getDistance());
+
+        TranslationMap.TranslationHashMap translationHashMap = new TranslationMap.TranslationHashMap(Locale.FRENCH);
+        log.info(""+deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getTurnDescription(translationHashMap));
+        log.info(""+deliveryGuy.getRoute().getBestRoute().get(0).getInstructions().get(1).getSign());
+
+        addRoute(document, pageSize);
+
+        SolidLine solidLine = new SolidLine(1f);
+        document.add(new LineSeparator(solidLine));
+    }
+
+    private void addDeliveryRequestHeader(Document document, PageSize pageSize, DeliveryGuy deliveryGuy, int index){
+
+        Table requestHeader = new Table(new float[]{50f, (pageSize.getWidth()-50f)/2, (pageSize.getWidth()-50f)/2});
+        requestHeader.addCell(
+                new Cell().add(
+                                new Paragraph(""+(index+1))
+                                        .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                                        .setVerticalAlignment(VerticalAlignment.MIDDLE)
+                                        .setHeight(30f)
+                                        .setWidth(30f)
+                                        .setFontSize(20f)
+                                        .setBold()
+                                        .setBorder(new SolidBorder(2))
+                                        .setBorderRadius(new BorderRadius(100))
+                        )
+                        .setTextAlignment(TextAlignment.CENTER)
+                        .setBorder(Border.NO_BORDER)
+        );
+        Table requestTimeInfo = new Table(new float[]{ (pageSize.getWidth()-50f)/2});
+
+        int arrivalHour = (int)(deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate()/3600);
+        int arrivalMinutes = (int)((deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate() - arrivalHour*3600)/60);
+        requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Arrivée prévue à %02d:%02d", arrivalHour, arrivalMinutes))).setBorder(Border.NO_BORDER).setPadding(0));
+
+        int durationMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() / 60;
+        int durationSeconds = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() % 60;
+
+        requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Temps de livraison : %02dmin %02dsec", durationMinutes, durationSeconds))).setBorder(Border.NO_BORDER).setPadding(0));
+
+        requestHeader.addCell(new Cell().add(requestTimeInfo).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+
+        double lat = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryAddress().getLatitude();
+        double lon = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryAddress().getLongitude();
+        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG,lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+
+        document.add(requestHeader);
+    }
+
+    private void addDeliveryRequestHeader(Document document, PageSize pageSize, DeliveryGuy deliveryGuy){
+
+        Table requestHeader = new Table(new float[]{150f, (pageSize.getWidth()-150f)});
+        requestHeader.addCell(
+                new Cell().add(
+                                new Paragraph("Retour dépôt")
+                                        .setFontSize(14f)
+                                        .setBold()
+                                        .setItalic()
+                        )
+                        .setBorder(Border.NO_BORDER)
+        );
+
+        double lat = deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude();
+        double lon = deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude();
+
+        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG,lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+
+        document.add(requestHeader);
+
     }
 
     private void addRoute(Document document, PageSize pageSize){
