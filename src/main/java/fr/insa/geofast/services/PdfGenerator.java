@@ -17,6 +17,7 @@ import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.*;
 import fr.insa.geofast.models.DeliveryGuy;
+import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 
 import com.itextpdf.kernel.events.Event;
@@ -25,10 +26,10 @@ import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.layout.Canvas;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.*;
-
 
 @Slf4j
 public class PdfGenerator {
@@ -38,31 +39,30 @@ public class PdfGenerator {
 
     private static final String LAT_LONG = "lat. : %f; lon. : %f";
 
-    private final ArrayList<DeliveryGuy> deliveryGuys = new ArrayList<>();
+    private static final ArrayList<DeliveryGuy> deliveryGuys = new ArrayList<>();
+
+    private PdfGenerator(){}
+
     private PdfGenerator(Map<String, DeliveryGuy> deliveryGuyMap) {
         deliveryGuys.addAll(deliveryGuyMap.values());
     }
 
-    public static void generatePdf(Map<String, DeliveryGuy> deliveryGuyMap) throws IOException {
+    public static void generatePdf(Map<String, DeliveryGuy> deliveryGuyMap, String path) throws IOException {
+
         log.info("Generating PDF...");
-        String fileName = getNewFileName();
         try {
-            new PdfGenerator(deliveryGuyMap).manipulatePdf(fileName);
+            new PdfGenerator(deliveryGuyMap).manipulatePdf(path);
             log.info("PDF generation ended.");
         } catch (IOException | FileNotFoundException e) {
             log.error(e.getMessage());
         }
     }
 
-    private static String getNewFileName() {
-        return "planning-request-" + new Date().getTime() + ".pdf";
-    }
-
     protected static String getFormattedDate() {
         return new Date().toString();
     }
 
-    public void manipulatePdf(String dest) throws IOException, FileNotFoundException {
+    private void manipulatePdf(String dest) throws IOException, FileNotFoundException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(dest));
         Document document = new Document(pdf);
         PageSize pageSize = new PageSize(PageSize.A4);
