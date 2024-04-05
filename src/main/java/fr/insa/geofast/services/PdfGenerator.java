@@ -36,7 +36,7 @@ public class PdfGenerator {
     private static final String GEOFAST_LOGO = "src/main/resources/fr/insa/geofast/GeoFast-compressed.png";
     private static final String BACKGROUND = "src/main/resources/fr/insa/geofast/pdf-background.png";
 
-    private static final String LAT_LONG = "lat. : %f; lon. : %f";
+    private static final String STR_LAT_LONG_FORMAT = "lat. : %f; lon. : %f";
 
     private final Map<String, DeliveryGuy> deliveryGuysMap;
 
@@ -95,7 +95,7 @@ public class PdfGenerator {
         deliveryGuyHeader.addCell(new Cell().add(new Paragraph("Départ du dépôt : 8h").setFontSize(14f)).setVerticalAlignment(VerticalAlignment.BOTTOM).setBorder(Border.NO_BORDER));
         deliveryGuyHeader.addCell(
                 new Cell().add(
-                                new Paragraph(String.format(LAT_LONG, deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude(), deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude()))
+                                new Paragraph(String.format(STR_LAT_LONG_FORMAT, deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude(), deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude()))
                                         .setFontSize(14f)
                         )
                         .setVerticalAlignment(VerticalAlignment.BOTTOM)
@@ -165,7 +165,7 @@ public class PdfGenerator {
 
         double lat = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryAddress().getLatitude();
         double lon = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryAddress().getLongitude();
-        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG, lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+        requestHeader.addCell(new Cell().add(new Paragraph(String.format(STR_LAT_LONG_FORMAT, lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
 
         document.add(requestHeader);
     }
@@ -186,7 +186,7 @@ public class PdfGenerator {
         double lat = deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude();
         double lon = deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude();
 
-        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG, lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+        requestHeader.addCell(new Cell().add(new Paragraph(String.format(STR_LAT_LONG_FORMAT, lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
 
         document.add(requestHeader);
     }
