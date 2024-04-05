@@ -8,6 +8,7 @@ import com.sothawo.mapjfx.event.MapViewEvent;
 import fr.insa.geofast.GeofastApp;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.*;
+import fr.insa.geofast.utils.ColorPalette;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -37,7 +38,7 @@ public class MapController implements Initializable {
     private Marker warehouseMarker = null;
     private final java.util.Map<String, CoordinateLine> routeLines = new HashMap<>();
     private final java.util.Map<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
-    private final java.util.Map<String, List<MapCircle>> deliveryGuyCircles = new HashMap<>();
+    private final java.util.Map<String, List<Marker>> deliveryGuyMarkers = new HashMap<>();
 
     @Setter
     private LeftController parentController;
@@ -88,7 +89,7 @@ public class MapController implements Initializable {
                 .setVisible(true);
         mapView.addMarker(warehouseMarker);
 
-        if (!deliveryGuyCircles.isEmpty()) {
+        if (!deliveryGuyMarkers.isEmpty()) {
             displayPlanningRequest(getPlanningRequest());
         }
 
@@ -96,20 +97,30 @@ public class MapController implements Initializable {
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
-        deliveryGuyCircles.clear();
+        deliveryGuyMarkers.clear();
         for (DeliveryGuy deliveryGuy : planningRequest.getCouriersMap().values()) {
-            List<MapCircle> circles = new ArrayList<>();
+            List<Marker> markers = new ArrayList<>();
             for (Request request : deliveryGuy.getRoute().getRequests().values()) {
                 Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
 
-                MapCircle circle = new MapCircle(coordinate, 10);
-                circle.setColor(deliveryGuy.getColor());
-                circle.setVisible(true);
+                var deliveryGuyColor = deliveryGuy.getColor();
 
-                circles.add(circle);
-                mapView.addMapCircle(circle);
+                var deliveryGuyColorName = "RED";
+
+                try {
+                    deliveryGuyColorName = ColorPalette.getColorName(deliveryGuyColor).toUpperCase();
+                } catch (Exception e) {
+                    log.error("Error getting deliveryGuyColor", e);
+                }
+
+                Marker marker = new Marker(Objects.requireNonNull(GeofastApp.class.getResource("markers/" + deliveryGuyColorName + ".png")), -10, -20);
+                marker.setPosition(coordinate);
+                marker.setVisible(true);
+
+                markers.add(marker);
+                mapView.addMarker(marker);
             }
-            deliveryGuyCircles.put(deliveryGuy.getId(), circles);
+            deliveryGuyMarkers.put(deliveryGuy.getId(), markers);
         }
 
         this.planningRequest = planningRequest;
@@ -234,14 +245,14 @@ public class MapController implements Initializable {
     }
 
     public void setDeliveryPointsVisible(String deliveryGuyId, Boolean isVisible) {
-        if (!deliveryGuyCircles.containsKey(deliveryGuyId)) {
+        if (!deliveryGuyMarkers.containsKey(deliveryGuyId)) {
             return;
         }
 
         if (Boolean.TRUE.equals(isVisible)) {
-            deliveryGuyCircles.get(deliveryGuyId).forEach(mapView::addMapCircle);
+            deliveryGuyMarkers.get(deliveryGuyId).forEach(mapView::addMarker);
         } else {
-            deliveryGuyCircles.get(deliveryGuyId).forEach(mapView::removeMapCircle);
+            deliveryGuyMarkers.get(deliveryGuyId).forEach(mapView::removeMarker);
         }
     }
 
@@ -284,7 +295,7 @@ public class MapController implements Initializable {
     }
 
     public void resetMapPlanningRequest() {
-        if(!Objects.isNull(planningRequest)) {
+        if (!Objects.isNull(planningRequest)) {
             planningRequest.getCouriersMap().values().forEach(deliveryGuy -> {
                 setDeliveryPointsVisible(deliveryGuy.getId(), false);
                 setLabelsVisible(deliveryGuy.getId(), false);
@@ -293,7 +304,7 @@ public class MapController implements Initializable {
 
             clearRouteLines();
 
-            deliveryGuyCircles.clear();
+            deliveryGuyMarkers.clear();
             planningRequestLabels.clear();
         }
     }
