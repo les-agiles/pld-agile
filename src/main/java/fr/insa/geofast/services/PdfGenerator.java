@@ -291,13 +291,16 @@ public class PdfGenerator {
                 log.error(e.getMessage());
             }
 
-            Canvas canvas = new Canvas(docEvent.getPage(), pageSize);
-            canvas
-                    .setFontSize(8)
-                    .add(geoFastLogo)
-                    .showTextAligned("Exporté le " + getFormattedDate(), rightX, headerY, TextAlignment.CENTER)
-                    .showTextAligned("GeoFast", centerX, footerY, TextAlignment.CENTER)
-                    .close();
+            try( Canvas canvas = new Canvas(docEvent.getPage(), pageSize)){
+                canvas
+                        .setFontSize(8)
+                        .add(geoFastLogo)
+                        .showTextAligned("Exporté le " + getFormattedDate(), rightX, headerY, TextAlignment.CENTER)
+                        .showTextAligned("GeoFast", centerX, footerY, TextAlignment.CENTER)
+                        .close();
+            }catch (Exception e){
+                log.error(e.getMessage());
+            }
         }
     }
 }
