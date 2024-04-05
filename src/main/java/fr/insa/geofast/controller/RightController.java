@@ -35,6 +35,7 @@ public class RightController implements Initializable {
         planningRequestsController.setParentController(this);
 
         computeRoutesButton.setOnAction(e -> onComputeRoutesPressed());
+        computeRoutesButton.setVisible(false);
     }
 
     private void onComputeRoutesPressed() {
@@ -64,6 +65,7 @@ public class RightController implements Initializable {
     }
 
     public void reset() {
+        getComputeRoutesButton().setVisible(false);
         planningRequestsController.reset();
         requestDetailsController.reset();
     }

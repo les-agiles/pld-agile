@@ -62,6 +62,7 @@ public class HeaderController implements Initializable {
             return;
         }
 
+        setExportButtonVisible(false);
         parentController.getMapController().reset();
         parentController.getParentController().getRightController().reset();
 
@@ -91,8 +92,12 @@ public class HeaderController implements Initializable {
             return;
         }
 
+        setExportButtonVisible(false);
+
         parentController.getMapController().resetMapPlanningRequest();
         parentController.getParentController().getRightController().reset();
+
+        parentController.getParentController().getRightController().getComputeRoutesButton().setVisible(true);
 
         parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
 
