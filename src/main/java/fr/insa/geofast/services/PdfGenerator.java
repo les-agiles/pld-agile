@@ -16,6 +16,7 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.*;
+import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.DeliveryGuy;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,11 +40,12 @@ public class PdfGenerator {
     private static final String LAT_LONG = "lat. : %f; lon. : %f";
 
     private final ArrayList<DeliveryGuy> deliveryGuys = new ArrayList<>();
+
     private PdfGenerator(Map<String, DeliveryGuy> deliveryGuyMap) {
         deliveryGuys.addAll(deliveryGuyMap.values());
     }
 
-    public static void generatePdf(Map<String, DeliveryGuy> deliveryGuyMap) throws IOException {
+    public static void generatePdf(Map<String, DeliveryGuy> deliveryGuyMap) throws IHMException {
         log.info("Generating PDF...");
         String fileName = getNewFileName();
         try {
@@ -51,6 +53,7 @@ public class PdfGenerator {
             log.info("PDF generation ended.");
         } catch (IOException | FileNotFoundException e) {
             log.error(e.getMessage());
+            throw new IHMException("Le fichier PDF n'a pas pu être généré.");
         }
     }
 
@@ -72,7 +75,7 @@ public class PdfGenerator {
 
         pdf.addNewPage();
         Paragraph title = new Paragraph("Programme de livraison")
-                .setFontColor(new DeviceRgb(0,0,0))
+                .setFontColor(new DeviceRgb(0, 0, 0))
                 .setFontSize(26f)
                 .setBold();
         document.add(
@@ -81,11 +84,9 @@ public class PdfGenerator {
                         .setTextAlignment(TextAlignment.CENTER)
         );
 
-        for (int i = 0; i < deliveryGuys.size(); i++)
-        {
+        for (int i = 0; i < deliveryGuys.size(); i++) {
             addDeliveryGuyProgram(document, pageSize, deliveryGuys.get(i));
-            if(i < deliveryGuys.size()-1)
-            {
+            if (i < deliveryGuys.size() - 1) {
                 document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             }
         }
@@ -93,8 +94,7 @@ public class PdfGenerator {
         document.close();
     }
 
-    private void addDeliveryGuyProgram(Document document, PageSize pageSize, DeliveryGuy deliveryGuy)
-    {
+    private void addDeliveryGuyProgram(Document document, PageSize pageSize, DeliveryGuy deliveryGuy) {
         float[] columnsWidth = {150f, 200f, pageSize.getWidth() - 350f};
 
         Table deliveryGuyHeader = new Table(columnsWidth);
@@ -102,8 +102,8 @@ public class PdfGenerator {
         deliveryGuyHeader.addCell(new Cell().add(new Paragraph("Départ du dépôt : 8h").setFontSize(14f)).setVerticalAlignment(VerticalAlignment.BOTTOM).setBorder(Border.NO_BORDER));
         deliveryGuyHeader.addCell(
                 new Cell().add(
-                        new Paragraph(String.format(LAT_LONG, deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude(), deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude()))
-                                .setFontSize(14f)
+                                new Paragraph(String.format(LAT_LONG, deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude(), deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude()))
+                                        .setFontSize(14f)
                         )
                         .setVerticalAlignment(VerticalAlignment.BOTTOM)
                         .setBorder(Border.NO_BORDER)
@@ -113,23 +113,21 @@ public class PdfGenerator {
         SolidLine solidLine = new SolidLine(1f);
         document.add(new LineSeparator(solidLine));
 
-        for(int i = 0; i < deliveryGuy.getRoute().getRequestsOrdered().size(); i++)
-        {
+        for (int i = 0; i < deliveryGuy.getRoute().getRequestsOrdered().size(); i++) {
             addDeliveryRequest(document, pageSize, deliveryGuy, i);
         }
 
         addBackToWarehouse(document, pageSize, deliveryGuy);
     }
 
-    private void addBackToWarehouse(Document document, PageSize pageSize, DeliveryGuy deliveryGuy){
+    private void addBackToWarehouse(Document document, PageSize pageSize, DeliveryGuy deliveryGuy) {
         addDeliveryRequestHeader(document, pageSize, deliveryGuy);
         addRoute(document, pageSize, deliveryGuy.getRoute().getBestRoute().get(deliveryGuy.getRoute().getBestRoute().size() - 1));
         SolidLine solidLine = new SolidLine(1f);
         document.add(new LineSeparator(solidLine));
     }
 
-    private void addDeliveryRequest(Document document, PageSize pageSize, DeliveryGuy deliveryGuy, int index)
-    {
+    private void addDeliveryRequest(Document document, PageSize pageSize, DeliveryGuy deliveryGuy, int index) {
         addDeliveryRequestHeader(document, pageSize, deliveryGuy, index);
 
         addRoute(document, pageSize, deliveryGuy.getRoute().getBestRoute().get(index));
@@ -138,12 +136,12 @@ public class PdfGenerator {
         document.add(new LineSeparator(solidLine));
     }
 
-    private void addDeliveryRequestHeader(Document document, PageSize pageSize, DeliveryGuy deliveryGuy, int index){
+    private void addDeliveryRequestHeader(Document document, PageSize pageSize, DeliveryGuy deliveryGuy, int index) {
 
-        Table requestHeader = new Table(new float[]{50f, (pageSize.getWidth()-50f)/2, (pageSize.getWidth()-50f)/2});
+        Table requestHeader = new Table(new float[]{50f, (pageSize.getWidth() - 50f) / 2, (pageSize.getWidth() - 50f) / 2});
         requestHeader.addCell(
                 new Cell().add(
-                                new Paragraph(""+(index+1))
+                                new Paragraph("" + (index + 1))
                                         .setHorizontalAlignment(HorizontalAlignment.CENTER)
                                         .setVerticalAlignment(VerticalAlignment.MIDDLE)
                                         .setHeight(30f)
@@ -156,10 +154,10 @@ public class PdfGenerator {
                         .setTextAlignment(TextAlignment.CENTER)
                         .setBorder(Border.NO_BORDER)
         );
-        Table requestTimeInfo = new Table(new float[]{ (pageSize.getWidth()-50f)/2});
+        Table requestTimeInfo = new Table(new float[]{(pageSize.getWidth() - 50f) / 2});
 
-        int arrivalHour = (int)(deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate()/3600);
-        int arrivalMinutes = (int)((deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate() - arrivalHour*3600)/60);
+        int arrivalHour = (int) (deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate() / 3600);
+        int arrivalMinutes = (int) ((deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate() - arrivalHour * 3600) / 60);
         requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Arrivée prévue à %02d:%02d", arrivalHour, arrivalMinutes))).setBorder(Border.NO_BORDER).setPadding(0));
 
         int durationMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() / 60;
@@ -171,14 +169,14 @@ public class PdfGenerator {
 
         double lat = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryAddress().getLatitude();
         double lon = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryAddress().getLongitude();
-        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG,lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG, lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
 
         document.add(requestHeader);
     }
 
-    private void addDeliveryRequestHeader(Document document, PageSize pageSize, DeliveryGuy deliveryGuy){
+    private void addDeliveryRequestHeader(Document document, PageSize pageSize, DeliveryGuy deliveryGuy) {
 
-        Table requestHeader = new Table(new float[]{150f, (pageSize.getWidth()-150f)});
+        Table requestHeader = new Table(new float[]{150f, (pageSize.getWidth() - 150f)});
         requestHeader.addCell(
                 new Cell().add(
                                 new Paragraph("Retour dépôt")
@@ -192,37 +190,37 @@ public class PdfGenerator {
         double lat = deliveryGuy.getRoute().getWarehouse().getAddress().getLatitude();
         double lon = deliveryGuy.getRoute().getWarehouse().getAddress().getLongitude();
 
-        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG,lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+        requestHeader.addCell(new Cell().add(new Paragraph(String.format(LAT_LONG, lat, lon))).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
 
         document.add(requestHeader);
     }
 
-    private void addRoute(Document document, PageSize pageSize, ResponsePath responsePath){
+    private void addRoute(Document document, PageSize pageSize, ResponsePath responsePath) {
 
         Table route = new Table(new float[]{pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin()})
                 .setHorizontalBorderSpacing(0)
                 .setVerticalBorderSpacing(0);
 
         Paragraph routeLabel = new Paragraph("Itinéraire").setBold().setFontSize(14f).setMarginLeft(20f);
-        route.addCell(new Cell().add(routeLabel).setBorder(Border.NO_BORDER).setPaddings(0,0,0,0));
+        route.addCell(new Cell().add(routeLabel).setBorder(Border.NO_BORDER).setPaddings(0, 0, 0, 0));
 
-        for(int i = 0; i < responsePath.getInstructions().size() ;i++){
+        for (int i = 0; i < responsePath.getInstructions().size(); i++) {
             String stepStr = translateInstruction(responsePath.getInstructions().get(i).getSign());
             if (!responsePath.getInstructions().get(i).getName().isEmpty()) {
                 stepStr += " sur " + responsePath.getInstructions().get(i).getName();
             }
             Paragraph step = new Paragraph(stepStr).setFontSize(12f).setMarginLeft(40f);
-            Paragraph next = new Paragraph(String.format("puis dans %dm", (int)responsePath.getInstructions().get(i).getDistance())).setFontSize(10f).setMarginLeft(40f).setFontColor(ColorConstants.GRAY);
+            Paragraph next = new Paragraph(String.format("puis dans %dm", (int) responsePath.getInstructions().get(i).getDistance())).setFontSize(10f).setMarginLeft(40f).setFontColor(ColorConstants.GRAY);
 
             route.addCell(new Cell().add(step).setBorder(Border.NO_BORDER).setPadding(0));
-            if (i < responsePath.getInstructions().size()-1) {
+            if (i < responsePath.getInstructions().size() - 1) {
                 route.addCell(new Cell().add(next).setBorder(Border.NO_BORDER).setPadding(0));
             }
         }
         document.add(route);
     }
 
-    private String translateInstruction(int sign){
+    private String translateInstruction(int sign) {
 
         return switch (sign) {
             case -98 -> "Faire un demi-tour";
@@ -259,7 +257,7 @@ public class PdfGenerator {
         @Override
         public void handleEvent(Event event) {
             try {
-                PdfDocumentEvent pdfDocumentEvent = (PdfDocumentEvent)event;
+                PdfDocumentEvent pdfDocumentEvent = (PdfDocumentEvent) event;
 
                 PdfCanvas canvas = new PdfCanvas(pdfDocumentEvent.getPage());
                 canvas.addImageFittedIntoRectangle(ImageDataFactory.create(BACKGROUND), pageSize, false);
