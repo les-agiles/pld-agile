@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import lombok.Getter;
 import lombok.Setter;
@@ -86,7 +87,7 @@ public class PlanningRequestsController {
 
         courier.getRoute().getRequests().values().forEach(request -> {
             HBox requestHBox = new HBox();
-            requestHBox.setSpacing(30);
+            requestHBox.setSpacing(10);
 
             Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
             requestHBox.getChildren().add(coordinates);
@@ -157,13 +158,12 @@ public class PlanningRequestsController {
     public void updateArrivalTimes(PlanningRequest planningRequest) {
         planningRequest.getRequests().forEach(request -> {
             HBox timeHBox = new HBox();
-
-            SVGPath clockIcon = new SVGPath();
-            clockIcon.setContent(IconsHelper.readIcon("clock-icon"));
+            timeHBox.setSpacing(5);
 
             Label arrivalTime = new Label("HH:mm");
+            SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
+            timeHBox.getChildren().addAll(svg, arrivalTime);
 
-            timeHBox.getChildren().add(arrivalTime);
             requestsHBoxes.get(request.getId()).getChildren().add(timeHBox);
         });
     }
