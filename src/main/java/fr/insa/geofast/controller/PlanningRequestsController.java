@@ -18,12 +18,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import lombok.Getter;
-import javafx.scene.paint.Color;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +43,8 @@ public class PlanningRequestsController {
     private final Map<DeliveryGuy, CheckBox> checkBoxes = new HashMap<>();
 
     private final Map<String, HBox> requestsTimeHBoxes = new HashMap<>();
+
+    private final Map<String, VBox> requestsVBoxes = new HashMap<>();
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -88,29 +90,9 @@ public class PlanningRequestsController {
 
         // Create a VBox to hold the request information
         VBox requestInfoBox = new VBox();
-        requestInfoBox.setSpacing(10);
+        requestsVBoxes.put(courier.getId(), requestInfoBox);
 
-        courier.getRoute().getRequests().values().forEach(request -> {
-            HBox requestHBox = new HBox();
-            requestHBox.setSpacing(30);
-
-            Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
-            requestHBox.getChildren().add(coordinates);
-
-            requestHBox.setOnMouseClicked(event -> {
-                resetBackground();
-                ((HBox) event.getSource()).setBackground(new Background(new BackgroundFill(Color.web("#E7D4FF"), null,null)));
-                displayRequestInformation(request);
-            });
-            requestInfoBox.getChildren().add(requestHBox);
-
-            // Setting arrival time HBoxes
-            HBox timeHBox = new HBox();
-            timeHBox.setSpacing(5);
-
-            requestsTimeHBoxes.put(request.getId(), timeHBox);
-            requestHBox.getChildren().add(timeHBox);
-        });
+        setRequestsForRequestInfoBox(requestInfoBox, courier.getRoute().getRequests().values());
 
         titledPane.setContent(requestInfoBox);
 
@@ -123,6 +105,32 @@ public class PlanningRequestsController {
             mapController.setLabelsVisible(courier.getId(), newVal);
             mapController.setDeliveryPointsVisible(courier.getId(), newVal);
             mapController.setRouteVisible(courier.getId(), newVal);
+        });
+    }
+
+    private void setRequestsForRequestInfoBox(VBox requestInfoBox, Collection<Request> requests) {
+        requests.forEach(request -> {
+            HBox requestHBox = new HBox();
+            requestHBox.setSpacing(30);
+
+            requestHBox.setStyle("-fx-padding: 10px");
+
+            Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
+            requestHBox.getChildren().add(coordinates);
+
+            requestHBox.setOnMouseClicked(event -> {
+                resetBackground();
+                ((HBox) event.getSource()).setBackground(new Background(new BackgroundFill(Color.web("#E7D4FF"), null, null)));
+                displayRequestInformation(request);
+            });
+            requestInfoBox.getChildren().add(requestHBox);
+
+            // Setting arrival time HBoxes
+            HBox timeHBox = new HBox();
+            timeHBox.setSpacing(5);
+
+            requestsTimeHBoxes.put(request.getId(), timeHBox);
+            requestHBox.getChildren().add(timeHBox);
         });
     }
 
@@ -155,13 +163,11 @@ public class PlanningRequestsController {
         return checkBox;
     }
 
-    private void resetBackground(){
-        for (TitledPane titledPane : this.accordion.getPanes())
-        {
-            if(titledPane.getContent() instanceof VBox vbox){
-                for(Node node : vbox.getChildren())
-                {
-                    ((HBox)node).setBackground(new Background(new BackgroundFill(Color.WHITE, null,null)));
+    private void resetBackground() {
+        for (TitledPane titledPane : this.accordion.getPanes()) {
+            if (titledPane.getContent() instanceof VBox vbox) {
+                for (Node node : vbox.getChildren()) {
+                    ((HBox) node).setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
                 }
             }
         }
@@ -180,6 +186,22 @@ public class PlanningRequestsController {
         globalCheckBox.setDisable(true);
         checkBoxes.clear();
         resetAccordionPanes();
+    }
+
+
+    public void refresh(PlanningRequest planningRequest) {
+        updateRequestsOrder(planningRequest);
+        updateArrivalTimes(planningRequest);
+    }
+
+    private void updateRequestsOrder(PlanningRequest planningRequest) {
+        requestsVBoxes.values().forEach(vBox -> vBox.getChildren().clear());
+
+        planningRequest.getCouriersMap().values().forEach(courier -> {
+            VBox requestInfoBox = requestsVBoxes.get(courier.getId());
+            setRequestsForRequestInfoBox(requestInfoBox, courier.getRoute().getRequestsOrdered());
+        });
+
     }
 
     public void updateArrivalTimes(PlanningRequest planningRequest) {

@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="1000" prefHeight="400.0" prefWidth="1000" xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RightController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RightController" VBox.vgrow="ALWAYS">
     <children>
         <Button fx:id="computeRoutesButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true"
                 depthTest="DISABLE" minWidth="0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT"

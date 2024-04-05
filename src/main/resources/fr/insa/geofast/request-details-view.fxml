@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="details" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RequestDetailsController">
+<VBox fx:id="details" spacing="10.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RequestDetailsController">
     <children>
         <HBox prefHeight="0.0" prefWidth="0.0">
             <children>
@@ -58,7 +58,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-                <ScrollPane prefHeight="200.0" HBox.hgrow="ALWAYS">
+                <ScrollPane minHeight="150.0" HBox.hgrow="ALWAYS">
                     <VBox fx:id="streets" spacing="10.0" HBox.hgrow="ALWAYS" />
                 </ScrollPane>
             </children>
