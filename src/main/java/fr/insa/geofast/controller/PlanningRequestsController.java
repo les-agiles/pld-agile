@@ -11,10 +11,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -153,7 +150,7 @@ public class PlanningRequestsController {
 
         if (selectedHBox != requestHBox) {
             selectedHBox = requestHBox;
-            requestHBox.setBackground(new Background(new BackgroundFill(Color.VIOLET, null, Insets.EMPTY)));
+            requestHBox.setBackground(new Background(new BackgroundFill(Color.VIOLET, new CornerRadii(5), Insets.EMPTY)));
         } else {
             selectedHBox = null;
             parentController.getRequestDetailsController().reset();
@@ -285,7 +282,7 @@ public class PlanningRequestsController {
 
     private void enterHoverRequest(HBox requestHBox) {
         if (requestHBox != selectedHBox) {
-            requestHBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, Insets.EMPTY)));
+            requestHBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(5), Insets.EMPTY)));
         }
     }
 
