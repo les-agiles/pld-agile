@@ -13,9 +13,7 @@ import java.nio.file.Paths;
 @Slf4j
 public class IconsHelper {
 
-    private IconsHelper() {
-        throw new IllegalStateException("Utility class");
-    }
+    private IconsHelper() { }
 
     public static SVGPath getIcon(String filePath, Paint strokeColor, Paint fillColor) {
         try {
