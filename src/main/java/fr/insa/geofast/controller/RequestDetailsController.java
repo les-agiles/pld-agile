@@ -5,7 +5,6 @@ import fr.insa.geofast.models.Segment;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -19,16 +18,13 @@ public class RequestDetailsController implements Initializable {
     private Label lonValue;
 
     @FXML
-    private Label deliveryRange;
+    private Label timeLabel;
 
     @FXML
-    private Label deliveryTime;
+    private Label timeValue;
 
     @FXML
     private Label deliveryGuy;
-
-    @FXML
-    private HBox rowArrivalDate;
 
     @FXML
     private VBox streets;
@@ -38,7 +34,7 @@ public class RequestDetailsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        details.setVisible(false);
+        reset();
     }
 
     public void updateRequestDetails(Request request){
@@ -46,10 +42,21 @@ public class RequestDetailsController implements Initializable {
         details.setVisible(true);
 
         this.latValue.setText(Double.toString(request.getDeliveryAddress().getLatitude()));
-
         this.lonValue.setText(Double.toString(request.getDeliveryAddress().getLongitude()));
 
-        this.deliveryRange.setText(String.format("%dh-%dh", request.getDeliveryTime(), request.getDeliveryTime()+1));
+        if (request.getArrivalDate() != null) // calculation done
+        {
+            this.timeLabel.setText("Heure de passage");
+
+            int arrivalHour = request.getArrivalDate().toSecondOfDay()/3600;
+            int arrivalMinutes = (request.getArrivalDate().toSecondOfDay() - arrivalHour*3600)/60;
+            this.timeValue.setText(String.format("%d:%d", arrivalHour, arrivalMinutes));
+        }
+        else
+        {
+            this.timeValue.setText(String.format("%dh-%dh", request.getDeliveryTime(), request.getDeliveryTime()+1));
+        }
+
         this.deliveryGuy.setText(request.getCourier().getId());
 
         this.streets.getChildren().clear();
@@ -59,12 +66,9 @@ public class RequestDetailsController implements Initializable {
             street.setText(segment.getName());
             this.streets.getChildren().add(street);
         }
+    }
 
-        if (request.getArrivalDate() !=  0) {
-            rowArrivalDate.setVisible(true);
-            this.deliveryTime.setText(String.format("%d:%d", (int)request.getArrivalDate(), (int)(request.getArrivalDate()) + 1));
-        } else {
-            rowArrivalDate.setVisible(false);
-        }
+    public void reset() {
+        details.setVisible(false);
     }
 }

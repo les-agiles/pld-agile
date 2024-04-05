@@ -20,6 +20,7 @@ import fr.insa.geofast.utils.GraphHopperSingleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalTime;
 import java.util.*;
 
 @Slf4j
@@ -42,7 +43,7 @@ public class Route {
     }
 
     public void computeBestRoute() throws IHMException {
-        if(requestsOrdered == null) {
+        if (requestsOrdered == null) {
             throw new IHMException("La tournée doit être ordonnée avant de trouver le meilleur chemin");
         }
 
@@ -71,7 +72,7 @@ public class Route {
      */
     public void computeBestRequestsOrder() throws IHMException {
         computeIntersectionsPathsMatrix();
-        
+
         VehicleTypeImpl.Builder vehicleTypeBuilder = VehicleTypeImpl.Builder.newInstance("custom_vehicle_type").setProfile("bike");
 
         VehicleImpl.Builder vehicleBuilder = VehicleImpl.Builder.newInstance("vehicle");
@@ -92,16 +93,19 @@ public class Route {
         Collection<VehicleRoutingProblemSolution> solutions = algorithm.searchSolutions();
         Optional<VehicleRoute> solution = Solutions.bestOf(solutions).getRoutes().stream().findFirst();
 
-        if(solution.isPresent()) {
+        if (solution.isPresent()) {
             requestsOrdered = new ArrayList<>();
 
             solution.get().getActivities().forEach(activity -> {
                 Request request = requests.get(activity.getLocation().getId());
-                request.setArrivalDate(activity.getEndTime() - activity.getOperationTime());
+
+                request.setArrivalDate(
+                        LocalTime.ofSecondOfDay((long) (activity.getEndTime() - activity.getOperationTime())))
+                ;
+
                 requestsOrdered.add(request);
             });
-        }
-        else {
+        } else {
             throw new IHMException("Aucune solution n'a pu être trouvée");
         }
     }
@@ -110,7 +114,7 @@ public class Route {
      * add best paths between all intersections (warehouse included) into intersectionsPathsMatrix
      */
     private void computeIntersectionsPathsMatrix() throws IHMException {
-        if(intersectionsPathsMatrix == null) {
+        if (intersectionsPathsMatrix == null) {
             intersectionsPathsMatrix = new HashMap<>();
         }
 
@@ -127,8 +131,7 @@ public class Route {
                     intersectionsPathsMatrix.putIfAbsent(RelationKey.newKey(from.getId(), to.getId()), getPathBetweenIntersections(fromIntersection, toIntersection));
                 }
             }
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
             throw new IHMException("Erreur lors du calcul des distances.");
         }
@@ -139,8 +142,8 @@ public class Route {
      */
     private ResponsePath getPathBetweenIntersections(Intersection from, Intersection to) throws IHMException {
         GHRequest req = new GHRequest(from.getLatitude(), from.getLongitude(), to.getLatitude(), to.getLongitude())
-                            .setProfile("bike")
-                            .setLocale(Locale.FRENCH);
+                .setProfile("bike")
+                .setLocale(Locale.FRENCH);
         GHResponse rsp = GraphHopperSingleton.getInstance().getGraphHopper().route(req);
 
         if (rsp.hasErrors()) {

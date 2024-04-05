@@ -4,6 +4,8 @@ GeoFast est une application Java qui vous permet de trouver le chemin le plus co
 Elle utilise l'algorithme A* pour trouver le chemin le plus court. Ce projet a été réalisé dans le cadre du cours
 PLD-AGILE à l'INSA de Lyon.
 
+ [Manuel utilisateur](MANUEL_UTILISATEURS.md)
+
 ## Stack technologique
 
 ### Interface Utilisateur (UI)
@@ -25,6 +27,10 @@ PLD-AGILE à l'INSA de Lyon.
 ### Calcul de l'itinéraire
 
 - [GraphHopper (DOC TECHNIQUE)](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
+- [JSPRIT (DOC TECHNIQUE)](readme/JSPRIT.md) – Calcul du plus court chemin entre N points
+
+### Génération du PDF
+- [Génération du PDF (DOC TECHNIQUE)](readme/ITEXT.md) - Export de la feuille de route au format PDF
 
 ### Divers
 

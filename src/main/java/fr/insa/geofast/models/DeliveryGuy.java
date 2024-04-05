@@ -9,12 +9,6 @@ public class DeliveryGuy {
     private final Route route;
     private final Color color;
 
-    public DeliveryGuy(String id, Warehouse warehouse) {
-        this.id = id;
-        this.route = new Route(warehouse);
-        color = Color.RED;
-    }
-
     public DeliveryGuy(String id, Warehouse warehouse, Color color) {
         this.id = id;
         this.route = new Route(warehouse);

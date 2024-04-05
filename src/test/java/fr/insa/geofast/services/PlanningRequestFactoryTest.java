@@ -3,6 +3,7 @@ package fr.insa.geofast.services;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -45,13 +46,46 @@ public class PlanningRequestFactoryTest {
         assertEquals("1", planningRequest.getRequests().get(0).getCourier().getId());
         assertEquals(map.getWarehouse(), planningRequest.getWarehouse());
         assertNotNull(planningRequest.getCouriersMap().get("1").getRoute());
-        assertEquals(0, planningRequest.getRequests().get(0).getArrivalDate(), 0.1);
+        assertNull(planningRequest.getRequests().get(0).getArrivalDate());
         assertEquals(2, planningRequest.getCouriersMap().get("1").getRoute().getRequests().size());
+        assertEquals(Color.RED, planningRequest.getCouriersMap().get("1").getColor());
     }
 
     @Test
-    void buildMap_ShouldThrowIHMException() {
-        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/unit-tests-map3.xml"));
-        assertThrows(IHMException.class, () -> MapFactory.buildMap(planningRequestAbsolutePath + "/not-exist.xml"));
+    void buildPlanningRequest_ShouldThrowIHMExceptionBecauseMapIsNull(){
+        assertThrows(IHMException.class, () -> PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request1.xml", null));
+    }
+
+    @Test
+    void buildPlanningRequest_ShouldThrowIHMExceptionBecauseParsingError(){
+        Map map = null;
+
+        try {
+            map = MapFactory.buildMap(mapAbsolutePath + "/unit-tests-map1.xml");
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+
+        Map finalMap = map;
+        IHMException ex =  assertThrows(IHMException.class, () -> PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request3.xml", finalMap));
+        assertEquals("Erreur lors de la lecture du fichier XML", ex.getMessage());
+
+        ex = assertThrows(IHMException.class, () -> PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/not-exist.xml", finalMap));
+        assertEquals("Fichier introuvable", ex.getMessage());
+    }
+
+    @Test
+    void buildPlanningRequest_ShouldThrowIHMExceptionBecauseMissingIntersection(){
+        Map map = null;
+
+        try {
+            map = MapFactory.buildMap(mapAbsolutePath + "/unit-tests-map1.xml");
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+
+        Map finalMap = map;
+        IHMException ex = assertThrows(IHMException.class, () -> PlanningRequestFactory.buildPlanningRequest(planningRequestAbsolutePath + "/unit-tests-request6.xml", finalMap));
+        assertEquals("La requête est associée à une intersection qui n'existe pas dans le plan chargé", ex.getMessage());
     }
 }
