@@ -60,9 +60,9 @@ public class RequestDetailsController implements Initializable {
             this.streets.getChildren().add(street);
         }
 
-        if (request.getArrivalDate() !=  0) {
+        if (request.getArrivalDate() != null) {
             rowArrivalDate.setVisible(true);
-            this.deliveryTime.setText(String.format("%d:%d", (int)request.getArrivalDate(), (int)(request.getArrivalDate()) + 1));
+            this.deliveryTime.setText(String.format("%d:%d", request.getArrivalDate().toSecondOfDay(), request.getArrivalDate().toSecondOfDay() + 1));
         } else {
             rowArrivalDate.setVisible(false);
         }

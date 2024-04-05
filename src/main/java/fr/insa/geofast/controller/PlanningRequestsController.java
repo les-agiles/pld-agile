@@ -19,6 +19,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public class PlanningRequestsController {
 
         courier.getRoute().getRequests().values().forEach(request -> {
             HBox requestHBox = new HBox();
-            requestHBox.setSpacing(10);
+            requestHBox.setSpacing(30);
 
             Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
             requestHBox.getChildren().add(coordinates);
@@ -160,7 +161,7 @@ public class PlanningRequestsController {
             HBox timeHBox = new HBox();
             timeHBox.setSpacing(5);
 
-            Label arrivalTime = new Label("HH:mm");
+            Label arrivalTime = new Label(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
             SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
             timeHBox.getChildren().addAll(svg, arrivalTime);
 
