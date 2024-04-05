@@ -22,7 +22,6 @@ public class PlanningRequestFactory {
 
         try {
             planningRequest = XMLParser.parsePlanningRequest(path);
-            planningRequest.setup(map);
         } catch (JAXBException e) {
             log.error(e.getMessage());
             throw new IHMException("Erreur lors de la lecture du fichier XML");
@@ -30,6 +29,8 @@ public class PlanningRequestFactory {
             log.error(e.getMessage());
             throw new IHMException("Fichier introuvable");
         }
+
+        planningRequest.setup(map);
 
         return planningRequest;
     }

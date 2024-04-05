@@ -17,15 +17,17 @@ public class IconsHelper {
     private IconsHelper() { }
 
     public static SVGPath getIcon(String filePath, Paint strokeColor, Paint fillColor) {
+        SVGPath icon = new SVGPath();
+
         try {
-            var icon = new SVGPath();
             icon.setContent(Files.readString(Paths.get(Objects.requireNonNull(GeofastApp.class.getResource(filePath)).toURI())));
-            icon.setStroke(strokeColor);
-            icon.setFill(fillColor);
-            return icon;
         } catch (IOException | URISyntaxException | NullPointerException e) {
             log.error(e.getMessage());
             return null;
         }
+
+        icon.setStroke(strokeColor);
+        icon.setFill(fillColor);
+        return icon;
     }
 }

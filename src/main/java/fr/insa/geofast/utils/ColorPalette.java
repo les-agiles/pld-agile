@@ -7,8 +7,7 @@ import java.util.List;
 
 public class ColorPalette {
 
-    private ColorPalette() {
-    }
+    private ColorPalette() { }
 
     private static final List<Color> colors = Arrays.asList(
             Color.RED,
