@@ -38,10 +38,10 @@ public class PdfGenerator {
 
     private static final String LAT_LONG = "lat. : %f; lon. : %f";
 
-    private final ArrayList<DeliveryGuy> deliveryGuys = new ArrayList<>();
+    private final Map<String, DeliveryGuy> deliveryGuysMap;
 
     private PdfGenerator(Map<String, DeliveryGuy> deliveryGuyMap) {
-        deliveryGuys.addAll(deliveryGuyMap.values());
+        this.deliveryGuysMap = deliveryGuyMap;
     }
 
     public static void generatePdf(Map<String, DeliveryGuy> deliveryGuyMap, String path) throws IHMException {
@@ -78,13 +78,12 @@ public class PdfGenerator {
                         .setTextAlignment(TextAlignment.CENTER)
         );
 
-        for (int i = 0; i < deliveryGuys.size(); i++) {
-            addDeliveryGuyProgram(document, pageSize, deliveryGuys.get(i));
-            if (i < deliveryGuys.size() - 1) {
-                document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-            }
+        for (DeliveryGuy deliveryGuy : deliveryGuysMap.values()) {
+            addDeliveryGuyProgram(document, pageSize, deliveryGuy);
+            document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         }
 
+        pdf.removePage(pdf.getLastPage());
         document.close();
     }
 
