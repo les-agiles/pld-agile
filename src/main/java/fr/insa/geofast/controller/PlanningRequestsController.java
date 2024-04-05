@@ -167,7 +167,7 @@ public class PlanningRequestsController {
         requestsTimeHBoxes.clear();
 
 
-        planningRequest.getCouriersMap().values().forEach(courier ->
+        planningRequest.getCouriersMap().values().forEach(courier -> {
             courier.getRoute().getRequestsOrdered().forEach(request -> {
                 Label arrivalTime = new Label(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
                 SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
@@ -176,7 +176,7 @@ public class PlanningRequestsController {
                 requestsTimeHBoxes.put(request.getId(), box);
 
             });
-        );
+        });
 
     }
 }
