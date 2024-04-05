@@ -1,13 +1,18 @@
 package fr.insa.geofast.utils;
 
+import fr.insa.geofast.exceptions.IHMException;
 import javafx.scene.paint.Color;
+import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 public class ColorPalette {
 
-    private ColorPalette() { }
+    private ColorPalette() {
+    }
 
     private static final List<Color> colors = Arrays.asList(
             Color.RED,
@@ -19,7 +24,7 @@ public class ColorPalette {
             Color.PINK,
             Color.CYAN,
             Color.MAGENTA,
-            Color.LIME,
+            Color.LIME/*,
             Color.TEAL,
             Color.OLIVE,
             Color.MAROON,
@@ -72,9 +77,29 @@ public class ColorPalette {
             Color.PALEVIOLETRED,
             Color.PAPAYAWHIP,
             Color.PEACHPUFF,
-            Color.PERU);
+            Color.PERU*/);
 
     public static Color getColor(int index) {
         return colors.get(index % colors.size());
+    }
+
+    /**
+     * Return the color name
+     *
+     * @param c
+     * @return
+     */
+    public static String getColorName(Color c) throws IHMException {
+        for (Field f : Color.class.getDeclaredFields()) {
+            //we want to test only fields of type Color
+            if (f.getType().equals(Color.class))
+                try {
+                    if (f.get(null).equals(c))
+                        return f.getName().toLowerCase();
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    log.error("Erreur lors de la récupération du nom de la couleur", e);
+                }
+        }
+        throw new IHMException("Erreur lors de la récupération du nom de la couleur");
     }
 }
