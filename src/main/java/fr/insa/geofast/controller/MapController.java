@@ -1,23 +1,26 @@
 package fr.insa.geofast.controller;
 
+import com.graphhopper.ResponsePath;
+import com.graphhopper.util.PointList;
+import com.graphhopper.util.shapes.GHPoint3D;
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapViewEvent;
+import fr.insa.geofast.GeofastApp;
+import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Slf4j
 public class MapController implements Initializable {
@@ -31,14 +34,19 @@ public class MapController implements Initializable {
      */
     private static final int ZOOM_DEFAULT = 14;
 
-    private final List<MapCircle> intersectionCircles = new ArrayList<>();
-    private final List<MapCircle> planningRequestCircles = new ArrayList<>();
+    private Marker warehouseMarker = null;
+    private final java.util.Map<String, CoordinateLine> routeLines = new HashMap<>();
+    private final java.util.Map<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
+    private final java.util.Map<String, List<MapCircle>> deliveryGuyCircles = new HashMap<>();
+
+    @Setter
+    private LeftController parentController;
 
     /**
      * button to set the map's zoom.
      */
     @FXML
-    private Button buttonZoom;
+    private Button zoomButton;
 
     /**
      * the MapView containing the map
@@ -59,46 +67,81 @@ public class MapController implements Initializable {
     private Slider sliderZoom;
 
     @Getter
-    @Setter
     private Map map;
 
     @Getter
-    @Setter
     private PlanningRequest planningRequest;
 
     public void displayMap(Map map) {
-        intersectionCircles.clear();
-
-        for (Intersection intersection : map.getIntersections()) {
-            Coordinate coordinate = new Coordinate(intersection.getLatitude(), intersection.getLongitude());
-
-            MapCircle circle = new MapCircle(coordinate, 10);
-            circle.setColor(Color.GRAY);
-            circle.setVisible(true);
-
-            intersectionCircles.add(circle);
-            mapView.addMapCircle(circle);
+        if (!Objects.isNull(warehouseMarker)) {
+            mapView.removeMarker(warehouseMarker);
         }
 
-        if (!planningRequestCircles.isEmpty()) {
+        this.map = map;
+
+        Intersection warehouse = map.getWarehouse().getAddress();
+        Coordinate coordinate = new Coordinate(warehouse.getLatitude(), warehouse.getLongitude());
+
+        // Affichage de la warehouse
+        warehouseMarker = new Marker(Objects.requireNonNull(GeofastApp.class.getResource("warehouse.png")), -10, -10)
+                .setPosition(coordinate)
+                .setVisible(true);
+        mapView.addMarker(warehouseMarker);
+
+        if (!deliveryGuyCircles.isEmpty()) {
             displayPlanningRequest(getPlanningRequest());
         }
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
-        planningRequestCircles.clear();
+        deliveryGuyCircles.clear();
+        for (DeliveryGuy deliveryGuy : planningRequest.getCouriersMap().values()) {
+            List<MapCircle> circles = new ArrayList<>();
+            for (Request request : deliveryGuy.getRoute().getRequests().values()) {
+                Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
 
-        for (Request request : planningRequest.getRequests()) {
-            Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
+                MapCircle circle = new MapCircle(coordinate, 10);
+                circle.setColor(deliveryGuy.getColor());
+                circle.setVisible(true);
 
-            MapCircle circle = new MapCircle(coordinate, 10);
-            DeliveryGuy deliveryGuy = request.getCourier();
-            circle.setColor(deliveryGuy.getColor());
-            circle.setVisible(true);
-
-            planningRequestCircles.add(circle);
-            mapView.addMapCircle(circle);
+                circles.add(circle);
+                mapView.addMapCircle(circle);
+            }
+            deliveryGuyCircles.put(deliveryGuy.getId(), circles);
         }
+
+        this.planningRequest = planningRequest;
+    }
+
+    public void displayComputedRoutes(PlanningRequest planningRequest) {
+        clearRouteLines();
+        java.util.Map<DeliveryGuy, CheckBox> checkBoxes = parentController.getParentController().getRightController().getPlanningRequestsController().getCheckBoxes();
+
+        for (DeliveryGuy courrier : planningRequest.getCouriersMap().values()) {
+            CoordinateLine line = getCoordinateLine(courrier);
+            // If the courrier's checkbox is selected, we display the route
+            line.setVisible(checkBoxes.get(courrier).isSelected());
+            line.setColor(courrier.getColor());
+            mapView.addCoordinateLine(line);
+            routeLines.put(courrier.getId(), line);
+        }
+    }
+
+    @NotNull
+    private static CoordinateLine getCoordinateLine(DeliveryGuy courrier) {
+        List<Coordinate> coords = new ArrayList<>();
+
+        for (ResponsePath path : courrier.getRoute().getBestRoute()) {
+            PointList points = path.getPoints();
+
+            for (int i = 0; i < points.size(); i++) {
+                GHPoint3D point = points.get(i);
+                Coordinate coord = new Coordinate(point.getLat(), point.getLon());
+                coords.add(coord);
+            }
+        }
+
+        return new CoordinateLine(coords);
     }
 
     /**
@@ -116,7 +159,7 @@ public class MapController implements Initializable {
         setControlsDisable(true);
 
         // wire the zoom button and connect the slider to the map's zoom
-        buttonZoom.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
+        zoomButton.setOnAction(event -> mapView.setZoom(ZOOM_DEFAULT));
         sliderZoom.valueProperty().bindBidirectional(mapView.zoomProperty());
 
         // watch the MapView's initialized property to finish initialization
@@ -176,5 +219,84 @@ public class MapController implements Initializable {
 
         // now enable the controls
         setControlsDisable(false);
+    }
+
+    public void setLabelsVisible(String deliveryGuyId, Boolean isVisible) {
+        // Si l'ordre des livraison n'a pas encore été calculé, on ne fait rien car on a pas encore de labels à afficher
+        if (!planningRequestLabels.containsKey(deliveryGuyId))
+            return;
+
+        for (MapLabel label : planningRequestLabels.get(deliveryGuyId)) {
+            label.setVisible(isVisible);
+        }
+    }
+
+    public void setDeliveryPointsVisible(String deliveryGuyId, Boolean isVisible) {
+        if (!deliveryGuyCircles.containsKey(deliveryGuyId)) {
+            return;
+        }
+
+        if (Boolean.TRUE.equals(isVisible)) {
+            deliveryGuyCircles.get(deliveryGuyId).forEach(mapView::addMapCircle);
+        } else {
+            deliveryGuyCircles.get(deliveryGuyId).forEach(mapView::removeMapCircle);
+        }
+    }
+
+    public void setRouteVisible(String id, Boolean isVisible) {
+        if (!routeLines.containsKey(id)) {
+            return;
+        }
+
+        routeLines.get(id).setVisible(isVisible);
+    }
+
+    public void updateLabels(PlanningRequest planningRequest) {
+        planningRequestLabels.clear();
+        java.util.Map<DeliveryGuy, CheckBox> checkBoxes = parentController.getParentController().getRightController().getPlanningRequestsController().getCheckBoxes();
+
+        for (DeliveryGuy deliveryGuy : planningRequest.getCouriersMap().values()) {
+            List<MapLabel> labels = new ArrayList<>();
+
+            for (int i = 0; i < deliveryGuy.getRoute().getRequestsOrdered().size(); i++) {
+                Request request = deliveryGuy.getRoute().getRequestsOrdered().get(i);
+
+                Coordinate position = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
+
+                MapLabel label = new MapLabel(String.valueOf(i + 1)).setPosition(position)
+                        // if the checkbox is selected, we display the label
+                        .setVisible(checkBoxes.get(deliveryGuy).isSelected());
+
+                labels.add(label);
+                mapView.addLabel(label);
+            }
+
+            planningRequestLabels.put(deliveryGuy.getId(), labels);
+        }
+    }
+
+    private void clearRouteLines() {
+        routeLines.values().forEach(line -> mapView.removeCoordinateLine(line));
+        routeLines.clear();
+    }
+
+    public void resetMapPlanningRequest() {
+        if(!Objects.isNull(planningRequest)) {
+            planningRequest.getCouriersMap().values().forEach(deliveryGuy -> {
+                setDeliveryPointsVisible(deliveryGuy.getId(), false);
+                setLabelsVisible(deliveryGuy.getId(), false);
+            });
+            planningRequest = null;
+
+            clearRouteLines();
+
+            deliveryGuyCircles.clear();
+            planningRequestLabels.clear();
+        }
+    }
+
+    public void reset() {
+        resetMapPlanningRequest();
+        warehouseMarker = null;
     }
 }

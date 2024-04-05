@@ -1,5 +1,6 @@
 package fr.insa.geofast.controller;
 
+import atlantafx.base.theme.Styles;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.Map;
 import fr.insa.geofast.models.PlanningRequest;
@@ -22,21 +23,21 @@ public class HeaderController implements Initializable {
     private LeftController parentController;
 
     @FXML
-    private Button importerPlan;
+    private Button importMapButton;
 
     @FXML
-    private Button importerProgramme;
+    private Button importPlanningRequestButton;
 
     @FXML
-    public Button exporterProgramme;
+    private Button exportToPDFButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        importerPlan.setOnAction(e -> readMapXml());
+        importMapButton.setOnAction(e -> readMapXml());
 
-        importerProgramme.setOnAction(e -> readPlanningRequestXml());
-        importerProgramme.setVisible(false);
-        exporterProgramme.setVisible(false);
+        importPlanningRequestButton.setOnAction(e -> readPlanningRequestXml());
+        importPlanningRequestButton.setVisible(false);
+        exportToPDFButton.setVisible(false);
     }
 
     private void readMapXml() {
@@ -50,13 +51,18 @@ public class HeaderController implements Initializable {
         }
 
         try {
+            parentController.getMapController().reset();
+            parentController.getParentController().getRightController().reset();
+
             Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
             parentController.getMapController().displayMap(map);
-            parentController.getMapController().setMap(map);
-            importerProgramme.setVisible(true);
+            importPlanningRequestButton.setVisible(true);
+
+            parentController.getParentController().displayNotification("Plan importé avec succès", Styles.SUCCESS);
         } catch (IHMException e) {
-            parentController.getParentController().displayNotification(e.getMessage());
+            parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
         }
+
     }
 
     private void readPlanningRequestXml() {
@@ -72,13 +78,21 @@ public class HeaderController implements Initializable {
         Map map = parentController.getMapController().getMap();
 
         try {
+            parentController.getMapController().resetMapPlanningRequest();
+            parentController.getParentController().getRightController().reset();
+
             PlanningRequest planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
             parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
+
             parentController.getMapController().displayPlanningRequest(planningRequest);
-            parentController.getMapController().setPlanningRequest(planningRequest);
-            exporterProgramme.setVisible(true);
+            
+            parentController.getParentController().displayNotification("Programme importé avec succès", Styles.SUCCESS);
         } catch (IHMException e) {
-            parentController.getParentController().displayNotification(e.getMessage());
+            parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
         }
+    }
+
+    public void setExportButtonVisible(boolean visible) {
+        exportToPDFButton.setVisible(visible);
     }
 }

@@ -4,8 +4,6 @@ import atlantafx.base.controls.Notification;
 import atlantafx.base.theme.Styles;
 import atlantafx.base.util.Animations;
 import javafx.fxml.FXML;
-
-
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,41 +26,52 @@ public class GeofastController extends StackPane implements Initializable {
     private RightController rightController;
 
     @FXML
-    public StackPane stackPane;
+    private StackPane stackPane;
 
     private Notification errorNotification;
+    private Notification successNotification;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initNotification();
+        errorNotification = new Notification("Une erreur est survenue");
+        initNotification(errorNotification, Styles.DANGER);
+
+        successNotification = new Notification("Opération réalisée avec succès");
+        initNotification(successNotification, Styles.SUCCESS);
 
         leftController.setParentController(this);
+        rightController.setParentController(this);
     }
 
-    private void initNotification() {
-        errorNotification = new Notification(
-                "Une erreur est survenue" // default message
+    private void initNotification(Notification notification, String style) {
+        notification.getStyleClass().addAll(
+                style, Styles.ELEVATED_1
         );
-        errorNotification.getStyleClass().addAll(
-                Styles.DANGER, Styles.ELEVATED_1
-        );
-        errorNotification.setPrefHeight(Region.USE_PREF_SIZE);
-        errorNotification.setMaxHeight(Region.USE_PREF_SIZE);
-        StackPane.setAlignment(errorNotification, Pos.TOP_RIGHT);
-        StackPane.setMargin(errorNotification, new Insets(10, 10, 0, 0));
+        notification.setPrefHeight(Region.USE_PREF_SIZE);
+        notification.setMaxHeight(Region.USE_PREF_SIZE);
+        StackPane.setAlignment(notification, Pos.TOP_RIGHT);
+        StackPane.setMargin(notification, new Insets(10, 10, 0, 0));
 
-        errorNotification.setOnClose(e -> {
-            var out = Animations.slideOutUp(errorNotification, Duration.millis(250));
-            out.setOnFinished(f -> stackPane.getChildren().remove(errorNotification));
+        notification.setOnClose(e -> {
+            var out = Animations.slideOutUp(notification, Duration.millis(250));
+            out.setOnFinished(f -> stackPane.getChildren().remove(notification));
             out.playFromStart();
         });
     }
 
-    public void displayNotification(String message) {
-        errorNotification.setMessage(message);
-        var in = Animations.slideInDown(errorNotification, Duration.millis(250));
-        if (!stackPane.getChildren().contains(errorNotification)) {
-            stackPane.getChildren().add(errorNotification);
+    public void displayNotification(String message, String style) {
+        Notification notification;
+
+        if (style.equals(Styles.DANGER)) {
+            notification = errorNotification;
+        } else {
+            notification = successNotification;
+        }
+
+        notification.setMessage(message);
+        var in = Animations.slideInDown(notification, Duration.millis(250));
+        if (!stackPane.getChildren().contains(notification)) {
+            stackPane.getChildren().add(notification);
         }
         in.playFromStart();
     }

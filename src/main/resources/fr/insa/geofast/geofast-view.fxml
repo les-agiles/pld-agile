@@ -9,7 +9,7 @@
         <HBox>
             <children>
                 <fx:include fx:id="left" source="left-view.fxml" HBox.hgrow="ALWAYS"/>
-                <fx:include fx:id="right" source="right-view.fxml" prefHeight="400.0" prefWidth="300.0" minWidth="300.0"
+                <fx:include fx:id="right" source="right-view.fxml" prefHeight="400.0" prefWidth="300.0" minWidth="325.0"
                             maxWidth="300.0"/>
             </children>
         </HBox>

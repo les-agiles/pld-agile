@@ -10,8 +10,7 @@ import java.io.FileNotFoundException;
 
 @Slf4j
 public class PlanningRequestFactory {
-    private PlanningRequestFactory() {
-    }
+    private PlanningRequestFactory() { }
 
     public static PlanningRequest buildPlanningRequest(String path, Map map) throws IHMException {
         if (map == null) {
@@ -20,6 +19,7 @@ public class PlanningRequestFactory {
         }
 
         PlanningRequest planningRequest;
+
         try {
             planningRequest = XMLParser.parsePlanningRequest(path);
             planningRequest.setup(map);
@@ -29,10 +29,8 @@ public class PlanningRequestFactory {
         } catch (FileNotFoundException e) {
             log.error(e.getMessage());
             throw new IHMException("Fichier introuvable");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new IHMException("Erreur inconnue");
         }
+
         return planningRequest;
     }
 }
