@@ -38,7 +38,10 @@ public class MapController implements Initializable {
     private Marker warehouseMarker = null;
     private final java.util.Map<String, CoordinateLine> routeLines = new HashMap<>();
     private final java.util.Map<String, List<MapLabel>> planningRequestLabels = new HashMap<>();
-    private final java.util.Map<String, List<Marker>> deliveryGuyMarkers = new HashMap<>();
+    private final java.util.Map<String, java.util.Map<String, Marker>> deliveryGuyMarkers = new HashMap<>();
+
+    private final Marker selectedMarker = new Marker(Objects.requireNonNull(GeofastApp.class.getResource("markers/MAGENTA.png")), -10, -20).setPosition(new Coordinate(0., 0.));
+    private Marker oldSelectedMarker = null;
 
     @Setter
     private LeftController parentController;
@@ -99,7 +102,7 @@ public class MapController implements Initializable {
     public void displayPlanningRequest(PlanningRequest planningRequest) {
         deliveryGuyMarkers.clear();
         for (DeliveryGuy deliveryGuy : planningRequest.getCouriersMap().values()) {
-            List<Marker> markers = new ArrayList<>();
+            HashMap<String, Marker> markers = new HashMap<>();
             for (Request request : deliveryGuy.getRoute().getRequests().values()) {
                 Coordinate coordinate = new Coordinate(request.getDeliveryAddress().getLatitude(), request.getDeliveryAddress().getLongitude());
 
@@ -117,7 +120,7 @@ public class MapController implements Initializable {
                 marker.setPosition(coordinate);
                 marker.setVisible(true);
 
-                markers.add(marker);
+                markers.put(request.getId(), marker);
                 mapView.addMarker(marker);
             }
             deliveryGuyMarkers.put(deliveryGuy.getId(), markers);
@@ -230,6 +233,9 @@ public class MapController implements Initializable {
         mapView.setZoom(ZOOM_DEFAULT);
         mapView.setCenter(mapCenterCoords);
 
+        // add the selected marker
+        mapView.addMarker(selectedMarker);
+
         // now enable the controls
         setControlsDisable(false);
     }
@@ -250,9 +256,9 @@ public class MapController implements Initializable {
         }
 
         if (Boolean.TRUE.equals(isVisible)) {
-            deliveryGuyMarkers.get(deliveryGuyId).forEach(mapView::addMarker);
+            deliveryGuyMarkers.get(deliveryGuyId).values().forEach(mapView::addMarker);
         } else {
-            deliveryGuyMarkers.get(deliveryGuyId).forEach(mapView::removeMarker);
+            deliveryGuyMarkers.get(deliveryGuyId).values().forEach(mapView::removeMarker);
         }
     }
 
@@ -306,11 +312,37 @@ public class MapController implements Initializable {
 
             deliveryGuyMarkers.clear();
             planningRequestLabels.clear();
+
+            unselectRequest();
         }
     }
 
     public void reset() {
         resetMapPlanningRequest();
         warehouseMarker = null;
+    }
+
+    public void selectRequest(String deliveryGuyId, String resquestId) {
+        var selectedRequestMarker = deliveryGuyMarkers.get(deliveryGuyId).get(resquestId);
+
+        // on cache le vrai marker
+        selectedRequestMarker.setVisible(false);
+
+        // on raffiche celui précedement caché le cas échéant
+        if (oldSelectedMarker != null)
+            oldSelectedMarker.setVisible(true);
+
+        // on retiens le marker qu'on vienbt de cacher
+        oldSelectedMarker = selectedRequestMarker;
+
+        // on affiche la version selectionnée du marker
+        selectedMarker.setPosition(selectedRequestMarker.getPosition()).setVisible(true);
+    }
+
+    public void unselectRequest() {
+        selectedMarker.setVisible(false);
+
+        if (oldSelectedMarker != null)
+            oldSelectedMarker.setVisible(true);
     }
 }
