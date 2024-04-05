@@ -53,19 +53,22 @@ public class HeaderController implements Initializable {
             return;
         }
 
+        Map map;
+
         try {
-            parentController.getMapController().reset();
-            parentController.getParentController().getRightController().reset();
-
-            Map map = MapFactory.buildMap(selectedFile.getAbsolutePath());
-            parentController.getMapController().displayMap(map);
-            importPlanningRequestButton.setVisible(true);
-
-            parentController.getParentController().displayNotification("Plan importé avec succès", Styles.SUCCESS);
+            map = MapFactory.buildMap(selectedFile.getAbsolutePath());
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
+            return;
         }
 
+        parentController.getMapController().reset();
+        parentController.getParentController().getRightController().reset();
+
+        parentController.getMapController().displayMap(map);
+        importPlanningRequestButton.setVisible(true);
+
+        parentController.getParentController().displayNotification("Plan importé avec succès", Styles.SUCCESS);
     }
 
     private void readPlanningRequestXml() {
@@ -79,20 +82,23 @@ public class HeaderController implements Initializable {
         }
 
         Map map = parentController.getMapController().getMap();
+        PlanningRequest planningRequest;
 
         try {
-            parentController.getMapController().resetMapPlanningRequest();
-            parentController.getParentController().getRightController().reset();
-
-            PlanningRequest planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
-            parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
-
-            parentController.getMapController().displayPlanningRequest(planningRequest);
-
-            parentController.getParentController().displayNotification("Programme importé avec succès", Styles.SUCCESS);
+            planningRequest = PlanningRequestFactory.buildPlanningRequest(selectedFile.getAbsolutePath(), map);
         } catch (IHMException e) {
             parentController.getParentController().displayNotification(e.getMessage(), Styles.DANGER);
+            return;
         }
+
+        parentController.getMapController().resetMapPlanningRequest();
+        parentController.getParentController().getRightController().reset();
+
+        parentController.getParentController().getRightController().getPlanningRequestsController().displayPlanningRequest(planningRequest);
+
+        parentController.getMapController().displayPlanningRequest(planningRequest);
+
+        parentController.getParentController().displayNotification("Programme importé avec succès", Styles.SUCCESS);
     }
 
     public void setExportButtonVisible(boolean visible) {

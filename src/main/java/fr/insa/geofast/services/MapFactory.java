@@ -16,7 +16,6 @@ public class MapFactory {
 
         try {
             map = XMLParser.parseMap(path);
-            map.setup();
         } catch (JAXBException e) {
             log.error(e.getMessage());
             throw new IHMException("Erreur lors de la lecture du fichier XML");
@@ -24,6 +23,8 @@ public class MapFactory {
             log.error(e.getMessage());
             throw new IHMException("Fichier introuvable");
         }
+
+        map.setup();
 
         return map;
     }
