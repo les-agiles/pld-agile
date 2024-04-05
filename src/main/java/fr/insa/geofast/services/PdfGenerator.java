@@ -150,8 +150,8 @@ public class PdfGenerator {
         );
         Table requestTimeInfo = new Table(new float[]{(pageSize.getWidth() - 50f) / 2});
 
-        int arrivalHour = (int) (deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate() / 3600);
-        int arrivalMinutes = (int) ((deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate() - arrivalHour * 3600) / 60);
+        int arrivalHour = deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate().getHour();
+        int arrivalMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate().getMinute();
         requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Arrivée prévue à %02d:%02d", arrivalHour, arrivalMinutes))).setBorder(Border.NO_BORDER).setPadding(0));
 
         if(deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() > 0)
