@@ -65,7 +65,6 @@ public class PdfGenerator {
         PageSize pageSize = new PageSize(PageSize.A4);
         document.setTopMargin(50);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new TextFooterEventHandler(document));
-        pdf.addEventHandler(PdfDocumentEvent.INSERT_PAGE, new BackgroundEventHandler(pageSize));
 
         pdf.addNewPage();
         Paragraph title = new Paragraph("Programme de livraison")
@@ -153,8 +152,7 @@ public class PdfGenerator {
         int arrivalMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate().getMinute();
         requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Arrivée prévue à %02d:%02d", arrivalHour, arrivalMinutes))).setBorder(Border.NO_BORDER).setPadding(0));
 
-        if(deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() > 0)
-        {
+        if (deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() > 0) {
             int durationMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() / 60;
             int durationSeconds = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() % 60;
 
@@ -282,6 +280,7 @@ public class PdfGenerator {
             float headerY = pageSize.getTop() - doc.getTopMargin() + doc.getTopMargin() / 2;
             float footerY = doc.getBottomMargin();
 
+            /*
             Image geoFastLogo = null;
             try {
                 geoFastLogo = new Image(ImageDataFactory.create(GEOFAST_LOGO));
@@ -289,16 +288,15 @@ public class PdfGenerator {
                 geoFastLogo.setHeight(25);
             } catch (MalformedURLException e) {
                 log.error(e.getMessage());
-            }
+            }*/
 
-            try( Canvas canvas = new Canvas(docEvent.getPage(), pageSize)){
+            try (Canvas canvas = new Canvas(docEvent.getPage(), pageSize)) {
                 canvas
                         .setFontSize(8)
-                        .add(geoFastLogo)
                         .showTextAligned("Exporté le " + getFormattedDate(), rightX, headerY, TextAlignment.CENTER)
                         .showTextAligned("GeoFast", centerX, footerY, TextAlignment.CENTER)
                         .close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error(e.getMessage());
             }
         }
