@@ -34,15 +34,16 @@ public class PlanningRequest {
             if (!couriersMap.containsKey(request.getCourierId())) {
                 couriersMap.put(request.getCourierId(), new DeliveryGuy(request.getCourierId(), warehouse, ColorPalette.getColor(couriersMap.size())));
             }
+
             // vérification que la requete fait bien partie des intersections du plan qui a été chargé au préalable
-            if(map.getIntersectionsMap().get(request.getDeliveryAddressId()) == null)
-            {
-                String msgErr = "la requete (id livreur : "+request.getCourierId()+") est associée à une intersection (id: "+request.getDeliveryAddressId()+") qui n'existe pas dans le plan chargé.";
+            if(map.getIntersectionsMap().get(request.getDeliveryAddressId()) == null) {
+                String msgErr = "La requête est associée à une intersection qui n'existe pas dans le plan chargé";
                 throw new IHMException(msgErr);
             }
         }
 
         int requestCounter = 0;
+
         // Setup requests
         for (Request request : requests) {
             Intersection deliveryIntersection = map.getIntersectionsMap().get(request.getDeliveryAddressId());

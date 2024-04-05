@@ -3,6 +3,7 @@ package fr.insa.geofast.controller;
 import fr.insa.geofast.models.DeliveryGuy;
 import fr.insa.geofast.models.PlanningRequest;
 import fr.insa.geofast.models.Request;
+import fr.insa.geofast.utils.IconsHelper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
@@ -11,11 +12,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +37,8 @@ public class PlanningRequestsController {
 
     @Getter
     private final Map<DeliveryGuy, CheckBox> checkBoxes = new HashMap<>();
+
+    private final Map<String, HBox> requestsTimeHBoxes = new HashMap<>();
 
     public void initialize() {
         // Set the checkbox to be unchecked by default
@@ -90,6 +96,12 @@ public class PlanningRequestsController {
             requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
             requestInfoBox.getChildren().add(requestHBox);
 
+            // Setting arrival time HBoxes
+            HBox timeHBox = new HBox();
+            timeHBox.setSpacing(5);
+
+            requestsTimeHBoxes.put(request.getId(), timeHBox);
+            requestHBox.getChildren().add(timeHBox);
         });
 
         titledPane.setContent(requestInfoBox);
@@ -148,5 +160,16 @@ public class PlanningRequestsController {
         globalCheckBox.setDisable(true);
         checkBoxes.clear();
         resetAccordionPanes();
+    }
+
+    public void updateArrivalTimes(PlanningRequest planningRequest) {
+
+        requestsTimeHBoxes.values().forEach(timeHBox -> timeHBox.getChildren().clear());
+
+        planningRequest.getRequests().forEach(request -> {
+            Label arrivalTime = new Label(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
+            SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
+            requestsTimeHBoxes.get(request.getId()).getChildren().addAll(svg, arrivalTime);
+        });
     }
 }
