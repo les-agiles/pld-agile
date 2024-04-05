@@ -154,10 +154,13 @@ public class PdfGenerator {
         int arrivalMinutes = (int) ((deliveryGuy.getRoute().getRequestsOrdered().get(index).getArrivalDate() - arrivalHour * 3600) / 60);
         requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Arrivée prévue à %02d:%02d", arrivalHour, arrivalMinutes))).setBorder(Border.NO_BORDER).setPadding(0));
 
-        int durationMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() / 60;
-        int durationSeconds = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() % 60;
+        if(deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() > 0)
+        {
+            int durationMinutes = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() / 60;
+            int durationSeconds = deliveryGuy.getRoute().getRequestsOrdered().get(index).getDeliveryDuration() % 60;
 
-        requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Temps de livraison : %02dmin %02dsec", durationMinutes, durationSeconds))).setBorder(Border.NO_BORDER).setPadding(0));
+            requestTimeInfo.addCell(new Cell().add(new Paragraph(String.format("Temps de livraison : %02dmin %02dsec", durationMinutes, durationSeconds))).setBorder(Border.NO_BORDER).setPadding(0));
+        }
 
         requestHeader.addCell(new Cell().add(requestTimeInfo).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
 
