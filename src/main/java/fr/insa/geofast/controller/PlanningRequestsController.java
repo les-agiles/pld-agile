@@ -118,11 +118,7 @@ public class PlanningRequestsController {
             Label coordinates = new Label("long : " + request.getDeliveryAddress().getLongitude() + " ; lat : " + request.getDeliveryAddress().getLatitude());
             requestHBox.getChildren().add(coordinates);
 
-            requestHBox.setOnMouseClicked(event -> {
-                resetBackground();
-                ((HBox) event.getSource()).setBackground(new Background(new BackgroundFill(Color.web("#E7D4FF"), null, null)));
-                displayRequestInformation(request);
-            });
+            requestHBox.setOnMouseClicked(event -> displayRequestInformation(request));
             requestInfoBox.getChildren().add(requestHBox);
 
             // Setting arrival time HBoxes
@@ -191,9 +187,7 @@ public class PlanningRequestsController {
 
     public void refresh(PlanningRequest planningRequest) {
         updateRequestsOrder(planningRequest);
-
         updateArrivalTimes(planningRequest);
-
     }
 
     private void updateRequestsOrder(PlanningRequest planningRequest) {
@@ -207,13 +201,21 @@ public class PlanningRequestsController {
     }
 
     public void updateArrivalTimes(PlanningRequest planningRequest) {
+        requestsTimeHBoxes.values().forEach(request -> request.setVisible(false));
+        requestsTimeHBoxes.clear();
 
         requestsTimeHBoxes.values().forEach(timeHBox -> timeHBox.getChildren().clear());
 
-        planningRequest.getRequests().forEach(request -> {
-            Label arrivalTime = new Label(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
-            SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
-            requestsTimeHBoxes.get(request.getId()).getChildren().addAll(svg, arrivalTime);
+        planningRequest.getCouriersMap().values().forEach(courier -> {
+            courier.getRoute().getRequestsOrdered().forEach(request -> {
+                Label arrivalTime = new Label(request.getArrivalDate().format(DateTimeFormatter.ofPattern("HH:mm")));
+                SVGPath svg = IconsHelper.getIcon("clock-icon", Color.BLACK, null);
+                HBox box = new HBox();
+                box.getChildren().addAll(svg, arrivalTime);
+                requestsTimeHBoxes.put(request.getId(), box);
+
+            });
         });
+
     }
 }
