@@ -80,17 +80,19 @@ public class MapController implements Initializable {
         this.map = map;
 
         Intersection warehouse = map.getWarehouse().getAddress();
-        Coordinate coordinate = new Coordinate(warehouse.getLatitude(), warehouse.getLongitude());
+        Coordinate warehouseCoords = new Coordinate(warehouse.getLatitude(), warehouse.getLongitude());
 
         // Affichage de la warehouse
         warehouseMarker = new Marker(Objects.requireNonNull(GeofastApp.class.getResource("warehouse.png")), -10, -10)
-                .setPosition(coordinate)
+                .setPosition(warehouseCoords)
                 .setVisible(true);
         mapView.addMarker(warehouseMarker);
 
         if (!deliveryGuyCircles.isEmpty()) {
             displayPlanningRequest(getPlanningRequest());
         }
+
+        mapView.setCenter(warehouseCoords);
     }
 
     public void displayPlanningRequest(PlanningRequest planningRequest) {
