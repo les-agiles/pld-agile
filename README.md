@@ -36,7 +36,7 @@ Le lancer (double-click) uniquement sur un système d'exploitation Windows.
 ### Calcul de l'itinéraire
 
 - [GraphHopper (DOC TECHNIQUE)](readme/GRAPHHOPPER.md) – Calcul du plus court chemin entre N points
-- [JSPRIT (DOC TECHNIQUE)](readme/JSPRIT.md) – Calcul du plus court chemin entre N points
+- [JSPRIT (DOC TECHNIQUE)](readme/JSPRIT.md) – Résolution du TSP
 
 ### Génération du PDF
 
