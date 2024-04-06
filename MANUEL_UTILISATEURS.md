@@ -88,6 +88,19 @@ du point.
 
 Vous pouvez afficher ou cacher les tournées de livraison des livreurs grâce au checkboxes.
 
+Il est important de noter que les tournées de livraison sont planifiées en tenant compte des contraintes de temps et de
+durée de livraison.
+
+Dans les situations où le créneau horaire est en dehors des heures de travail du livreur, ou lorsque le nombre de
+livraisons est trop élevé pour un seul livreur compte tenu des contraintes, certaines livraisons ne peuvent pas être
+effectuées dans leur créneau prévu. Ces livraisons non assignées sont alors affichées en bas de la liste des livraisons
+du livreur.
+
+Un exemple de ce cas peut être observé lors de l’utilisation de la carte `largeMap.xml` et du programme
+`requestsLarge7.xml`, spécifiquement pour le livreur numéro 1 :
+
+![resultat_calcul_tournees_livraison_non_assignee.png](ressource/resultat_calcul_tournees_livraison_non_assignee.png)
+
 ## <a id="partie4"/>4. Export des tournées de livraison au format pdf
 
 ![export_tournee_pdf.png](ressource/export_tournee_pdf.png)
