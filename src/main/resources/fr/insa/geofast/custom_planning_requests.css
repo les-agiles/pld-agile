@@ -1,3 +1,11 @@
 .slightly-padded-content {
     -fx-padding: 10px;
 }
+
+.request-hbox {
+    -fx-spacing: 30;
+}
+
+.time-hbox {
+    -fx-spacing: 5;
+}

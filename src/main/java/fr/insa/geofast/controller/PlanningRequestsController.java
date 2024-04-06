@@ -24,7 +24,9 @@ import java.util.*;
 @Slf4j
 public class PlanningRequestsController {
 
-    private static final String SLIGHTLY_PADDED_CONTENT = "slightly-padded-content";
+    private static final String SLIGHTLY_PADDED_CONTENT_STYLE = "slightly-padded-content";
+    private static final String REQUEST_HBOX_STYLE = "request-hbox";
+    private static final String TIME_HBOX_STYLE = "time-hbox";
     private static final String LONGITUDE_LABEL = "long : ";
     private static final String LATITUDE_LABEL = " ; lat : ";
 
@@ -113,8 +115,7 @@ public class PlanningRequestsController {
 
     private void addRequestToVBox(Request request, VBox requestsVBox, boolean isComputed) {
         HBox requestHBox = new HBox();
-        requestHBox.setSpacing(30);
-        requestHBox.getStyleClass().add(SLIGHTLY_PADDED_CONTENT);
+        requestHBox.getStyleClass().addAll(REQUEST_HBOX_STYLE, SLIGHTLY_PADDED_CONTENT_STYLE);
 
         Label coordinates = new Label(LONGITUDE_LABEL + request.getDeliveryAddress().getLongitude() + LATITUDE_LABEL + request.getDeliveryAddress().getLatitude());
         requestHBox.getChildren().add(coordinates);
@@ -137,7 +138,7 @@ public class PlanningRequestsController {
         if (isComputed) {
             // Setting arrival time HBoxes
             HBox timeHBox = new HBox();
-            timeHBox.setSpacing(5);
+            timeHBox.getStyleClass().add(TIME_HBOX_STYLE);
             requestsTimeHBoxes.put(request.getId(), timeHBox);
             requestHBox.getChildren().add(timeHBox);
         }
@@ -243,7 +244,7 @@ public class PlanningRequestsController {
         // if nonComputedRequests is not empty, we add the label
         if (!nonComputedRequests.isEmpty()) {
             Label label = new Label("Livraison(s) non assignée(s)");
-            label.getStyleClass().addAll(Styles.TEXT, Styles.WARNING, SLIGHTLY_PADDED_CONTENT);
+            label.getStyleClass().addAll(Styles.TEXT, Styles.WARNING, SLIGHTLY_PADDED_CONTENT_STYLE);
 
             nonComputedRequests.forEach(request -> {
                 VBox vbox = requestsVBoxes.get(request.getCourier().getId());
