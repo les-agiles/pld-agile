@@ -16,6 +16,7 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.*;
+import fr.insa.geofast.GeofastApp;
 import fr.insa.geofast.exceptions.IHMException;
 import fr.insa.geofast.models.DeliveryGuy;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,6 @@ import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.layout.Canvas;
 
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.util.*;
 
 @Slf4j
@@ -36,6 +36,8 @@ public class PdfGenerator {
     private static final String STR_LAT_LONG_FORMAT = "lat. : %f; lon. : %f";
 
     private final Map<String, DeliveryGuy> deliveryGuysMap;
+    private static final String GEOFAST_LOGO = "GeoFast-compressed.png";
+    private static final String BACKGROUND = "pdf-background.png";
 
     private PdfGenerator(Map<String, DeliveryGuy> deliveryGuyMap) {
         this.deliveryGuysMap = deliveryGuyMap;
@@ -62,6 +64,7 @@ public class PdfGenerator {
         PageSize pageSize = new PageSize(PageSize.A4);
         document.setTopMargin(50);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new TextFooterEventHandler(document));
+        pdf.addEventHandler(PdfDocumentEvent.INSERT_PAGE, new BackgroundEventHandler(pageSize));
 
         pdf.addNewPage();
         Paragraph title = new Paragraph("Programme de livraison")
@@ -237,6 +240,27 @@ public class PdfGenerator {
         };
     }
 
+    private static class BackgroundEventHandler implements IEventHandler {
+
+        protected PageSize pageSize;
+
+        public BackgroundEventHandler(PageSize pageSize) {
+            this.pageSize = pageSize;
+        }
+
+        @Override
+        public void handleEvent(Event event) {
+            PdfDocumentEvent pdfDocumentEvent = (PdfDocumentEvent) event;
+
+            PdfCanvas canvas = new PdfCanvas(pdfDocumentEvent.getPage());
+            try {
+                canvas.addImageFittedIntoRectangle(ImageDataFactory.create(Objects.requireNonNull(GeofastApp.class.getResource(BACKGROUND))), pageSize, false);
+            } catch (NullPointerException e) {
+                log.error(e.getMessage());
+            }
+        }
+    }
+
     private static class TextFooterEventHandler implements IEventHandler {
         protected Document doc;
 
@@ -249,17 +273,25 @@ public class PdfGenerator {
             PdfDocumentEvent docEvent = (PdfDocumentEvent) currentEvent;
             Rectangle pageSize = docEvent.getPage().getPageSize();
 
+            float leftX = pageSize.getLeft() + doc.getLeftMargin();
             float rightX = ((pageSize.getLeft() + doc.getLeftMargin())
                     + (pageSize.getRight() - doc.getRightMargin())) - 100;
-            float centerX = (pageSize.getLeft() + doc.getLeftMargin() + pageSize.getRight() - doc.getRightMargin()) / 2;
             float headerY = pageSize.getTop() - doc.getTopMargin() + doc.getTopMargin() / 2;
-            float footerY = doc.getBottomMargin();
+
+            Image geoFastLogo = null;
+            try {
+                geoFastLogo = new Image(ImageDataFactory.create(Objects.requireNonNull(GeofastApp.class.getResource(GEOFAST_LOGO))));
+                geoFastLogo.setFixedPosition(leftX + 20, headerY - 10);
+                geoFastLogo.setHeight(25);
+            } catch (NullPointerException e) {
+                log.error(e.getMessage());
+            }
 
             try (Canvas canvas = new Canvas(docEvent.getPage(), pageSize)) {
                 canvas
                         .setFontSize(8)
+                        .add(geoFastLogo)
                         .showTextAligned("Exporté le " + getFormattedDate(), rightX, headerY, TextAlignment.CENTER)
-                        .showTextAligned("GeoFast", centerX, footerY, TextAlignment.CENTER)
                         .close();
             } catch (Exception e) {
                 log.error(e.getMessage());
