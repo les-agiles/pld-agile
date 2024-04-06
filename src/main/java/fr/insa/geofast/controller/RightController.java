@@ -33,6 +33,7 @@ public class RightController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         planningRequestsController.setParentController(this);
+        computeRoutesButton.setDisable(true);
 
         computeRoutesButton.setOnAction(e -> onComputeRoutesPressed());
     }
@@ -60,7 +61,11 @@ public class RightController implements Initializable {
         planningRequestsController.refresh(planningRequest);
         mapController.updateLabels(planningRequest);
         mapController.displayComputedRoutes(planningRequest);
-        parentController.getLeftController().getHeaderController().setExportButtonVisible(true);
+        parentController.getLeftController().getHeaderController().setExportButtonDisable(false);
+    }
+
+    public void setComputeRoutesButtonDisable(boolean visible) {
+        computeRoutesButton.setDisable(visible);
     }
 
     public void reset() {
