@@ -28,6 +28,7 @@ public class GeofastApp extends Application {
         logger.trace("stage loaded");
 
         Scene scene = new Scene(rootNode, 1000, 700);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("custom_planning_requests.css")).toExternalForm());
         logger.trace("scene created");
 
         stage.setTitle("GeoFast!");
