@@ -97,7 +97,7 @@ effectuées dans leur créneau prévu. Ces livraisons non assignées sont alors 
 du livreur.
 
 Un exemple de ce cas peut être observé lors de l’utilisation de la carte `largeMap.xml` et du programme
-`requestsLarge7.xml`, spécifiquement pour le livreur numéro 1.
+`requestsLarge7.xml`, spécifiquement pour le livreur numéro 1 :
 
 ![resultat_calcul_tournees_livraison_non_assignee.png](ressource/resultat_calcul_tournees_livraison_non_assignee.png)
 
