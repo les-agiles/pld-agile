@@ -111,3 +111,5 @@ Au préalable, vous devez avoir calculer les tournées d'un programme de livrais
 
 Le fichier PDF généré contiendra la liste de route de chaque livreur.
 
+[Exemple de fichier PDF généré](ressource/export-pdf-exemple.pdf)
+
