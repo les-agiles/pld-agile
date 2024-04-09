@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<VBox fx:id="details" spacing="10.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RequestDetailsController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox fx:id="details" spacing="10.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.insa.geofast.controller.RequestDetailsController">
+    <padding>
+        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
+    </padding>
     <children>
         <HBox prefHeight="0.0" prefWidth="0.0">
             <children>
-            <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" text="Détail d'un point de livraison" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Label>
+                <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       nodeOrientation="LEFT_TO_RIGHT" text="Détail d'un point de livraison" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="System Bold" size="16.0"/>
+                    </font>
+                </Label>
             </children>
         </HBox>
         <HBox maxHeight="1.7976931348623157E308" prefHeight="35.0" prefWidth="600.0" spacing="5.0">
             <children>
-            <Label text="Coordonnées">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label text="lat. : " />
-            <Label fx:id="latValue" text="0" />
-            <Label text="lon. : " HBox.hgrow="ALWAYS" />
-            <Label fx:id="lonValue" maxHeight="-Infinity" text="0" HBox.hgrow="ALWAYS" />
+                <Label text="Coordonnées">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
+                <Label text="lat. : "/>
+                <Label fx:id="latValue" text="0"/>
+                <Label text="lon. : " HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lonValue" maxHeight="-Infinity" text="0" HBox.hgrow="ALWAYS"/>
             </children>
         </HBox>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
             <children>
-            <Label fx:id="timeLabel" text="Horaire">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="timeValue" text="XX-XX" />
+                <Label fx:id="timeLabel" text="Horaire">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="timeValue" text="XX-XX"/>
 
             </children>
         </HBox>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
             <children>
-            <Label text="Livreur">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="deliveryGuy" text="Livreur X" />
+                <Label text="Livreur">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="deliveryGuy" text="Livreur X"/>
             </children>
         </HBox>
         <HBox spacing="20.0" HBox.hgrow="ALWAYS">
             <children>
-            <Label text="Rues de l'intersection">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
+                <Label text="Rues de l'intersection">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
                 <ScrollPane minHeight="150.0" HBox.hgrow="ALWAYS">
-                    <VBox fx:id="streets" spacing="10.0" HBox.hgrow="ALWAYS" />
+                    <VBox fx:id="streets" spacing="10.0" HBox.hgrow="ALWAYS"/>
                 </ScrollPane>
             </children>
         </HBox>

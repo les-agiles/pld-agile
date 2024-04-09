@@ -37,8 +37,8 @@ public class HeaderController implements Initializable {
         importMapButton.setOnAction(e -> readMapXml());
 
         importPlanningRequestButton.setOnAction(e -> readPlanningRequestXml());
-        importPlanningRequestButton.setVisible(false);
-        exportToPDFButton.setVisible(false);
+        importPlanningRequestButton.setDisable(true);
+        exportToPDFButton.setDisable(true);
 
         exportToPDFButton.setOnAction(e -> export());
     }
@@ -66,7 +66,9 @@ public class HeaderController implements Initializable {
         parentController.getParentController().getRightController().reset();
 
         parentController.getMapController().displayMap(map);
-        importPlanningRequestButton.setVisible(true);
+        importPlanningRequestButton.setDisable(false);
+        exportToPDFButton.setDisable(true);
+        parentController.getParentController().getRightController().setComputeRoutesButtonDisable(true);
 
         parentController.getParentController().displayNotification("Plan importé avec succès", Styles.SUCCESS);
     }
@@ -98,11 +100,14 @@ public class HeaderController implements Initializable {
 
         parentController.getMapController().displayPlanningRequest(planningRequest);
 
+        parentController.getParentController().getRightController().setComputeRoutesButtonDisable(false);
+        exportToPDFButton.setDisable(true);
+
         parentController.getParentController().displayNotification("Programme importé avec succès", Styles.SUCCESS);
     }
 
-    public void setExportButtonVisible(boolean visible) {
-        exportToPDFButton.setVisible(visible);
+    public void setExportButtonDisable(boolean visible) {
+        exportToPDFButton.setDisable(visible);
     }
 
     private void export() {
